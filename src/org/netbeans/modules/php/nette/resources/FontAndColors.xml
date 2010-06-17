@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE fontscolors PUBLIC "-//NetBeans//DTD Editor Fonts and Colors settings 1.1//EN" "http://www.netbeans.org/dtds/EditorFontsColors-1_1.dtd">
+<fontscolors>
+    <fontcolor name="text" default="identifier"/>
+    <fontcolor name="error" default="error"/>
+    <fontcolor name="macro" default="keyword" foreColor="red"/>
+    <fontcolor name="variable" default="keyword" foreColor="EE7700" />
+    <fontcolor name="comment" default="comment"/>
+    <fontcolor name="keyword" default="keyword"/>
+    <fontcolor name="number" default="number"/>
+    <fontcolor name="operator" default="operator"/>
+    <fontcolor name="string" default="string" foreColor="00AA00"/>
+    <fontcolor name="assign" default="separator" foreColor="red"/>
+    <fontcolor name="colon" default="separator" foreColor="red"/>
+    <fontcolor name="whitespace" default="whitespace"/>
+    <fontcolor name="delimiter" default="operator" foreColor="red">
+        <font style="bold"/>
+    </fontcolor>
+</fontscolors>
