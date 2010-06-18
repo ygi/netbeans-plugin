@@ -102,13 +102,35 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                     }
                         
                     c = input.read();
-                    input.backup(1);
+                    //input.backup(1);
                     if(!Character.isJavaIdentifierPart(c) && c != '!' && c != '?'
                             && c != '=' && c != '/' && c != '*') {
                         return LatteTopTokenId.HTML;
                     }
                     state = State.AFTER_LD;
                     while(true) {
+                        cc = (char)c;
+                        if(c == '*') {                                  //if comment starts
+                            c = input.read();
+                            cc = (char)c;
+                            while(true) {
+                                if(c == '*')
+                                {
+                                    c = input.read();
+                                    cc = (char)c;
+                                    if(c == '}' || c == EOF) {          //if closing comment found or EOF
+                                        state = State.OUTER;
+                                        return LatteTopTokenId.LATTE;
+                                    }
+                                    input.backup(1);
+                                }
+                                if(c == EOF) {
+                                    return LatteTopTokenId.HTML;
+                                }
+                                c = input.read();
+                                cc = (char)c;
+                            }
+                        }
                         if(c == '{') {
                             input.backup(1);
                             return LatteTopTokenId.HTML;

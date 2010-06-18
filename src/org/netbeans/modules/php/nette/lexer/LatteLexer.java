@@ -96,8 +96,9 @@ class LatteLexer implements Lexer<LatteTokenId> {
                                 return token(LatteTokenId.COMMENT);
                             }
                             if(ch == '*') {
-                                if(input.read() == '}' || ch == EOF) {
-                                    input.backup(1);
+                                ch = input.read();
+                                input.backup(1);
+                                if(ch == '}' || ch == EOF) {
                                     state = State.AFTER_MACRO;
                                     return token(LatteTokenId.COMMENT);
                                 }
