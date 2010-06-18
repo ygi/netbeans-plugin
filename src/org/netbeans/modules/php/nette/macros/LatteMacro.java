@@ -11,7 +11,8 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledDocument;
 
 /**
- *
+ * Base Macro class
+ * Handles macro name, if it is pair macro, end and macro name (ifCurrent /if)
  * @author redhead
  */
 public class LatteMacro {

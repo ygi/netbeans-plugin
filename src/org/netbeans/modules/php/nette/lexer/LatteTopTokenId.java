@@ -18,7 +18,7 @@ import org.netbeans.spi.lexer.Lexer;
 import org.netbeans.spi.lexer.LexerRestartInfo;
 
 /**
- *
+ * Enum of tokens for top language of latte template and top language specification
  * @author redhead
  */
 public enum LatteTopTokenId implements TokenId {

@@ -8,7 +8,7 @@ package org.netbeans.modules.php.nette.macros;
 import javax.swing.text.JTextComponent;
 
 /**
- *
+ * Represents single macro (no pair; eg. {else})
  * @author redhead
  */
 public class LatteSingleMacro extends LatteMacro {

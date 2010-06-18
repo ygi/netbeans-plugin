@@ -34,8 +34,8 @@ import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 
 /**
- *
- * @author cawe
+ * Some utils used for editor operations
+ * @author redhead
  */
 public class EditorUtils {
 

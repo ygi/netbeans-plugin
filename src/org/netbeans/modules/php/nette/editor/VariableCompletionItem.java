@@ -20,7 +20,7 @@ import org.netbeans.spi.editor.completion.CompletionTask;
 import org.netbeans.spi.editor.completion.support.CompletionUtilities;
 
 /**
- *
+ * Representers completion item for variable (is super class for others) //FIXME: ?
  * @author redhead
  */
 public class VariableCompletionItem implements CompletionItem {
@@ -50,7 +50,7 @@ public class VariableCompletionItem implements CompletionItem {
     }
 
     public void processKeyEvent(KeyEvent ke) {
-
+        
     }
 
     public int getPreferredWidth(Graphics grphcs, Font font) {

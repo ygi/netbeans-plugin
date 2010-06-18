@@ -12,7 +12,7 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledDocument;
 
 /**
- *
+ * Representing comment macro for completion
  * @author redhead
  */
 public class LatteCommentMacro extends LatteMacro {

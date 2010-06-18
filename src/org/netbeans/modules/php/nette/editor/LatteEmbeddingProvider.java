@@ -21,8 +21,8 @@ import org.netbeans.modules.php.nette.lexer.LatteTokenId;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 
 /**
- * Provides code completion for HTML or LATTE tokens
- *
+ * Provides embedded languages for HTML or LATTE tokens (language is denoted by mime-type)
+ * @author redhead
  */
 public class LatteEmbeddingProvider extends EmbeddingProvider {
 
@@ -51,7 +51,7 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
         while (sequence.moveNext()) {
             Token t = sequence.token();
             if (t.id() == LatteTopTokenId.LATTE) {
-                //virtualni kod (zamezuje chybam v syntaxi v css, js)
+                //virtualni kod @@@ zamezuje chybam v syntaxi v css, js
                 if(t.text().charAt(0) == '{')
                     htmlEmbeddings.add(snapshot.create("@@@", "text/x-php5"));
                 embeddings.add(snapshot.create(sequence.offset(), t.length(), "text/latte"));

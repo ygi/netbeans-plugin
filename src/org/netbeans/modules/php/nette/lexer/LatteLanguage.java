@@ -10,7 +10,7 @@ import org.netbeans.modules.csl.spi.LanguageRegistration;
 import org.netbeans.modules.parsing.spi.Parser;
 
 /**
- *
+ * Registers new language to mime-type text/latte-template for .phtml files
  * @author redhead
  */
 @LanguageRegistration(mimeType="text/latte-template")

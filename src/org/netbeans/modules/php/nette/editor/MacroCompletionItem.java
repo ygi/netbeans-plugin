@@ -8,7 +8,7 @@ package org.netbeans.modules.php.nette.editor;
 import java.awt.Color;
 
 /**
- *
+ * Colors the macro completion item
  * @author redhead
  */
 public class MacroCompletionItem extends VariableCompletionItem {
