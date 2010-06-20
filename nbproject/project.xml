@@ -78,6 +78,20 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
+                    <code-name-base>org.netbeans.modules.php.editor</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <implementation-version/>
+                    </run-dependency>
+                </dependency>
+                <dependency>
+                    <code-name-base>org.netbeans.modules.php.help</code-name-base>
+                    <run-dependency>
+                        <specification-version>1.5.1</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
                     <code-name-base>org.openide.filesystems</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>

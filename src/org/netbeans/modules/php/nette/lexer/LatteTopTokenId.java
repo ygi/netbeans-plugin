@@ -98,10 +98,10 @@ public enum LatteTopTokenId implements TokenId {
 
 
     /**
-     * Gets language denoted by tokens
-     * @return Language<LatteTopTokenId>
+     * Gets language used for these tokens
+     * @return language
      */
-    public static final Language<LatteTopTokenId> language() {
+    public static Language<LatteTopTokenId> language() {
         return language;
     }
 }

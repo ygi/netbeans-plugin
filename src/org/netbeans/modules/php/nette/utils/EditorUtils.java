@@ -88,6 +88,14 @@ public class EditorUtils {
         return start;
     }
 
+    /**
+     * Parses out links from modules/presenters which are in the current application
+     * @param doc Latte Template document
+     * @param written user-written text (until caret)
+     * @param startOffset document text offset where to start completion
+     * @param length of text to overwrite
+     * @return List<CompletionItem> ready completion set to add to CompletionResultSet
+     */
     public static List<CompletionItem> parseLink(Document doc, String link, int startOffset, int length) {
         FileObject fo = Source.create(doc).getFileObject();
 
@@ -124,9 +132,16 @@ public class EditorUtils {
         return list;
     }
 
+    /**
+     * Parses components/controls from presenter php file which this template belongs to
+     * @param doc Latte Template document
+     * @param written user-written text (until caret)
+     * @param startOffset document text offset where to start completion
+     * @param length of text to overwrite
+     * @return List<CompletionItem> ready completion set to add to CompletionResultSet
+     */
     public static List<CompletionItem> parseControl(Document doc, String written, int startOffset, int length) {
         List<CompletionItem> list = new ArrayList<CompletionItem>();
-        
         try {
             FileObject fo = Source.create(doc).getFileObject();
 
@@ -180,6 +195,14 @@ public class EditorUtils {
         return list;
     }
 
+    /**
+     *
+     * @param doc Latte Template document
+     * @param written user-written text (until caret)
+     * @param startOffset document text offset where to start completion
+     * @param length of text to overwrite
+     * @return List<CompletionItem> ready completion set to add to CompletionResultSet
+     */
     public static List<CompletionItem> parseLayout(Document doc, String written, int startOffset, int length) {
         List<CompletionItem> list = new ArrayList<CompletionItem>();
 
@@ -195,6 +218,15 @@ public class EditorUtils {
         return list;
     }
 
+    /**
+     * Parses out variables from presenter php file which this template belongs to,
+     * and extra dynamic variables created in template
+     * @param doc Latte Template document
+     * @param var user-written text (until caret)
+     * @param caretOffset caret position offset
+     * @param dynamicVars dynamically created variables in template
+     * @return List<CompletionItem> ready completion set to add to CompletionResultSet
+     */
     public static List<CompletionItem> parseVariable(Document doc, String var, int caretOffset, 
             List<String> dynamicVars)
     {
@@ -215,21 +247,10 @@ public class EditorUtils {
         return list;
     }
 
-    public static List<CompletionItem> parseDynamic(List<String> vars, String var, int caretOffset) {
-        List<CompletionItem> list = new ArrayList<CompletionItem>();
-        
-        for(String s : vars) {
-            if(s.startsWith(var)) {
-                list.add(new VariableCompletionItem(s, caretOffset-var.length(), caretOffset));
-            }
-        }
-        return list;
-    }
-
     /**
      * Get context depending variables for Latte template.
-     * @param doc for whcih template
-     * @return list with variables which were sent from presenter
+     * @param doc Latte Template document for which to find variables
+     * @return ArrayList<String> list of variables which were sent from presenter
      */
     public static ArrayList<String> getKeywordsForView(Document doc) {
         ArrayList<String> results = new ArrayList<String>();
@@ -255,7 +276,7 @@ public class EditorUtils {
                                 BufferedReader bis = new BufferedReader(new FileReader(p));
                                 String line;
                                 while ((line = bis.readLine()) != null) {
-                                    String res = parseLineForVars(line);
+                                    String res = parseLineForVar(line);
                                     if (res != null && !results.contains(res)) {
                                         results.add(res);
                                     }
@@ -281,6 +302,11 @@ public class EditorUtils {
         return results;
     }
 
+    /**
+     * Gets presenter name of the Template file
+     * @param fo Latte Template file object
+     * @return String presenter name
+     */
     public static String getPresenter(FileObject fo) {
         String[] fn = fo.getName().split("\\.");
 
@@ -291,11 +317,53 @@ public class EditorUtils {
         }
     }
 
+    /**
+     * Gets presenter name of the Template file
+     * @param fo Latte Template file object
+     * @return String presenter name
+     */
+    public static FileObject getPresenterFile(FileObject fo) {
+        String presenter = getPresenter(fo) + "Presenter.php";
+
+        byte level = 0;
+        while (true) {
+            level++;
+            fo = fo.getParent();
+            if(fo.getName().equals("sessions")
+                    || fo.getName().equals("temp") || fo.getName().equals("logs"))
+                continue;
+            for (FileObject f : fo.getChildren()) {
+                if (f.isFolder() && f.getName().equals("presenters")) {
+                    File p = new File(f.getPath(), presenter);
+                    if (p.exists()) {
+                        return FileUtil.toFileObject(p);
+                    }
+                    break;
+                }
+            }
+            if(fo.getName().equals("app")) {
+                break;
+            }
+            if(level > 6) {   // just 5 levels up
+                break;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Searches for all presenter paths (modules + presenters)
+     * @param fo File which is in php module
+     * @return List of all presenter paths
+     */
     public static List<String> getAllPresenters(FileObject fo) {
         File appDir = new File(PhpModule.forFileObject(fo).getSourceDirectory().getPath() + "/app");
-
+        
         Enumeration<? extends FileObject> files = FileUtil.toFileObject(appDir).getChildren(true);
 
+        Pattern p = Pattern.compile("class +([A-Za-z_][A-Za-z0-9_]*)Presenter");
+        
         List<String> list = new ArrayList<String>();
         while (files.hasMoreElements()) {
             FileObject pfo = files.nextElement();
@@ -306,7 +374,6 @@ public class EditorUtils {
                     String line;
                     while ((line = bis.readLine()) != null) {
                         if(line.contains("class ") && !line.contains("abstract")) {
-                            Pattern p = Pattern.compile("class +([A-Za-z_][A-Za-z0-9_]*)Presenter");
                             Matcher m = p.matcher(line);
                             String presenterPath = "";
                             if(m.find()) {
@@ -329,20 +396,20 @@ public class EditorUtils {
         return list;
     }
 
-
-    private static Pattern varPattern = Pattern.compile("template->([A-Za-z_][A-Za-z0-9_]*)");
+    //FIXME: takes $template->methods() as variables too
+    private static Pattern varPattern = Pattern.compile("template->([A-Za-z_][A-Za-z0-9_]*\\(?)");
 
     /**
-     * Get information if the line contains parameter sent into template.
+     * Get variable name if the line contains variable sent into template
      * @param line scanned line
-     * @return whole line if there is sent variable or nothing
+     * @return variable name starting with $ or null if not found
      */
-    public static String parseLineForVars(String line) {
+    public static String parseLineForVar(String line) {
         try {
             if (line.contains("template")) {
                 Matcher m = varPattern.matcher(line);
                 String var = null;
-                if (m.find()) {
+                if (m.find() && !m.group(1).endsWith("(")) {
                     var = "$" + m.group(1);
                 }
                 return var;
@@ -353,6 +420,10 @@ public class EditorUtils {
         return null;
     }
 
+    /**
+     * Returns list of gerenal variables for Latte Templates
+     * @return list of variables
+     */
     private static ArrayList<String> getGeneralVariables() {
         ArrayList<String> generalVars = new ArrayList<String>();
         generalVars.add("$baseUri");
@@ -362,6 +433,11 @@ public class EditorUtils {
         return generalVars;
     }
 
+    /**
+     * Searches for all layouts or global templates (with preceding @ char)
+     * @param fo file in app folder from which a relative path will be constructed
+     * @return list of layouts relative path
+     */
     public static List<String> getLayouts(FileObject fo) {
         ArrayList<String> layouts = new ArrayList<String>();
 
@@ -385,6 +461,12 @@ public class EditorUtils {
         return layouts;
     }
 
+    /**
+     *
+     * @param from file or folder which to to create relative path from
+     * @param to file which create a relative path to
+     * @return relative path
+     */
     public static String getRelativePath(FileObject from, FileObject to) {
         ArrayList<String> fPath = new ArrayList<String>(Arrays.asList(from.getPath().split("/")));
         ArrayList<String> tPath = new ArrayList<String>(Arrays.asList(to.getPath().split("/")));
@@ -416,6 +498,12 @@ public class EditorUtils {
         return relPath.equals("") ? null : relPath;
     }
 
+    /**
+     * Searches for all files recursively (children folders including)
+     * @param fp folder which to start search from
+     * @param filter filter denoting what files should be returned
+     * @return list of files found
+     */
     private static List<FileObject> getFilesRecursive(FileObject fp, FilenameFilter filter) {
         List<FileObject> list = new ArrayList<FileObject>();
         

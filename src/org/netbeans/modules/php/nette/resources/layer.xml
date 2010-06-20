@@ -70,7 +70,7 @@
     <folder name="Loaders">
         <folder name="text">
             <folder name="latte-template">
-                <attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/latte_icon – kopie.png"/>
+                <attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/latte_icon2.png"/>
                 <folder name="Actions">
                     <file name="org-openide-actions-CopyAction.shadow">
                         <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-CopyAction.instance"/>
@@ -151,12 +151,13 @@
     <folder name="Templates">
         <folder name="Scripting">
             <file name="LatteTemplate.phtml" url="latteTemplate.phtml">
+                <attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/latte_icon2.png"/>
                 <attr name="template" boolvalue="true"/>
                 <attr name="templateCategory" stringvalue="PHP"/>
                 <attr name="position" intvalue="500"/>
                 <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
                 <attr name="templateWizardURL" urlvalue="latteTemplate.phtml"/>
-                <attr name="SystemFileSystem.icon" urlvalue="iconTmpl.gif"/>
+                <attr name="SystemFileSystem.icon" urlvalue="latte_icon2.png"/>
                 <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.resources.Bundle"/>
             </file>
         </folder>

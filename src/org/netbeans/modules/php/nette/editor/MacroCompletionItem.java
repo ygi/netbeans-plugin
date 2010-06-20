@@ -17,4 +17,9 @@ public class MacroCompletionItem extends VariableCompletionItem {
         super(text, dotOffset, caretOffset);
         fieldColor = Color.decode("0xDD0000");
     }
+
+    @Override
+    public int getSortPriority() {
+        return 90;
+    }
 }

@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import org.netbeans.api.lexer.InputAttributes;
-import org.netbeans.api.lexer.LanguagePath;
 import org.netbeans.api.lexer.Token;
 import org.netbeans.api.lexer.TokenHierarchy;
 import org.netbeans.api.lexer.TokenSequence;
@@ -29,6 +26,7 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
     @Override
     public List<Embedding> getEmbeddings(Snapshot snapshot) {
         // for sending atributes for LatteLexer (dynamic variables)
+        // may be not necessary
         Document doc = snapshot.getSource().getDocument(true);
         InputAttributes inputAttributes = new InputAttributes();
         LatteParseData tmplParseData = new LatteParseData(doc);
@@ -41,6 +39,7 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
         TokenSequence<LatteTopTokenId> sequence = th.tokenSequence(LatteTopTokenId.language());
 
         //TODO: neprochazet celou sekvenci (ale par radku pred a po caret)
+        // jestli je to vubec mozny...
 
         sequence.moveStart();
         List<Embedding> embeddings = new ArrayList<Embedding>();
@@ -55,6 +54,7 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
                 if(t.text().charAt(0) == '{')
                     htmlEmbeddings.add(snapshot.create("@@@", "text/x-php5"));
                 embeddings.add(snapshot.create(sequence.offset(), t.length(), "text/latte"));
+
             }/* else if(t.id() == LatteTopTokenId.LATTE_OPEN) {
                 latteEmbeddings.add(snapshot.create("{"+macro+" ", "text/latte"));
             } else if(t.id() == LatteTopTokenId.LATTE_CLOSE) {
