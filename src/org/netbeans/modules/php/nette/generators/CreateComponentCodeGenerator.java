@@ -9,6 +9,9 @@ import org.netbeans.modules.php.nette.utils.EditorUtils;
 import org.netbeans.spi.editor.codegen.CodeGenerator;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
+import org.openide.DialogDescriptor;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 
 public class CreateComponentCodeGenerator implements CodeGenerator {
 
@@ -44,7 +47,13 @@ public class CreateComponentCodeGenerator implements CodeGenerator {
 
 		CreateComponentPanel panel = new CreateComponentPanel();
 
-		JOptionPane.showMessageDialog(textComp, panel, "Create component...", JOptionPane.PLAIN_MESSAGE);
+		DialogDescriptor dd = new DialogDescriptor(panel, "Create component...");
+		Object result = DialogDisplayer.getDefault().notify(dd);
+		if (result != NotifyDescriptor.OK_OPTION) {
+			return;
+		}
+
+		//JOptionPane.showMessageDialog(textComp, panel, "Create component...", JOptionPane.PLAIN_MESSAGE);
 
 		try {
 			Document doc = textComp.getDocument();
