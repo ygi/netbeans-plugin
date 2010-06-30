@@ -85,7 +85,7 @@ public class NettePhpFrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public EditorExtender getEditorExtender(PhpModule pm) {
-        return null;
+        return new NetteEditorExtender();
     }
     
 }

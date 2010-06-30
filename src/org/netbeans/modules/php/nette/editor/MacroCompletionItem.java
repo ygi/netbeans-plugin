@@ -8,7 +8,7 @@ package org.netbeans.modules.php.nette.editor;
 import java.awt.Color;
 
 /**
- *
+ * Colors the macro completion item
  * @author redhead
  */
 public class MacroCompletionItem extends VariableCompletionItem {
@@ -16,5 +16,10 @@ public class MacroCompletionItem extends VariableCompletionItem {
     public MacroCompletionItem(String text, int dotOffset, int caretOffset) {
         super(text, dotOffset, caretOffset);
         fieldColor = Color.decode("0xDD0000");
+    }
+
+    @Override
+    public int getSortPriority() {
+        return 90;
     }
 }

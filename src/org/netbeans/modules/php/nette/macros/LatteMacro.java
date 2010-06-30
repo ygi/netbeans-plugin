@@ -11,7 +11,8 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledDocument;
 
 /**
- *
+ * Base Macro class
+ * Handles macro name, if it is pair macro, end and macro name (ifCurrent /if)
  * @author redhead
  */
 public class LatteMacro {
@@ -55,14 +56,22 @@ public class LatteMacro {
     }
 
     public String getText() {
-        String text = '{'+macro+'}';
+        String text = getMacro();
         if(isPair)
-            text += "{/"+endMacro+'}';
+            text += getEndMacro();
         return text;
     }
 
     public String getMacroName() {
         return macro;
+    }
+
+    public boolean isPair() {
+        return isPair;
+    }
+
+    public String getEndMacro() {
+        return "{/"+endMacro+"}";
     }
 
 }

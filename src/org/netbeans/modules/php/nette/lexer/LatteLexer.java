@@ -11,7 +11,7 @@ import org.netbeans.spi.lexer.TokenFactory;
 import javax.swing.text.Document;
 
 /**
- *
+ * Lexer for inside-macro tokenizing (must be parsed out by LatteTopLexer as LatteTopTokenId.LATTE)
  * @author redhead
  */
 class LatteLexer implements Lexer<LatteTokenId> {
@@ -43,8 +43,8 @@ class LatteLexer implements Lexer<LatteTokenId> {
         this.tokenFactory = info.tokenFactory();
     }
 
+    /** keywords which will be highlited differently (like in PHP) */
     private final static List<String> keywords = new ArrayList<String>();
-    
     static {
         keywords.add("true");
         keywords.add("false");
@@ -55,7 +55,8 @@ class LatteLexer implements Lexer<LatteTokenId> {
         keywords.add("and");
         keywords.add("xor");
     };
-
+    
+    /** State of the lexer - where in tokenizing the macro the lexer ended */
     enum State {
         OUTER,
         INIT,
@@ -69,6 +70,12 @@ class LatteLexer implements Lexer<LatteTokenId> {
         IN_PARAMS
     }
 
+    /**
+     * Tokenizes the input. In this lexer the input must be a latte macro (latte mime-type).
+     * For HTML use LatteTopLexer
+     * Returns creted Token with LattteTokenId
+     * @return Token<LattteTokenId>
+     */
     public Token<LatteTokenId> nextToken() {
         while(true) {
             int ch = input.read();
@@ -96,8 +103,9 @@ class LatteLexer implements Lexer<LatteTokenId> {
                                 return token(LatteTokenId.COMMENT);
                             }
                             if(ch == '*') {
-                                if(input.read() == '}' || ch == EOF) {
-                                    input.backup(1);
+                                ch = input.read();
+                                input.backup(1);
+                                if(ch == '}' || ch == EOF) {
                                     state = State.AFTER_MACRO;
                                     return token(LatteTokenId.COMMENT);
                                 }
@@ -223,10 +231,20 @@ class LatteLexer implements Lexer<LatteTokenId> {
         }
     }
 
+    /**
+     * Returns state in which the lexer ended in current tokenizing
+     * @return State
+     */
     public Object state() {
         return state;
     }
 
+    /**
+     * Finishes current token representing a number
+     * FIXME: single dot is also tokenized as number (in php it is a legal operator for string concat.)
+     * @param int ch character currently tokenized
+     * @return
+     */
     private Token<LatteTokenId> finishIntOrFloatLiteral(int ch) {
         boolean floatLiteral = false;
         while (true) {
@@ -249,6 +267,11 @@ class LatteLexer implements Lexer<LatteTokenId> {
         }
     }
 
+    /**
+     * Creates token from factory
+     * @param id
+     * @return
+     */
     private Token<LatteTokenId> token(LatteTokenId id) {
         return (id.fixedText() != null)
             ? tokenFactory.getFlyweightToken(id, id.fixedText())

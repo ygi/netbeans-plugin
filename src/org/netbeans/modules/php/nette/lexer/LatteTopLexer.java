@@ -13,7 +13,7 @@ import org.netbeans.spi.lexer.TokenFactory;
 import org.netbeans.spi.lexer.TokenPropertyProvider;
 
 /**
- *
+ * Top Lexer for text/latte-template mime-type
  * @author redhead
  */
 class LatteTopLexer implements Lexer<LatteTopTokenId> {
@@ -39,6 +39,10 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
 
     private String property = null;
 
+    /**
+     * Tokenizes passed input. Returns Token created with LatteTopTokenId
+     * @return Token<LatteTopTokenId>
+     */
     public Token<LatteTopTokenId> nextToken() {
         LatteTopTokenId tokenId = scanner.nextToken();
         Token<LatteTopTokenId> token = null;
@@ -60,6 +64,9 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
 
     }
 
+    /**
+     * State of the lexer - where in tokenizing the lexer ended
+     */
     private enum State {
         INIT,
         OUTER,
@@ -81,6 +88,12 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
             this.state = state;
         }
 
+        /**
+         * Top lexer tokenizer for latte-template
+         * Parses out macros as LatteTopTokenId.LATTE and other as LatteTopTokenId.HTML
+         * (+ started concept for n:attributes)
+         * @return LatteTopTokenId
+         */
         public LatteTopTokenId nextToken() {
             int c = input.read();
             CharSequence text;
@@ -102,13 +115,35 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                     }
                         
                     c = input.read();
-                    input.backup(1);
+                    //input.backup(1);
                     if(!Character.isJavaIdentifierPart(c) && c != '!' && c != '?'
                             && c != '=' && c != '/' && c != '*') {
                         return LatteTopTokenId.HTML;
                     }
                     state = State.AFTER_LD;
                     while(true) {
+                        cc = (char)c;
+                        if(c == '*') {                                  //if comment starts
+                            c = input.read();
+                            cc = (char)c;
+                            while(true) {
+                                if(c == '*')
+                                {
+                                    c = input.read();
+                                    cc = (char)c;
+                                    if(c == '}' || c == EOF) {          //if closing comment found or EOF
+                                        state = State.OUTER;
+                                        return LatteTopTokenId.LATTE;
+                                    }
+                                    input.backup(1);
+                                }
+                                if(c == EOF) {
+                                    return LatteTopTokenId.HTML;
+                                }
+                                c = input.read();
+                                cc = (char)c;
+                            }
+                        }
                         if(c == '{') {
                             input.backup(1);
                             return LatteTopTokenId.HTML;
