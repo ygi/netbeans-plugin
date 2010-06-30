@@ -2,7 +2,6 @@ package org.netbeans.modules.php.nette.generators;
 
 import java.util.Collections;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import org.netbeans.modules.php.nette.utils.EditorUtils;
@@ -13,9 +12,15 @@ import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 
+/**
+ *
+ * @author Ondřej Brejla
+ */
 public class CreateComponentCodeGenerator implements CodeGenerator {
 
 	JTextComponent textComp;
+
+	CreateComponentPanel panel;
 
 	/**
 	 *
@@ -44,34 +49,59 @@ public class CreateComponentCodeGenerator implements CodeGenerator {
 	 * dialog
 	 */
 	public void invoke() {
+		if (processDialog()) {
+			try {
+				Document doc = textComp.getDocument();
+				int position = textComp.getCaretPosition();
 
-		CreateComponentPanel panel = new CreateComponentPanel();
+				String componentFactoryCode = panel.isFormTabSelected() ? 
+						generateComponentFactoryCode(panel.getFormName(), panel.getFormClass()) :
+						generateComponentFactoryCode(panel.getComponentName(), panel.getComponentClass());
+
+				doc.insertString(position, componentFactoryCode, null);
+
+				textComp.setDocument(doc);
+			} catch (Exception ex) {
+				Exceptions.printStackTrace(ex);
+			}
+		}
+	}
+
+	/**
+	 * Returns generated source code for a component specified by its name and class.
+	 *
+	 * @param componentName
+	 * @param componentClass
+	 * @return
+	 */
+	private String generateComponentFactoryCode(String componentName, String componentClass) {
+		return "\n\tpublic function createComponent" + EditorUtils.capitalize(componentName) + "(" + (panel.isRegisterInConstructor() ? "$name" : "") + ") {\n"
+				+ "\t\t$" + componentName + " = new " + componentClass + "(" + (panel.isRegisterInConstructor() ? "$this, $name" : "") + ");\n"
+				+ "\t\t\n"
+				+ "\t\t\n"
+				+ "\t\t\n"
+				+ (panel.isCreateValidSubmit() ? "\t\t$" + componentName + "->onSubmit[] = callback($this, 'validSubmit" + componentName + "');\n" : "")
+				+ (panel.isCreateInvalidSubmit() ? "\t\t$" + componentName + "->onInvalidSubmit[] = callback($this, 'invalidSubmit" + componentName + "');\n" : "")
+				+ (!panel.isRegisterInConstructor() ? "\t\treturn $" + componentName + ";\n" : "")
+				+ "\t}\n"
+				+ (panel.isCreateValidSubmit() ? "\n\t\tpublic function validSubmit" + componentName + "(" + componentClass + " $" + componentName + ") {\n\t\t\n\t}\n" : "")
+				+ (panel.isCreateInvalidSubmit() ? "\n\t\tpublic function invalidSubmit" + componentName + "(" + componentClass + " $" + componentName + ") {\n\t\t\n\t}\n" : "");
+	}
+
+	/**
+	 * Shows dialog for generating component factory code.
+	 *
+	 * @return True, if OK was clicked, false otherwise.
+	 */
+	private boolean processDialog() {
+		panel = new CreateComponentPanel();
 
 		DialogDescriptor dd = new DialogDescriptor(panel, "Create component...");
 		Object result = DialogDisplayer.getDefault().notify(dd);
 		if (result != NotifyDescriptor.OK_OPTION) {
-			return;
-		}
-
-		//JOptionPane.showMessageDialog(textComp, panel, "Create component...", JOptionPane.PLAIN_MESSAGE);
-
-		try {
-			Document doc = textComp.getDocument();
-
-			int position = textComp.getCaretPosition();
-
-			String componentName = panel.getComponentName();
-			doc.insertString(position, "\n\tpublic function createComponent" + EditorUtils.capitalize(componentName) + "() {\n"
-					+ "\t\t$" + componentName + " = new " + panel.getComponentClass() + "();\n"
-					+ "\t\t\n"
-					+ "\t\t\n"
-					+ "\t\t\n"
-					+ "\t\treturn $" + componentName + ";\n"
-					+ "\t}", null);
-
-			textComp.setDocument(doc);
-		} catch (Exception ex) {
-			Exceptions.printStackTrace(ex);
+			return false;
+		} else {
+			return true;
 		}
 	}
 

@@ -9,7 +9,7 @@ package org.netbeans.modules.php.nette.generators;
 
 /**
  *
- * @author warden
+ * @author Ondřej Brejla
  */
 public class CreateComponentPanel extends javax.swing.JPanel {
 
@@ -27,83 +27,88 @@ public class CreateComponentPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel2 = new javax.swing.JPanel();
+        tabPanel = new javax.swing.JTabbedPane();
+        formPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jTextField1 = new javax.swing.JTextField();
-        jCheckBox3 = new javax.swing.JCheckBox();
+        createValidSubmit = new javax.swing.JCheckBox();
+        formClass = new javax.swing.JTextField();
+        createInvalidSubmit = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jPanel1 = new javax.swing.JPanel();
+        formName = new javax.swing.JTextField();
+        useAppForm = new javax.swing.JCheckBox();
+        componentPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         componentName = new javax.swing.JTextField();
         componentClass = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        registerInConstructor = new javax.swing.JCheckBox();
 
         jLabel3.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jLabel3.text")); // NOI18N
 
-        jCheckBox2.setSelected(true);
-        jCheckBox2.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jCheckBox2.text")); // NOI18N
+        createValidSubmit.setSelected(true);
+        createValidSubmit.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.createValidSubmit.text")); // NOI18N
 
-        jTextField1.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jTextField1.text")); // NOI18N
-        jTextField1.setEnabled(false);
+        formClass.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.formClass.text")); // NOI18N
+        formClass.setEnabled(false);
 
-        jCheckBox3.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jCheckBox3.text")); // NOI18N
+        createInvalidSubmit.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.createInvalidSubmit.text")); // NOI18N
 
         jLabel4.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jLabel4.text")); // NOI18N
 
-        jTextField2.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jTextField2.text")); // NOI18N
+        formName.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.formName.text")); // NOI18N
 
-        jCheckBox4.setSelected(true);
-        jCheckBox4.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jCheckBox4.text")); // NOI18N
+        useAppForm.setSelected(true);
+        useAppForm.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.useAppForm.text")); // NOI18N
+        useAppForm.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                useAppFormStateChanged(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout formPanelLayout = new javax.swing.GroupLayout(formPanel);
+        formPanel.setLayout(formPanelLayout);
+        formPanelLayout.setHorizontalGroup(
+            formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(formPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jCheckBox2)
+                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, formPanelLayout.createSequentialGroup()
+                        .addComponent(createValidSubmit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
-                        .addComponent(jCheckBox3))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(createInvalidSubmit))
+                    .addGroup(formPanelLayout.createSequentialGroup()
+                        .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(formPanelLayout.createSequentialGroup()
+                                .addComponent(formClass, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jCheckBox4))
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))))
+                                .addComponent(useAppForm))
+                            .addComponent(formName, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))))
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        formPanelLayout.setVerticalGroup(
+            formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(formPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox4))
+                    .addComponent(formClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(useAppForm))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(formName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox3)
-                    .addComponent(jCheckBox2))
+                .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(createInvalidSubmit)
+                    .addComponent(createValidSubmit))
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
+        tabPanel.addTab(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.formPanel.TabConstraints.tabTitle"), formPanel); // NOI18N
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jLabel1.text")); // NOI18N
 
@@ -113,30 +118,30 @@ public class CreateComponentPanel extends javax.swing.JPanel {
 
         componentClass.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.componentClass.text")); // NOI18N
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout componentPanelLayout = new javax.swing.GroupLayout(componentPanel);
+        componentPanel.setLayout(componentPanelLayout);
+        componentPanelLayout.setHorizontalGroup(
+            componentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(componentPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(componentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(componentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(componentName, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
                     .addComponent(componentClass, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        componentPanelLayout.setVerticalGroup(
+            componentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(componentPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(componentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(componentClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(componentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(componentName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(43, Short.MAX_VALUE))
@@ -144,56 +149,51 @@ public class CreateComponentPanel extends javax.swing.JPanel {
 
         componentName.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jTextField1.AccessibleContext.accessibleName")); // NOI18N
 
-        jTabbedPane1.addTab(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
+        tabPanel.addTab(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.componentPanel.TabConstraints.tabTitle"), componentPanel); // NOI18N
 
-        jCheckBox1.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jCheckBox1.text")); // NOI18N
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
-            }
-        });
+        registerInConstructor.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.registerInConstructor.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(tabPanel)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCheckBox1)
+                .addComponent(registerInConstructor)
                 .addContainerGap(340, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox1)
+                .addComponent(registerInConstructor)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-	private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-		// TODO add your handling code here:
-	}//GEN-LAST:event_jCheckBox1ActionPerformed
+	private void useAppFormStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_useAppFormStateChanged
+		formClass.setEnabled(!useAppForm.isSelected());
+	}//GEN-LAST:event_useAppFormStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField componentClass;
     private javax.swing.JTextField componentName;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JPanel componentPanel;
+    private javax.swing.JCheckBox createInvalidSubmit;
+    private javax.swing.JCheckBox createValidSubmit;
+    private javax.swing.JTextField formClass;
+    private javax.swing.JTextField formName;
+    private javax.swing.JPanel formPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JCheckBox registerInConstructor;
+    private javax.swing.JTabbedPane tabPanel;
+    private javax.swing.JCheckBox useAppForm;
     // End of variables declaration//GEN-END:variables
 
 	public String getComponentName() {
@@ -202,6 +202,30 @@ public class CreateComponentPanel extends javax.swing.JPanel {
 
 	public String getComponentClass() {
 		return componentClass.getText();
+	}
+
+	public String getFormName() {
+		return formName.getText();
+	}
+
+	public String getFormClass() {
+		return formClass.getText();
+	}
+
+	public boolean isCreateInvalidSubmit() {
+		return createInvalidSubmit.isSelected();
+	}
+
+	public boolean isCreateValidSubmit() {
+		return createValidSubmit.isSelected();
+	}
+
+	public boolean isRegisterInConstructor() {
+		return registerInConstructor.isSelected();
+	}
+
+	public boolean isFormTabSelected() {
+		return tabPanel.getSelectedIndex() == 0;
 	}
 
 }
