@@ -16,6 +16,7 @@
         </folder>
     </folder>
 
+
     <folder name="Editors">
         <folder name="text">
             <folder name="latte-template">
@@ -30,8 +31,7 @@
                     <file name="org-netbeans-modules-html-editor-completion-HtmlPaletteCompletionProvider.instance"/>
                     <file name="org-netbeans-modules-php-nette-editor-LatteCompletionProvider.instance"/>
                 </folder>
-                <file name="org-netbeans-modules-csl-editor-semantic-HighlightsLayerFactoryImpl.instance"/>
-                <file name="org-netbeans-modules-html-editor-coloring-EmbeddingHighlightsLayerFactory.instance"/>
+                <!--file name="org-netbeans-modules-html-editor-coloring-EmbeddingHighlightsLayerFactory.instance"/-->
                 <file name="org-netbeans-modules-php-nette-editor-LatteEmbeddingProvider$Factory.instance"/>
                 <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.lexer.Bundle"/>
                 <folder name="FontsColors">
@@ -46,6 +46,11 @@
             </folder>
 
             <folder name="latte">
+                <folder name="BracesMatchers">
+                    <file name="org-netbeans-modules-php-nette-editor-LatteBracesMatchingFactory.instance">
+                        <attr name="position" intvalue="0"/>
+                    </file>
+                </folder>
                 <folder name="FontsColors">
                     <folder name="NetBeans">
                         <folder name="Defaults">
@@ -155,7 +160,7 @@
 
     <folder name="Templates">
         <folder name="Scripting">
-            <file name="LatteTemplate.phtml" url="latteTemplate.phtml">
+            <file name="Latte Template" url="latteTemplate.phtml">
                 <attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/latte_icon2.png"/>
                 <attr name="template" boolvalue="true"/>
                 <attr name="templateCategory" stringvalue="PHP"/>

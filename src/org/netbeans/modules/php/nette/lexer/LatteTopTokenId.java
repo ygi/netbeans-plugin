@@ -28,7 +28,8 @@ public enum LatteTopTokenId implements TokenId {
     LATTE_CLOSE(null, "close"),
     LATTE_ATTR(null, "n_attr"),
     LATTE_TAG(null, "n_tag"),
-    HTML(null, "lattetop");
+    HTML(null, "lattetop"),
+    HTML_TAG(null, "lattetop");
     //LD(null, "delimiter"),
     //RD(null, "delimiter");
 
@@ -83,10 +84,9 @@ public enum LatteTopTokenId implements TokenId {
                 return LanguageEmbedding.create(HTMLTokenId.language(), 0, 0, true);
             } else if(id == LatteTopTokenId.LATTE_CLOSE) {
                 return LanguageEmbedding.create(HTMLTokenId.language(), 0, 0, true);*/
-            } else if(id == LatteTopTokenId.HTML) {
+            } else {
                 return LanguageEmbedding.create(HTMLTokenId.language(), 0, 0, true);
             }
-            return null;
         }
 
 

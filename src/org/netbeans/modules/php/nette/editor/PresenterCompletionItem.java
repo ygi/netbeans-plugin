@@ -20,6 +20,6 @@ public class PresenterCompletionItem extends VariableCompletionItem {
 
     @Override
     public int getSortPriority() {
-        return 10;
+        return -2000;
     }
 }

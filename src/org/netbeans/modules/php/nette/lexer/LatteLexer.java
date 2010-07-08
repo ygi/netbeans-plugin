@@ -54,6 +54,8 @@ class LatteLexer implements Lexer<LatteTokenId> {
         keywords.add("or");
         keywords.add("and");
         keywords.add("xor");
+        keywords.add("isset");
+        keywords.add("instanceof");
     };
     
     /** State of the lexer - where in tokenizing the macro the lexer ended */
