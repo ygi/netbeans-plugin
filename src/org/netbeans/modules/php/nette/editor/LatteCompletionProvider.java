@@ -79,6 +79,7 @@ public class LatteCompletionProvider implements CompletionProvider {
     };
 
     public final static HashMap<String, LatteMacro[]> friendMacros = new HashMap<String, LatteMacro[]>();
+    
     static {
         friendMacros.put("if", new LatteMacro[] {
             new LatteMacro("else"),
