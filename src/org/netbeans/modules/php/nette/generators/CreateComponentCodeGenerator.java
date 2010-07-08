@@ -75,17 +75,20 @@ public class CreateComponentCodeGenerator implements CodeGenerator {
 	 * @return
 	 */
 	private String generateComponentFactoryCode(String componentName, String componentClass) {
-		return "\n\tpublic function createComponent" + EditorUtils.capitalize(componentName) + "(" + (panel.isRegisterInConstructor() ? "$name" : "") + ") {\n"
-				+ "\t\t$" + componentName + " = new " + componentClass + "(" + (panel.isRegisterInConstructor() ? "$this, $name" : "") + ");\n"
+		String smallComponentName = EditorUtils.firstLetterSmall(componentName);
+		String capitalizedComponentName = EditorUtils.firstLetterCapital(componentName);
+
+		return "\n\tprotected function createComponent" + capitalizedComponentName + "(" + (panel.isRegisterInConstructor() ? "$name" : "") + ") {\n"
+				+ "\t\t$" + smallComponentName + " = new " + componentClass + "(" + (panel.isRegisterInConstructor() ? "$this, $name" : "") + ");\n"
 				+ "\t\t\n"
 				+ "\t\t\n"
 				+ "\t\t\n"
-				+ (panel.isCreateValidSubmit() ? "\t\t$" + componentName + "->onSubmit[] = callback($this, 'validSubmit" + componentName + "');\n" : "")
-				+ (panel.isCreateInvalidSubmit() ? "\t\t$" + componentName + "->onInvalidSubmit[] = callback($this, 'invalidSubmit" + componentName + "');\n" : "")
-				+ (!panel.isRegisterInConstructor() ? "\t\treturn $" + componentName + ";\n" : "")
+				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "\t\t$" + smallComponentName + "->onSubmit[] = callback($this, 'validSubmit" + capitalizedComponentName + "');\n" : "")
+				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "\t\t$" + smallComponentName + "->onInvalidSubmit[] = callback($this, 'invalidSubmit" + capitalizedComponentName + "');\n" : "")
+				+ (!panel.isRegisterInConstructor() ? "\n\t\treturn $" + smallComponentName + ";\n" : "")
 				+ "\t}\n"
-				+ (panel.isCreateValidSubmit() ? "\n\t\tpublic function validSubmit" + componentName + "(" + componentClass + " $" + componentName + ") {\n\t\t\n\t}\n" : "")
-				+ (panel.isCreateInvalidSubmit() ? "\n\t\tpublic function invalidSubmit" + componentName + "(" + componentClass + " $" + componentName + ") {\n\t\t\n\t}\n" : "");
+				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "\n\tpublic function validSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\t\t\n\t}\n" : "")
+				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "\n\tpublic function invalidSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\t\t\n\t}\n" : "");
 	}
 
 	/**
