@@ -27,10 +27,11 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
     private TokenFactory<LatteTopTokenId> tokenFactory;
 
     LatteTopLexer(LexerRestartInfo<LatteTopTokenId> info) {
-        State state = info.state() == null ? State.INIT : (State)info.state();
+        State state = info.state() == null ? State.INIT : ((LexerState)info.state()).getState();
+        State substate = info.state() == null ? State.INIT : ((LexerState)info.state()).getState();
         this.input = info.input();
         this.tokenFactory = info.tokenFactory();
-        this.scanner = new LatteTopColoringLexer(info, state);
+        this.scanner = new LatteTopColoringLexer(info, state, substate);
     }
 
     public static synchronized LatteTopLexer create(LexerRestartInfo<LatteTopTokenId> info) {
@@ -47,17 +48,19 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
         LatteTopTokenId tokenId = scanner.nextToken();
         Token<LatteTopTokenId> token = null;
         if (tokenId != null) {
-            if(property == null || tokenId != LatteTopTokenId.LATTE_ATTR)
-                token = tokenFactory.createToken(tokenId);
-            else
+            if(property != null && tokenId != LatteTopTokenId.HTML) {
                 token = tokenFactory.createPropertyToken(tokenId, input.readLength(),
                         new LattePropertyProvider(property));
+                property = null;
+            } else {
+                token = tokenFactory.createToken(tokenId);
+            }
         }
         return token;
     }
 
     public Object state() {
-        return null;
+        return scanner.getState();
     }
 
     public void release() {
@@ -72,6 +75,7 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
         OUTER,
         AFTER_LD,
         IN_LATTE,
+        IN_LATTE_TAG,
         IN_HTML_TAG,
         IN_HTML_ATTR,
         IN_LATTE_ATTR,
@@ -81,11 +85,13 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
     private class LatteTopColoringLexer {
 
         private State state;
+        private State substate;
         private final LexerInput input;
 
-        public LatteTopColoringLexer(LexerRestartInfo<LatteTopTokenId> info, State state) {
+        public LatteTopColoringLexer(LexerRestartInfo<LatteTopTokenId> info, State state, State substate) {
             this.input = info.input();
             this.state = state;
+            this.substate = substate;
         }
 
         /**
@@ -109,6 +115,7 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                 textLength = text.length();
 
                 if (cc == '{') {
+                    substate = state;
                     if(textLength > 1) {
                         input.backup(1);
                         return LatteTopTokenId.HTML;
@@ -132,7 +139,7 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                                     c = input.read();
                                     cc = (char)c;
                                     if(c == '}' || c == EOF) {          //if closing comment found or EOF
-                                        state = State.OUTER;
+                                        state = substate;
                                         return LatteTopTokenId.LATTE;
                                     }
                                     input.backup(1);
@@ -149,11 +156,11 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                             return LatteTopTokenId.HTML;
                         }
                         if(c == '}') {
-                            state = State.OUTER;
+                            state = substate;
                             return LatteTopTokenId.LATTE;
                         }
                         if(c == EOF) {
-                            state = State.OUTER;
+                            state = substate;
                             return LatteTopTokenId.HTML;
                         }
                         c = input.read();
@@ -161,22 +168,82 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                 }
                 //parsing <tag n:attr>
                 if((state == State.OUTER || state == State.INIT) && c == '<') {
-                    c = input.read();
-                    if(Character.isLetter(c)) {
-                        int c2 = input.read();
-                        if(c != 'n' && c2 != ':') {
-                            state = State.IN_HTML_TAG;
-                            break;
-                        }
-                    }
-                }
-                if(state == State.IN_HTML_TAG) {
-                    if(c == '>') {
-                        state = State.OUTER;
+                    if(input.readLength() > 1) {
+                        input.backup(1);
                         break;
                     }
+                    c = input.read();
+                    int i = 0;
+                    while(true) {
+                        if(!Character.isLetter(c) || c == EOF) {
+                            if((c != '/' || i != 0) && c != ':' && c != '-') {
+                                input.backup(1);
+                                if(input.readLength() == 1) {
+                                    state = State.OUTER;
+                                    return LatteTopTokenId.HTML;
+                                }
+                                if(input.readText().toString().startsWith(("<n:"))) {
+                                    state = State.IN_LATTE_TAG;
+                                    property = input.readText().toString().substring(3);
+                                    return LatteTopTokenId.LATTE_TAG;
+                                } else {
+                                    state = State.IN_HTML_TAG;
+                                    return LatteTopTokenId.HTML_TAG;
+                                }
+                            }
+                        }
+                        c = input.read();
+                        i++;
+                    }
+                }
+                if(state == State.IN_HTML_TAG || state == State.IN_LATTE_TAG) {
+                    if(c == '/') {
+                        if(input.readLength() > 1) {
+                            input.backup(1);
+                            break;
+                        }
+                        c = input.read();
+                        if(c == '>') {
+                            state = State.OUTER;
+                            if(state == State.IN_LATTE_TAG)
+                                return LatteTopTokenId.LATTE_TAG;
+                            else
+                                return LatteTopTokenId.HTML_TAG;
+                        }
+                        input.backup(1);
+                        break;
+                    }
+                    if(c == '>') {
+                        if(input.readLength() > 1) {
+                            input.backup(1);
+                            break;
+                        }
+                        if(state == State.IN_LATTE_TAG) {
+                            state = State.OUTER;
+                            return LatteTopTokenId.LATTE_TAG;   // intetional TAG
+                        } else {
+                            state = State.OUTER;
+                            return LatteTopTokenId.HTML;
+                        }
+                    }
+                    if(c == '<') {
+                        if(input.readLength() > 1) {
+                            input.backup(1);
+                            if(state == State.IN_LATTE_TAG) {
+                                state = State.OUTER;
+                                return LatteTopTokenId.LATTE_TAG;   // intetional TAG
+                            } else {
+                                state = State.OUTER;
+                                return LatteTopTokenId.HTML;
+                            }
+                        }
+                    }
                     if(c == '"') {
-                        state = State.IN_HTML_ATTR;
+                        substate = state;
+                        if(state == State.IN_LATTE_TAG)
+                            state = State.IN_LATTE_ATTR;
+                        else
+                            state = State.IN_HTML_ATTR;
                         break;
                     }
                     if(c == ' ') {
@@ -189,7 +256,10 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                             while(c != EOF) {
                                 if(Character.isLetter(c))
                                     property += (char)c;
+                                else if(c == '-')       // for tag- and inner- prefixes
+                                    property = "";
                                 if(c == '"') {
+                                    substate = state;
                                     state = State.IN_LATTE_ATTR;
                                     return LatteTopTokenId.HTML;
                                 }
@@ -201,7 +271,8 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                 }
                 if(state == State.IN_LATTE_ATTR && c == '"') {
                     if(input.readLength() == 1) {
-                        state = State.IN_HTML_TAG;
+                        state = substate;
+                        substate = null;
                         break;
                     } else {
                         input.backup(1);
@@ -210,10 +281,12 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                     }
                 }
                 if(state == State.IN_LATTE_ATTR_CLOSE && c == '"') {
-                    state = State.IN_HTML_TAG;
+                    state = substate;
+                    substate = null;
                     return LatteTopTokenId.HTML;
                 }
                 if(state == State.IN_HTML_ATTR && c == '"') {
+                    substate = null;
                     state = State.IN_HTML_TAG;
                 }
                 
@@ -229,7 +302,26 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
         }
 
         Object getState() {
+            return new LexerState(state, substate);
+        }
+    }
+
+    class LexerState {
+
+        State state;
+        State substate;
+
+        public LexerState(State state, State substate) {
+            this.state = state;
+            this.substate = substate;
+        }
+
+        public State getState() {
             return state;
+        }
+
+        public State getSubstate() {
+            return substate;
         }
     }
 

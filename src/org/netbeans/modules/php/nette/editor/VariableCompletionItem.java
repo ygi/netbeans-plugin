@@ -27,9 +27,9 @@ public class VariableCompletionItem implements CompletionItem {
 
     protected Color fieldColor = Color.decode("0xEE7700");
     
-    private String text;
-    private int dotOffset;
-    private int caretOffset;
+    protected String text;
+    protected int dotOffset;
+    protected int caretOffset;
 
     public VariableCompletionItem(String text, int dotOffset, int caretOffset) {
         this.text = text;
@@ -54,11 +54,13 @@ public class VariableCompletionItem implements CompletionItem {
     }
 
     public int getPreferredWidth(Graphics grphcs, Font font) {
-        return CompletionUtilities.getPreferredWidth(text, null, grphcs, font);
+        String s = text.replace("<", "&lt;").replace("\"", "&quot;");
+        return CompletionUtilities.getPreferredWidth(s, null, grphcs, font);
     }
 
     public void render(Graphics grphcs, Font font, Color color, Color color1, int width, int height, boolean selected) {
-        CompletionUtilities.renderHtml(null, text, null, grphcs, font,
+        String s = text.replace("<", "&lt;").replace("\"", "&quot;");
+        CompletionUtilities.renderHtml(null, s, null, grphcs, font,
             (selected ? Color.white : fieldColor), width, height, selected);
     }
 

@@ -51,10 +51,6 @@ public class LatteMacro {
         }
     }
 
-    public String getMacro() {
-        return '{'+macro+'}';
-    }
-
     public String getText() {
         String text = getMacro();
         if(isPair)
@@ -62,16 +58,24 @@ public class LatteMacro {
         return text;
     }
 
+    public String getMacro() {
+        return '{'+macro+'}';
+    }
+
     public String getMacroName() {
         return macro;
     }
 
-    public boolean isPair() {
-        return isPair;
-    }
-
     public String getEndMacro() {
         return "{/"+endMacro+"}";
+    }
+
+    public String getEndMacroName() {
+        return endMacro;
+    }
+
+    public boolean isPair() {
+        return isPair;
     }
 
 }

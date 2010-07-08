@@ -18,4 +18,9 @@ public class ControlCompletionItem extends VariableCompletionItem {
         fieldColor = Color.decode("0x000000");
     }
 
+    @Override
+    public int getSortPriority() {
+        return -2000;
+    }
+
 }
