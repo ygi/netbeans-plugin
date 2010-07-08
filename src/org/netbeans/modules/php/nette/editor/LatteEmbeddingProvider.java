@@ -45,7 +45,7 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
         blockMacros.add("for");
         blockMacros.add("if");
         blockMacros.add("ifset");
-        blockMacros.add("ifCurrent");
+        blockMacros.add("ifcurrent");
         blockMacros.add("while");
         blockMacros.add("block");
         blockMacros.add("snippet");
