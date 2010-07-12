@@ -78,17 +78,17 @@ public class CreateComponentCodeGenerator implements CodeGenerator {
 		String smallComponentName = EditorUtils.firstLetterSmall(componentName);
 		String capitalizedComponentName = EditorUtils.firstLetterCapital(componentName);
 
-		return "protected function createComponent" + capitalizedComponentName + "(" + (panel.isRegisterInConstructor() ? "$name" : "") + ") {\n"
-				+ "\t\t$" + smallComponentName + " = new " + componentClass + "(" + (panel.isRegisterInConstructor() ? "$this, $name" : "") + ");\n"
-				+ "\t\t\n"
-				+ "\t\t\n"
-				+ "\t\t\n"
-				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "\t\t$" + smallComponentName + "->onSubmit[] = callback($this, 'validSubmit" + capitalizedComponentName + "');\n" : "")
-				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "\t\t$" + smallComponentName + "->onInvalidSubmit[] = callback($this, 'invalidSubmit" + capitalizedComponentName + "');\n" : "")
-				+ (!panel.isRegisterInConstructor() ? "\n\t\treturn $" + smallComponentName + ";\n" : "")
-				+ "\t}\n"
-				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "\n\tpublic function validSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\t\t\n\t}\n" : "")
-				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "\n\tpublic function invalidSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\t\t\n\t}\n" : "");
+		return "protected function createComponent" + capitalizedComponentName + "(" + (panel.isRegisterInConstructor() ? "$name" : "") + ") {"
+				+ "$" + smallComponentName + " = new " + componentClass + "(" + (panel.isRegisterInConstructor() ? "$this, $name" : "") + ");"
+				+ "\n"
+				+ "\n"
+				+ "\n"
+				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "$" + smallComponentName + "->onSubmit[] = callback($this, 'validSubmit" + capitalizedComponentName + "');" : "")
+				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "$" + smallComponentName + "->onInvalidSubmit[] = callback($this, 'invalidSubmit" + capitalizedComponentName + "');" : "")
+				+ (!panel.isRegisterInConstructor() ? "return $" + smallComponentName + ";" : "")
+				+ "}"
+				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "public function validSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\t\t\n\t}" : "")
+				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "public function invalidSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\t\t\n\t}" : "");
 	}
 
 	/**
