@@ -1,8 +1,8 @@
 package org.netbeans.modules.php.nette.generators;
 
+import org.netbeans.modules.php.nette.ui.generators.CreateComponentGeneratorPanel;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import org.netbeans.lib.editor.codetemplates.api.CodeTemplate;
 import org.netbeans.lib.editor.codetemplates.api.CodeTemplateManager;
@@ -19,24 +19,23 @@ import org.openide.NotifyDescriptor;
  *
  * @author Ondřej Brejla
  */
-public class CreateComponentCodeGenerator implements CodeGenerator {
+public class CreateComponentGenerator implements CodeGenerator {
 
 	JTextComponent textComp;
 
-	CreateComponentPanel panel;
+	CreateComponentGeneratorPanel panel;
 
 	/**
 	 *
 	 * @param context containing JTextComponent and possibly other items registered by {@link CodeGeneratorContextProvider}
 	 */
-	private CreateComponentCodeGenerator(Lookup context) { // Good practice is not to save Lookup outside ctor
+	private CreateComponentGenerator(Lookup context) { // Good practice is not to save Lookup outside ctor
 		textComp = context.lookup(JTextComponent.class);
 	}
 
 	public static class Factory implements CodeGenerator.Factory {
-
 		public List<? extends CodeGenerator> create(Lookup context) {
-			return Collections.singletonList(new CreateComponentCodeGenerator(context));
+			return Collections.singletonList(new CreateComponentGenerator(context));
 		}
 	}
 
@@ -97,7 +96,7 @@ public class CreateComponentCodeGenerator implements CodeGenerator {
 	 * @return True, if OK was clicked, false otherwise.
 	 */
 	private boolean processDialog() {
-		panel = new CreateComponentPanel();
+		panel = new CreateComponentGeneratorPanel();
 
 		DialogDescriptor dd = new DialogDescriptor(panel, "Create component...");
 		Object result = DialogDisplayer.getDefault().notify(dd);

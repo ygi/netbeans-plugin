@@ -112,7 +112,7 @@ public class NetteEditorExtender extends EditorExtender {
 
     }
 
-    @Override
+    //@Override
     public PhpClass getClass(FileObject fo, String string) {
         return new PhpClass("NejakyPresenter", string);
     }
