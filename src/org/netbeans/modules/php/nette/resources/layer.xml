@@ -7,10 +7,10 @@
             <folder name="latte-template">
                 <attr name="useCustomEditorKit" boolvalue="false"/>
                 <file name="language.instance">
-                    <attr name="instanceClass" stringvalue="org.netbeans.modules.php.nette.lexer.LatteLanguage"/>
+                    <attr name="instanceClass" stringvalue="org.netbeans.modules.php.nette.gsf.LatteLanguage"/>
                 </file>
                 <file name="structure.instance">
-                    <attr name="instanceClass" stringvalue="org.netbeans.modules.php.nette.lexer.LatteStructureScanner"/>
+                    <attr name="instanceClass" stringvalue="org.netbeans.modules.php.nette.gsf.LatteStructureScanner"/>
                 </file>
             </folder>
         </folder>

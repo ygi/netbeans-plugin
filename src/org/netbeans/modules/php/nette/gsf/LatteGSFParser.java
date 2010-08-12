@@ -1,5 +1,5 @@
 
-package org.netbeans.modules.php.nette.lexer;
+package org.netbeans.modules.php.nette.gsf;
 
 import java.util.Collections;
 import java.util.List;

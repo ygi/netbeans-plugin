@@ -1,13 +1,15 @@
 /*
  */
 
-package org.netbeans.modules.php.nette.lexer;
+package org.netbeans.modules.php.nette.gsf;
 
+import org.netbeans.modules.php.nette.gsf.LatteGSFParser;
 import org.netbeans.api.lexer.Language;
 import org.netbeans.modules.csl.api.StructureScanner;
 import org.netbeans.modules.csl.spi.DefaultLanguageConfig;
 import org.netbeans.modules.csl.spi.LanguageRegistration;
 import org.netbeans.modules.parsing.spi.Parser;
+import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 
 /**
  * Registers new language to mime-type text/latte-template for .phtml files
