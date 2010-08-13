@@ -3,7 +3,6 @@ package org.netbeans.modules.php.nette.generators;
 import org.netbeans.modules.php.nette.ui.generators.CreateComponentGeneratorPanel;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import org.netbeans.lib.editor.codetemplates.api.CodeTemplate;
 import org.netbeans.lib.editor.codetemplates.api.CodeTemplateManager;
@@ -35,7 +34,6 @@ public class CreateComponentGenerator implements CodeGenerator {
 	}
 
 	public static class Factory implements CodeGenerator.Factory {
-
 		public List<? extends CodeGenerator> create(Lookup context) {
 			return Collections.singletonList(new CreateComponentGenerator(context));
 		}

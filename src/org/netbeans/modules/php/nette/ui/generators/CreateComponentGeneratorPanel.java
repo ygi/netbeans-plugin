@@ -43,22 +43,22 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
         componentClass = new javax.swing.JTextField();
         registerInConstructor = new javax.swing.JCheckBox();
 
-        jLabel3.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.jLabel3.text")); // NOI18N
+        jLabel3.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jLabel3.text")); // NOI18N
 
         createValidSubmit.setSelected(true);
-        createValidSubmit.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.createValidSubmit.text")); // NOI18N
+        createValidSubmit.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.createValidSubmit.text")); // NOI18N
 
-        formClass.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.formClass.text")); // NOI18N
+        formClass.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.formClass.text")); // NOI18N
         formClass.setEnabled(false);
 
-        createInvalidSubmit.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.createInvalidSubmit.text")); // NOI18N
+        createInvalidSubmit.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.createInvalidSubmit.text")); // NOI18N
 
-        jLabel4.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.jLabel4.text")); // NOI18N
+        jLabel4.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jLabel4.text")); // NOI18N
 
-        formName.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.formName.text")); // NOI18N
+        formName.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.formName.text")); // NOI18N
 
         useAppForm.setSelected(true);
-        useAppForm.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.useAppForm.text")); // NOI18N
+        useAppForm.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.useAppForm.text")); // NOI18N
         useAppForm.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 useAppFormStateChanged(evt);
@@ -108,15 +108,15 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        tabPanel.addTab(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.formPanel.TabConstraints.tabTitle"), formPanel); // NOI18N
+        tabPanel.addTab(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.formPanel.TabConstraints.tabTitle"), formPanel); // NOI18N
 
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.jLabel1.text")); // NOI18N
+        jLabel1.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jLabel1.text")); // NOI18N
 
-        jLabel2.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.jLabel2.text")); // NOI18N
+        jLabel2.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jLabel2.text")); // NOI18N
 
-        componentName.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.null.text")); // NOI18N
+        componentName.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.null.text")); // NOI18N
 
-        componentClass.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.componentClass.text")); // NOI18N
+        componentClass.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.componentClass.text")); // NOI18N
 
         javax.swing.GroupLayout componentPanelLayout = new javax.swing.GroupLayout(componentPanel);
         componentPanel.setLayout(componentPanelLayout);
@@ -147,11 +147,11 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
                 .addContainerGap(43, Short.MAX_VALUE))
         );
 
-        componentName.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.jTextField1.AccessibleContext.accessibleName")); // NOI18N
+        componentName.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jTextField1.AccessibleContext.accessibleName")); // NOI18N
 
-        tabPanel.addTab(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.componentPanel.TabConstraints.tabTitle"), componentPanel); // NOI18N
+        tabPanel.addTab(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.componentPanel.TabConstraints.tabTitle"), componentPanel); // NOI18N
 
-        registerInConstructor.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentPanel.registerInConstructor.text")); // NOI18N
+        registerInConstructor.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.registerInConstructor.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

@@ -7,10 +7,10 @@
             <folder name="latte-template">
                 <attr name="useCustomEditorKit" boolvalue="false"/>
                 <file name="language.instance">
-                    <attr name="instanceClass" stringvalue="org.netbeans.modules.php.nette.lexer.LatteLanguage"/>
+                    <attr name="instanceClass" stringvalue="org.netbeans.modules.php.nette.gsf.LatteLanguage"/>
                 </file>
                 <file name="structure.instance">
-                    <attr name="instanceClass" stringvalue="org.netbeans.modules.php.nette.lexer.LatteStructureScanner"/>
+                    <attr name="instanceClass" stringvalue="org.netbeans.modules.php.nette.gsf.LatteStructureScanner"/>
                 </file>
             </folder>
         </folder>
@@ -63,7 +63,7 @@
             </folder>
             <folder name="x-php5">
                 <folder name="CodeGenerators">
-                    <file name="org-netbeans-modules-php-nette-generators-CreateComponentCodeGenerator$Factory.instance"/>
+                    <file name="org-netbeans-modules-php-nette-generators-CreateComponentGenerator$Factory.instance"/>
                 </folder>
             </folder>
         </folder>
@@ -72,7 +72,7 @@
     <folder name="OptionsDialog">
         <folder name="PreviewExamples">
             <folder name="text">
-                <file name="latte-template" url="latteSample.phtml"/>
+                <file name="latte-template" url="LatteSample.phtml"/>
             </folder>
         </folder>
     </folder>
@@ -159,16 +159,34 @@
     </folder>
 
     <folder name="Templates">
-        <folder name="Scripting">
-            <file name="Latte Template" url="latteTemplate.phtml">
-                <attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/latte_icon2.png"/>
+        <folder name="Nette Framework">
+			<attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.resources.Bundle"/>
+			<file name="PresenterTemplate.php" url="PresenterTemplate.php">
+				<attr name="displayName" bundlevalue="org.netbeans.modules.php.nette.resources.Bundle#Templates/Nette-Framework/PresenterTemplate.php"/>
                 <attr name="template" boolvalue="true"/>
-                <attr name="templateCategory" stringvalue="PHP"/>
-                <attr name="position" intvalue="500"/>
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.myorg.additionalfiletemplates.Bundle"/>
+                <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/presenter_icon.png"/>
+				<attr name="position" intvalue="100"/>
+                <attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/PresenterDescription.html"/>
                 <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-                <attr name="templateWizardURL" urlvalue="latteTemplate.phtml"/>
-                <attr name="SystemFileSystem.icon" urlvalue="latte_icon2.png"/>
-                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.resources.Bundle"/>
+            </file>
+			<file name="ControlTemplate.php" url="ControlTemplate.php">
+				<attr name="displayName" bundlevalue="org.netbeans.modules.php.nette.resources.Bundle#Templates/Nette-Framework/ControlTemplate.php"/>
+                <attr name="template" boolvalue="true"/>
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.myorg.additionalfiletemplates.Bundle"/>
+                <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/control_icon.png"/>
+				<attr name="position" intvalue="200"/>
+                <attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/ControlDescription.html"/>
+                <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
+            </file>
+            <file name="LatteTemplate.phtml" url="LatteTemplate.phtml">
+				<attr name="displayName" bundlevalue="org.netbeans.modules.php.nette.resources.Bundle#Templates/Nette-Framework/LatteTemplate.phtml"/>
+                <attr name="template" boolvalue="true"/>
+				<attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.resources.Bundle"/>
+                <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/latte_icon.png"/>
+                <attr name="position" intvalue="300"/>
+				<attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/LatteDescription.html"/>
+                <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
             </file>
         </folder>
     </folder>
