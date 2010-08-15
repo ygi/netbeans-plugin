@@ -1,8 +1,8 @@
 package org.netbeans.modules.php.nette.generators;
 
+import org.netbeans.modules.php.nette.ui.generators.CreateComponentGeneratorPanel;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import org.netbeans.lib.editor.codetemplates.api.CodeTemplate;
 import org.netbeans.lib.editor.codetemplates.api.CodeTemplateManager;
@@ -19,24 +19,23 @@ import org.openide.NotifyDescriptor;
  *
  * @author Ondřej Brejla
  */
-public class CreateComponentCodeGenerator implements CodeGenerator {
+public class CreateComponentGenerator implements CodeGenerator {
 
 	JTextComponent textComp;
 
-	CreateComponentPanel panel;
+	CreateComponentGeneratorPanel panel;
 
 	/**
 	 *
 	 * @param context containing JTextComponent and possibly other items registered by {@link CodeGeneratorContextProvider}
 	 */
-	private CreateComponentCodeGenerator(Lookup context) { // Good practice is not to save Lookup outside ctor
+	private CreateComponentGenerator(Lookup context) { // Good practice is not to save Lookup outside ctor
 		textComp = context.lookup(JTextComponent.class);
 	}
 
 	public static class Factory implements CodeGenerator.Factory {
-
 		public List<? extends CodeGenerator> create(Lookup context) {
-			return Collections.singletonList(new CreateComponentCodeGenerator(context));
+			return Collections.singletonList(new CreateComponentGenerator(context));
 		}
 	}
 
@@ -61,8 +60,6 @@ public class CreateComponentCodeGenerator implements CodeGenerator {
 				CodeTemplateManager manager = CodeTemplateManager.get(textComp.getDocument());
 				CodeTemplate template = manager.createTemporary(componentFactoryCode);
 				template.insert(textComp);
-
-				//textComp.setDocument(doc);
 			} catch (Exception ex) {
 				Exceptions.printStackTrace(ex);
 			}
@@ -80,17 +77,17 @@ public class CreateComponentCodeGenerator implements CodeGenerator {
 		String smallComponentName = EditorUtils.firstLetterSmall(componentName);
 		String capitalizedComponentName = EditorUtils.firstLetterCapital(componentName);
 
-		return "protected function createComponent" + capitalizedComponentName + "(" + (panel.isRegisterInConstructor() ? "$name" : "") + ") {\n"
-				+ "        $" + smallComponentName + " = new " + componentClass + "(" + (panel.isRegisterInConstructor() ? "$this, $name" : "") + ");\n"
-				+ "        \n"
-				+ "        \n"
-				+ "        \n"
-				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "\t\t$" + smallComponentName + "->onSubmit[] = callback($this, 'validSubmit" + capitalizedComponentName + "');\n" : "")
-				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "\t\t$" + smallComponentName + "->onInvalidSubmit[] = callback($this, 'invalidSubmit" + capitalizedComponentName + "');\n" : "")
-				+ (!panel.isRegisterInConstructor() ? "\n\t\treturn $" + smallComponentName + ";\n" : "")
-				+ "    }\n"
-				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "\n\tpublic function validSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\t\t\n\t}\n" : "")
-				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "\n\tpublic function invalidSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\t\t\n\t}\n" : "");
+		return "protected function createComponent" + capitalizedComponentName + "(" + (panel.isRegisterInConstructor() ? "$name" : "") + ") {"
+				+ "$" + smallComponentName + " = new " + componentClass + "(" + (panel.isRegisterInConstructor() ? "$this, $name" : "") + ");"
+				+ "\n"
+				+ "\n"
+				+ "\n"
+				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "$" + smallComponentName + "->onSubmit[] = callback($this, 'validSubmit" + capitalizedComponentName + "');" : "")
+				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "$" + smallComponentName + "->onInvalidSubmit[] = callback($this, 'invalidSubmit" + capitalizedComponentName + "');" : "")
+				+ (!panel.isRegisterInConstructor() ? "return $" + smallComponentName + ";" : "")
+				+ "}"
+				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "public function validSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\t\t\n\t}" : "")
+				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "public function invalidSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\t\t\n\t}" : "");
 	}
 
 	/**
@@ -99,7 +96,7 @@ public class CreateComponentCodeGenerator implements CodeGenerator {
 	 * @return True, if OK was clicked, false otherwise.
 	 */
 	private boolean processDialog() {
-		panel = new CreateComponentPanel();
+		panel = new CreateComponentGeneratorPanel();
 
 		DialogDescriptor dd = new DialogDescriptor(panel, "Create component...");
 		Object result = DialogDisplayer.getDefault().notify(dd);

@@ -1,20 +1,20 @@
 
 /*
- * CreateComponentPanel.java
+ * CreateComponentGeneratorPanel.java
  *
  * Created on 18.6.2010, 20:04:41
  */
 
-package org.netbeans.modules.php.nette.generators;
+package org.netbeans.modules.php.nette.ui.generators;
 
 /**
  *
  * @author Ondřej Brejla
  */
-public class CreateComponentPanel extends javax.swing.JPanel {
+public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
 
-    /** Creates new form CreateComponentPanel */
-    public CreateComponentPanel() {
+    /** Creates new form CreateComponentGeneratorPanel */
+    public CreateComponentGeneratorPanel() {
         initComponents();
     }
 
@@ -43,22 +43,22 @@ public class CreateComponentPanel extends javax.swing.JPanel {
         componentClass = new javax.swing.JTextField();
         registerInConstructor = new javax.swing.JCheckBox();
 
-        jLabel3.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jLabel3.text")); // NOI18N
+        jLabel3.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jLabel3.text")); // NOI18N
 
         createValidSubmit.setSelected(true);
-        createValidSubmit.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.createValidSubmit.text")); // NOI18N
+        createValidSubmit.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.createValidSubmit.text")); // NOI18N
 
-        formClass.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.formClass.text")); // NOI18N
+        formClass.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.formClass.text")); // NOI18N
         formClass.setEnabled(false);
 
-        createInvalidSubmit.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.createInvalidSubmit.text")); // NOI18N
+        createInvalidSubmit.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.createInvalidSubmit.text")); // NOI18N
 
-        jLabel4.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jLabel4.text")); // NOI18N
+        jLabel4.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jLabel4.text")); // NOI18N
 
-        formName.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.formName.text")); // NOI18N
+        formName.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.formName.text")); // NOI18N
 
         useAppForm.setSelected(true);
-        useAppForm.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.useAppForm.text")); // NOI18N
+        useAppForm.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.useAppForm.text")); // NOI18N
         useAppForm.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 useAppFormStateChanged(evt);
@@ -108,15 +108,15 @@ public class CreateComponentPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        tabPanel.addTab(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.formPanel.TabConstraints.tabTitle"), formPanel); // NOI18N
+        tabPanel.addTab(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.formPanel.TabConstraints.tabTitle"), formPanel); // NOI18N
 
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jLabel1.text")); // NOI18N
+        jLabel1.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jLabel1.text")); // NOI18N
 
-        jLabel2.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jLabel2.text")); // NOI18N
+        jLabel2.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jLabel2.text")); // NOI18N
 
-        componentName.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.null.text")); // NOI18N
+        componentName.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.null.text")); // NOI18N
 
-        componentClass.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.componentClass.text")); // NOI18N
+        componentClass.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.componentClass.text")); // NOI18N
 
         javax.swing.GroupLayout componentPanelLayout = new javax.swing.GroupLayout(componentPanel);
         componentPanel.setLayout(componentPanelLayout);
@@ -147,11 +147,11 @@ public class CreateComponentPanel extends javax.swing.JPanel {
                 .addContainerGap(43, Short.MAX_VALUE))
         );
 
-        componentName.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.jTextField1.AccessibleContext.accessibleName")); // NOI18N
+        componentName.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jTextField1.AccessibleContext.accessibleName")); // NOI18N
 
-        tabPanel.addTab(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.componentPanel.TabConstraints.tabTitle"), componentPanel); // NOI18N
+        tabPanel.addTab(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.componentPanel.TabConstraints.tabTitle"), componentPanel); // NOI18N
 
-        registerInConstructor.setText(org.openide.util.NbBundle.getMessage(CreateComponentPanel.class, "CreateComponentPanel.registerInConstructor.text")); // NOI18N
+        registerInConstructor.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.registerInConstructor.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
