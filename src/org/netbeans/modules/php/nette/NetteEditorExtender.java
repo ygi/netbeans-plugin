@@ -19,7 +19,6 @@ import org.netbeans.modules.php.api.editor.PhpClass;
 import org.netbeans.modules.php.api.editor.PhpVariable;
 import org.netbeans.modules.php.editor.CodeUtils;
 import org.netbeans.modules.php.editor.model.ModelUtils;
-import org.netbeans.modules.php.editor.model.Scope;
 import org.netbeans.modules.php.editor.model.TypeScope;
 import org.netbeans.modules.php.editor.parser.PHPParseResult;
 import org.netbeans.modules.php.editor.parser.api.Utils;
@@ -110,11 +109,6 @@ public class NetteEditorExtender extends EditorExtender {
             return vars;
         }
 
-    }
-
-    @Override
-    public PhpClass getClass(FileObject fo, String string) {
-        return new PhpClass("NejakyPresenter", string);
     }
     
 }
