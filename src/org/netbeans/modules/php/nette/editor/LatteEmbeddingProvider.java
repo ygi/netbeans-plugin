@@ -257,11 +257,12 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 						// if there is a string literal or variable, do not add quotes
 						htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
 						htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
+						htmlEmbeddings.add(snapshot.create(" ?>", "text/x-php5"));
 					} else {
 						// otherwise encasulate parametr with double quotes
 						htmlEmbeddings.add(snapshot.create("<?php \"", "text/x-php5"));
 						htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
-						htmlEmbeddings.add(snapshot.create("\"", "text/x-php5"));
+						htmlEmbeddings.add(snapshot.create("\"?>", "text/x-php5"));
 					}
 					break;
 				}
