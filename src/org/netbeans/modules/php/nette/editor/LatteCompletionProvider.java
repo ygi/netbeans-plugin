@@ -76,6 +76,8 @@ public class LatteCompletionProvider implements CompletionProvider {
         new LatteParamMacro("var", false),
         new LatteParamMacro("dump", false),
         new LatteMacro("debugbreak", false),
+        new LatteMacro("l", false),
+        new LatteMacro("r", false),
     };
 
     public final static HashMap<String, LatteMacro[]> friendMacros = new HashMap<String, LatteMacro[]>();
