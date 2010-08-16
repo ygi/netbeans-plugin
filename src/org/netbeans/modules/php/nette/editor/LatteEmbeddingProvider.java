@@ -400,6 +400,10 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 							|| (whiteSpace == 1 && t2.id() == LatteTokenId.COMA)) {
 						whiteSpace++;
 						start = sequence.offset() + sequence2.offset() + t2.length();
+						if(t2.id() == LatteTokenId.RD) {
+							start--;
+							break;
+						}
 					}
 					continue;
 				}
@@ -408,9 +412,18 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 				}
 				length += t2.length();
 			} while(sequence2.moveNext());
-			htmlEmbeddings.add(snapshot.create("<?php \"", "text/x-php5"));
-			htmlEmbeddings.add(snapshot.create(firstStart, start - firstStart, "text/x-php5"));
-			htmlEmbeddings.add(snapshot.create("\"", "text/x-php5"));
+
+			String fParam = snapshot.getText().subSequence(firstStart, start).toString();
+			int trim = (fParam.endsWith(",") || fParam.endsWith(" ")) ? 1 : 0;
+			if(fParam.contains("'") || fParam.contains("\"") || fParam.matches(".*\\$[a-zA-Z_].*")) {
+				htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
+				htmlEmbeddings.add(snapshot.create(firstStart, start - firstStart - trim, "text/x-php5"));
+			} else {
+				htmlEmbeddings.add(snapshot.create("<?php \"", "text/x-php5"));
+				htmlEmbeddings.add(snapshot.create(firstStart, start - firstStart - trim, "text/x-php5"));
+				htmlEmbeddings.add(snapshot.create("\"", "text/x-php5"));
+			}
+			
 			htmlEmbeddings.add(snapshot.create("; array( ", "text/x-php5"));
 			htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
 			htmlEmbeddings.add(snapshot.create(")?>", "text/x-php5"));
