@@ -103,15 +103,19 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 
 		Snapshot snapshot;
 
-		List<Embedding> embeddings = new ArrayList<Embedding>();
+		/* Stores all embeddings with text/x-php mime */
 		List<Embedding> htmlEmbeddings = new ArrayList<Embedding>();
 
+		// LatteTopTokenId sequence
 		TokenSequence<LatteTopTokenId> sequence;
 
+		// macro name used for n:attributes
 		String macroName = null;
 
+		// counts number of {block} macros (there may be one unclosed)
 		int numOfBlocks = 0;
-		
+
+		// stores sequence of tags and number of code blocks which were defined by n:attributes for that tag
 		List<Integer> tags = new ArrayList<Integer>();
 
 		public EmbeddingResolver(Snapshot snapshot) {
@@ -131,52 +135,54 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 			while(sequence.moveNext()) {
 				Token t = sequence.token();
 				if(t.id() == LatteTopTokenId.LATTE) {
-					getLatteEmbedding(t);
+					getLatteEmbedding(t);											// deals with all latte macros
 				} else {
-					//jinak html resp. php
+					//otherwise html/php
 					LatteTopTokenId id = (LatteTopTokenId) t.id();
 					if(t.id() == LatteTopTokenId.HTML_TAG || t.id() == LatteTopTokenId.LATTE_TAG) {
-						String tag = t.text().toString();
-						if(tag.startsWith("<") && tag.charAt(1) != '/') {
+						String tag = t.text().toString();							// tag
+						if(tag.startsWith("<") && tag.charAt(1) != '/') {			// opening tag
 							if(t.id() == LatteTopTokenId.LATTE_TAG) {
-								macroName = (String) t.getProperty("macro");
+								macroName = (String) t.getProperty("macro");		// if <n:tag, store macro name
 							}
-							String tagName = tag.substring(1);
-							tags.add(0);
-						} else if(tag.equals("/>") || tag.startsWith("</")) {
-							//String tagName = tag.substring(2);
-							if(tags.size() > 0) {
-								int c = tags.remove(tags.size() - 1);
-								if(c > 0) {
+							tags.add(0);											// counts nesting
+						} else if(tag.equals("/>") || tag.startsWith("</")) {		// closed non-pair tag or closing tag
+							if(tags.size() > 0) {									// if there are some tags
+								int c = tags.remove(tags.size() - 1);				// remove last tag (opening)
+								if(c > 0) {											// if there are some code blocks
 									htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
 									for(int i = 0; i < c; i++) {
-										htmlEmbeddings.add(snapshot.create("}", "text/x-php5"));
+										htmlEmbeddings.add(snapshot.create("}", "text/x-php5")); // close all code blocks
 									}
 									htmlEmbeddings.add(snapshot.create(" ?>", "text/x-php5"));
 								}
 							}
 							macroName = null;
 						} else if(tag.equals(">") && t.id() == LatteTopTokenId.LATTE_TAG) {
-							macroName = null;
+							macroName = null;										// do nothing here
 						}
 					}
+					// deals as html/php (will color all HTML tags appropriately)
 					htmlEmbeddings.add(snapshot.create(sequence.offset(), t.length(), "text/x-php5"));
 				}
 			}
+			// there can be one {block} macro opened (in that case close it internally)
 			if(numOfBlocks == 1) {
 				htmlEmbeddings.add(snapshot.create("<?php } ?>", "text/x-php5"));
 			}
 
-			//sjednoti text/x-php5 embeddingy (prechody mezi jazyky)
+			List<Embedding> embeddings = new ArrayList<Embedding>();		// embedding result
+			
+			//merges text/x-php5 embeddings into one piece
 			if(!htmlEmbeddings.isEmpty()) {
 				embeddings.add(Embedding.create(htmlEmbeddings));
 			}
 
 
 			if(embeddings.isEmpty()) {
-				return Collections.emptyList();
+				return Collections.emptyList();		// no embedding
 			} else {
-				return embeddings;
+				return embeddings;					// return embedding
 			}
 
 		}
@@ -188,11 +194,12 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 			} else if(t.text().charAt(0) == '{') {
 				macroName = null;														// else it is a macro starting with {
 			}
+			
 			TokenHierarchy<CharSequence> th2 = TokenHierarchy.create(t.text(), LatteTokenId.language());
 			TokenSequence<LatteTokenId> sequence2 = th2.tokenSequence(LatteTokenId.language());
 
 			boolean endMacro = false;
-			String macro = (macroName != null ? macroName : "");
+			String macro = (macroName != null ? macroName : "");					// macro name used internally
 
 			sequence2.moveStart();
 			while(sequence2.moveNext()) {
@@ -210,7 +217,7 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 				if(!macro.equals("")) {
 					if(arrayMacros.contains(macro)) {
 						// {var var => ""} ->  $var = "";
-						processArrayMacro(sequence2, start, macro);
+						processArrayMacro(sequence2, start);
 						break;
 					}
 					if(specialMacros.contains(macro)) {
@@ -229,26 +236,40 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 					}
 					if(macro.equals("attr")) {
 						// {attr class() something()} -> $v->class()->something()
-						processAttrMacro(sequence2, start);
+						processAttrMacro(sequence2);
 						break;
 					}
 
-					// default
+					// default (all other macros)
+					boolean toString = true;									// encapsulate with string quotes?
 					do {
 						t2 = sequence2.token();
+						if(t2.id() == LatteTokenId.VARIABLE || t2.id() == LatteTokenId.STRING) {
+							toString = false;	//if vthere is variable or string literal do not "convert" to string
+						}
 						if(t2.id() == LatteTokenId.RD) {
 							break;
 						}
 						length += t2.length();
 					} while(sequence2.moveNext());
-					htmlEmbeddings.add(snapshot.create("<?php \"", "text/x-php5"));
-					htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
-					htmlEmbeddings.add(snapshot.create("\" ?>", "text/x-php5"));
+					
+					if(!toString) {
+						// if there is a string literal or variable, do not add quotes
+						htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
+						htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
+					} else {
+						// otherwise encasulate parametr with double quotes
+						htmlEmbeddings.add(snapshot.create("<?php \"", "text/x-php5"));
+						htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
+						htmlEmbeddings.add(snapshot.create("\"", "text/x-php5"));
+					}
 					break;
 				}
-				// no macro only variable
+				// no macro only variable ( {$variable} )
+				// if variable or error starting with $ (as user will write the rest after :) )
 				if(t2.id() == LatteTokenId.VARIABLE
-						|| (t2.id() == LatteTokenId.ERROR && t2.text().equals("$"))) {
+						|| (t2.id() == LatteTokenId.ERROR && t2.text().equals("$")))
+				{
 					do {
 						t2 = sequence2.token();
 						if(t2.id() == LatteTokenId.RD || t2.id() == LatteTokenId.PIPE) {
@@ -256,6 +277,7 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 						}
 						length += t2.length();
 					} while(sequence2.moveNext());
+					// we don't need to write any echo or escaping (too long)
 					htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
 					htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
 					htmlEmbeddings.add(snapshot.create(" ?>", "text/x-php5"));
@@ -263,36 +285,36 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 			}
 		}
 
-		private void processAttrMacro(TokenSequence<LatteTokenId> sequence2, int start) {
+		private void processAttrMacro(TokenSequence<LatteTokenId> sequence2) {
 			int length = 0;
 			int numOfBrackets = 0;				// counts number of brackets to clearly match nested brackets
-			int whiteSpace = 0;					// counts whitespaces (delimites attr calls)
-			List<Integer> starts = new ArrayList<Integer>();
-			List<Integer> lengths = new ArrayList<Integer>();
+			int whiteSpace = 0;					// counts whitespaces (delimits attr calls)
+			List<Integer> starts = new ArrayList<Integer>();	// array of starts of attr call
+			List<Integer> lengths = new ArrayList<Integer>();	// array of lengths of attr call
 			do {
 				Token<LatteTokenId> t2 = sequence2.token();
-				if(whiteSpace == 0) {
+				if(whiteSpace == 0) {							// expecting first attr call or right delim }
 					if(t2.id() == LatteTokenId.WHITESPACE
-							|| t2.id() == LatteTokenId.RD) {
+							|| t2.id() == LatteTokenId.RD) {	// if found one
 						whiteSpace++;
-						starts.add(sequence.offset() + sequence2.offset() + t2.length());
-						length = 0;
+						starts.add(sequence.offset() + sequence2.offset() + t2.length());	//add start for new attr call
+						length = 0;								// will calculate below
 					}
 					continue;
 				} else {
-					if(t2.id() == LatteTokenId.LNB) {
-						numOfBrackets++;
+					if(t2.id() == LatteTokenId.LNB) {			// if left bracket
+						numOfBrackets++;						// add bracket
 					}
-					if(t2.id() == LatteTokenId.RNB) {
-						numOfBrackets--;
+					if(t2.id() == LatteTokenId.RNB) {			// if right bracket
+						numOfBrackets--;						// remove bracket
 					}
 					if((t2.id() == LatteTokenId.WHITESPACE || t2.id() == LatteTokenId.RD)
-							&& numOfBrackets == 0) {
-						lengths.add(length);
-						if(t2.id() != LatteTokenId.RD) {
+							&& numOfBrackets == 0) {			// expecting another attr call 
+						lengths.add(length);					// add last call length
+						if(t2.id() != LatteTokenId.RD) {		// add start for new attr call
 							starts.add(sequence.offset() + sequence2.offset() + t2.length());
 						} else {
-							break;
+							break;								// or no other call found
 						}
 						length = 0;
 						continue;
@@ -300,32 +322,35 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 				}
 				length += t2.length();
 			} while(sequence2.moveNext());
+			
 			if(numOfBrackets != 0) {
-				lengths.add(length);
+				lengths.add(length);											// add last length
 			}
-			htmlEmbeddings.add(snapshot.create("<?php $v", "text/x-php5"));
+			htmlEmbeddings.add(snapshot.create("<?php $v", "text/x-php5"));		// $v represents a Html object
 			for(int i = 0; i < lengths.size(); i++) {
+				// the subsequence is empty or whitespace only
 				if(snapshot.getText().subSequence(starts.get(i), starts.get(i) + lengths.get(i)).toString().trim().equals("")) {
 					continue;
 				}
-				htmlEmbeddings.add(snapshot.create("->", "text/x-php5"));
-				htmlEmbeddings.add(snapshot.create(starts.get(i), lengths.get(i), "text/x-php5"));
+				htmlEmbeddings.add(snapshot.create("->", "text/x-php5"));		// add -> object access
+				htmlEmbeddings.add(snapshot.create(starts.get(i), lengths.get(i), "text/x-php5"));	// and attr call itself
 			}
 			htmlEmbeddings.add(snapshot.create(";?>", "text/x-php5"));
 		}
 
 		
-		private void processBlockMacro(TokenSequence<LatteTokenId> sequence2, int start, String macro, boolean endMacro) {
+		private void processBlockMacro(TokenSequence<LatteTokenId> sequence2, int start, String macro,
+				boolean endMacro) {
 			int length = 0;
-			if(!endMacro) {
-				boolean pipe = false;
+			if(!endMacro) {												// is not end macro
+				boolean pipe = false;									// helper delimiter found
 				do {
 					Token<LatteTokenId> t2 = sequence2.token();
-					if(pipe && t2.id() != LatteTokenId.PIPE) {
-						length--;
+					if(pipe && t2.id() != LatteTokenId.PIPE) {			// if pipe found and it is not php OR (||)
+						length--;										// end cycle
 						break;
 					} else {
-						if(!pipe && t2.id() == LatteTokenId.PIPE) {      //is start of helper?
+						if(!pipe && t2.id() == LatteTokenId.PIPE) {		// helper delim found
 							pipe = true;
 						} else {
 							pipe = false;
@@ -336,31 +361,37 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 					}
 					length += t2.length();
 				} while(sequence2.moveNext());
-				//htmlEmbeddings.add(snapshot.create(snapshot.getText().subSequence(start, start+length), "text/x-php5"));
+				
 				if(macro.equals("block") || macro.equals("snippet")) {
+					// for block and snippet process as string only
 					htmlEmbeddings.add(snapshot.create("<?php \"", "text/x-php5"));
 					htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
 					htmlEmbeddings.add(snapshot.create("\";{?>", "text/x-php5"));
+					// if it is not n: tag or attribute and it is a block
 					if(macroName == null && macro.equals("block")) {
-						numOfBlocks++;
+						numOfBlocks++;			// counts number of {block} macros (last closing can be ommited)
 					}
 				} else {
+					// for if, foreach, ... process as <?php macro(attr) { ?>
 					htmlEmbeddings.add(snapshot.create("<?php " + macro + "(", "text/x-php5"));
 					htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
 					htmlEmbeddings.add(snapshot.create(");{", "text/x-php5"));
-					if(macro.equals("foreach")) {
+					if(macro.equals("foreach")) {		// in case of foreach create $iterator variable
 						htmlEmbeddings.add(snapshot.create("$iterator=new SmartCachingIterator;", "text/x-php5"));
 					}
 					htmlEmbeddings.add(snapshot.create("?>", "text/x-php5"));
 				}
+				// in case of n:tag
+				// FIXME: possible error, try <n:block tag and n:block="" attr at the same template?
 				if(macroName != null) {
 					int i = tags.remove(tags.size() - 1);
 					tags.add(i + 1);
 				}
 			} else {
+				// for closing macros just create block closing bracket }
 				htmlEmbeddings.add(snapshot.create("<?php } ?>", "text/x-php5"));
 				if(macro.equals("block")) {
-					numOfBlocks--;
+					numOfBlocks--;				// in case of {block} macro only (last closing can be ommited)
 				}
 			}
 		}
@@ -378,10 +409,12 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 			if(macro.equals("_") || macro.equals("=") || macro.equals("!") || macro.equals("!=")
 					 || macro.equals("!_"))
 			{
+				// in case of output macros process as php echo
 				htmlEmbeddings.add(snapshot.create("<?php echo", "text/x-php5"));
 				htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
 				htmlEmbeddings.add(snapshot.create(" ?>", "text/x-php5"));
 			} else {
+				// other process as regular php code
 				htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
 				htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
 				htmlEmbeddings.add(snapshot.create(" ?>", "text/x-php5"));
@@ -389,19 +422,25 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 		}
 		
 		private void processSpecialMacro(TokenSequence<LatteTokenId> sequence2, int start) {
+			// include, widget, control, (p)link, extends, ...
 			int firstStart = start;
 			int whiteSpace = 0;
+			boolean toString = true;
 			int length = 0;
 			do {
 				Token<LatteTokenId> t2 = sequence2.token();
-				if(whiteSpace < 2) {
-					if(t2.id() == LatteTokenId.WHITESPACE
-							|| t2.id() == LatteTokenId.RD
-							|| (whiteSpace == 1 && t2.id() == LatteTokenId.COMA)) {
+				if(whiteSpace < 2) {											// first param ( {mac param ...})
+					if(t2.id() == LatteTokenId.VARIABLE || t2.id() == LatteTokenId.STRING) {
+						toString = false;										// do not encapsulate with quotes
+					}
+					if(t2.id() == LatteTokenId.WHITESPACE						// delims parameters
+							|| (whiteSpace == 1 && t2.id() == LatteTokenId.COMA) // or delimted by coma!
+							|| t2.id() == LatteTokenId.RD)
+					{
 						whiteSpace++;
-						start = sequence.offset() + sequence2.offset() + t2.length();
+						start = sequence.offset() + sequence2.offset() + t2.length();	// start of other params
 						if(t2.id() == LatteTokenId.RD) {
-							start--;
+							start--;											// exclude right delim
 							break;
 						}
 					}
@@ -413,107 +452,94 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 				length += t2.length();
 			} while(sequence2.moveNext());
 
-			String fParam = snapshot.getText().subSequence(firstStart, start).toString();
-			int trim = (fParam.endsWith(",") || fParam.endsWith(" ")) ? 1 : 0;
-			if(fParam.contains("'") || fParam.contains("\"") || fParam.matches(".*\\$[a-zA-Z_].*")) {
+			String fParam = snapshot.getText().subSequence(firstStart, start).toString();	// get first param
+			int trim = (fParam.endsWith(",") || fParam.endsWith(" ")) ? 1 : 0;	// will remove trailing comma or WS
+			if(!toString) {
+				// if variable or string literal was found in first param, do not encapsulte with quotes
 				htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
 				htmlEmbeddings.add(snapshot.create(firstStart, start - firstStart - trim, "text/x-php5"));
 			} else {
+				// otherwise process as php string
 				htmlEmbeddings.add(snapshot.create("<?php \"", "text/x-php5"));
 				htmlEmbeddings.add(snapshot.create(firstStart, start - firstStart - trim, "text/x-php5"));
 				htmlEmbeddings.add(snapshot.create("\"", "text/x-php5"));
 			}
-			
+			// for other params create array
 			htmlEmbeddings.add(snapshot.create("; array( ", "text/x-php5"));
 			htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
 			htmlEmbeddings.add(snapshot.create(")?>", "text/x-php5"));
 		}
 		
-		private void processArrayMacro(TokenSequence<LatteTokenId> sequence2, int start, String macro) {
+		private void processArrayMacro(TokenSequence<LatteTokenId> sequence2, int start) {
+			// assign, var, default
 			int length = 0;
 
-			List<Integer> starts = new ArrayList<Integer>();
-			List<Integer> lengths = new ArrayList<Integer>();
+			List<Integer> starts = new ArrayList<Integer>();	// array of starts of var assignments
+			List<Integer> lengths = new ArrayList<Integer>();	// array of lengths of var assignments
 
-			byte state = -1;
-			int numOfBrackets = 0;
-			String var = "";
+			byte state = -1;									// -1,0 - variable; 1,2 - value
+			int numOfBrackets = 0;								// counts nested brackets
+			String var = "";									// stores var name and var value
 			do {
 				Token<LatteTokenId> t2 = sequence2.token();
-				if (state == -1 || state == 0) {
+				if (state == -1 || state == 0) {								// var name
 					if (state == -1 && t2.id() != LatteTokenId.WHITESPACE) {
-						start = sequence2.offset() + sequence.offset();
-						state = 0;
+						start = sequence2.offset() + sequence.offset();			// start of var name
+						state = 0;												// don't search for var name start
 						length = 0;
 						var = "";
 					}
-					if (t2.id() == LatteTokenId.ASSIGN) {
-						starts.add(var.trim().startsWith("$") ? start : -start);
+					if (t2.id() == LatteTokenId.ASSIGN) {						// assign seq found
+						starts.add(var.trim().startsWith("$") ? start : -start);// not $ = negative position (see below)
 						lengths.add(length);
 						length = 0;
-						state = 1;
-						var = "";
+						state = 1;												// search for value
 						continue;
 					}
-					if (t2.id() != LatteTokenId.WHITESPACE) {
-						length += t2.length();
-						var += t2.text();
+					if (t2.id() != LatteTokenId.WHITESPACE) {					// no whitespace = variable name
+						length += t2.length();									// add text length
+						var += t2.text();										// add text to var name
 					}
 				}
 				if (state == 1 || state == 2) {
 					if (state == 1) {
-						start = sequence2.offset() + sequence.offset();
+						start = sequence2.offset() + sequence.offset();			// start of value
 						length = 0;
 						state = 2;
+						var = "";												// where value will be stored
 					}
-					if (t2.id() == LatteTokenId.LNB) {
+					if (t2.id() == LatteTokenId.LNB) {							// left bracket found (count it)
 						numOfBrackets++;
 					}
-					if (t2.id() == LatteTokenId.RNB) {
+					if (t2.id() == LatteTokenId.RNB) {							// right bracket found (remove it)
 						numOfBrackets--;
 					}
-					if (t2.id() == LatteTokenId.RD || (t2.id() == LatteTokenId.COMA
-							&& numOfBrackets == 0)) {
-						starts.add(start);
-						lengths.add(length);
-						length = 0;
-						state = -1;
+					if (t2.id() == LatteTokenId.RD								// right delim } found
+							|| (t2.id() == LatteTokenId.COMA && numOfBrackets == 0)) {	// or comma found (out of brackets)
+						starts.add(start);										// add value start
+						lengths.add(length);									// add value length
+						state = -1;												// search for next variable name
 						continue;
 					}
-					length += t2.length();
-					var += t2.text();
+					length += t2.length();										// add up value length
+					var += t2.text();											// add variable value
 				}
 			} while (sequence2.moveNext());
+			
 			htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
-			String text = snapshot.getText().toString();
 			for (int i = 0; i < starts.size(); i += 2) {
-				start = starts.get(i) > 0 ? starts.get(i) : -starts.get(i);
-				var = text.substring(start, start + lengths.get(i));
-				var = starts.get(i) > 0 ? var : "$" + var;
-				if (macro.equals("default")) {
-					htmlEmbeddings.add(snapshot.create("if(!isset(" + var + ")) {", "text/x-php5"));
-				}
-				if (starts.get(i) < 0) {
+				if (starts.get(i) < 0) {										// if position negative prepend with $
 					htmlEmbeddings.add(snapshot.create("$", "text/x-php5"));
-					htmlEmbeddings.add(snapshot.create(-starts.get(i), lengths.get(i), "text/x-php5"));
+					htmlEmbeddings.add(snapshot.create(-starts.get(i), lengths.get(i), "text/x-php5"));	// variable
 				} else {
-					htmlEmbeddings.add(snapshot.create(starts.get(i), lengths.get(i), "text/x-php5"));
+					htmlEmbeddings.add(snapshot.create(starts.get(i), lengths.get(i), "text/x-php5"));	// variable
 				}
-				htmlEmbeddings.add(snapshot.create("=", "text/x-php5"));
-				htmlEmbeddings.add(snapshot.create(starts.get(i + 1), lengths.get(i + 1), "text/x-php5"));
-				htmlEmbeddings.add(snapshot.create(";", "text/x-php5"));
-				if (macro.equals("default")) {
-					htmlEmbeddings.add(snapshot.create("}", "text/x-php5"));
-				}
-				if (starts.get(i) < 0) {
-					htmlEmbeddings.add(snapshot.create("$", "text/x-php5"));
-					htmlEmbeddings.add(snapshot.create(-starts.get(i), lengths.get(i), "text/x-php5"));
-				} else {
-					htmlEmbeddings.add(snapshot.create(starts.get(i), lengths.get(i), "text/x-php5"));
-				}
+
+				htmlEmbeddings.add(snapshot.create("=", "text/x-php5"));		// assignment char
+				htmlEmbeddings.add(snapshot.create(starts.get(i + 1), lengths.get(i + 1), "text/x-php5")); // var value
 				htmlEmbeddings.add(snapshot.create(";", "text/x-php5"));
 			}
-			htmlEmbeddings.add(snapshot.create(" ?>", "text/x-php5"));
+			htmlEmbeddings.add(snapshot.create("?>", "text/x-php5"));
 		}
 	}
 }

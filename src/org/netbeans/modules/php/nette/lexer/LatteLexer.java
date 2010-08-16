@@ -65,6 +65,7 @@ class LatteLexer implements Lexer<LatteTokenId> {
         keywords.add("false");
         keywords.add("array");
         keywords.add("null");
+        keywords.add("new");
         keywords.add("as");
         keywords.add("or");
         keywords.add("and");
