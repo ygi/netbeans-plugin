@@ -23,15 +23,11 @@ import org.netbeans.spi.lexer.LexerRestartInfo;
  */
 public enum LatteTopTokenId implements TokenId {
 
-    LATTE(null, "latte"),
-    LATTE_OPEN(null, "open"),
-    LATTE_CLOSE(null, "close"),
-    LATTE_ATTR(null, "n_attr"),
-    LATTE_TAG(null, "n_tag"),
-    HTML(null, "lattetop"),
-    HTML_TAG(null, "lattetop");
-    //LD(null, "delimiter"),
-    //RD(null, "delimiter");
+    LATTE(null, "latte"),			// macros
+    LATTE_ATTR(null, "n_attr"),		// n:attr
+    LATTE_TAG(null, "n_tag"),		// <n:tag
+    HTML(null, "lattetop"),			// anything which is not latte
+    HTML_TAG(null, "lattetop");		// starndard html <tag
 
     private final String fixedText;
     private final String primaryCategory;
@@ -49,11 +45,7 @@ public enum LatteTopTokenId implements TokenId {
         return primaryCategory;
     }
 
-    private enum State {
-        OUTER,
-        AFTER_LD,
-        IN_LATTE
-    }
+    
     private static final Language<LatteTopTokenId> language = new LanguageHierarchy<LatteTopTokenId>() {
 
         @Override
@@ -76,16 +68,10 @@ public enum LatteTopTokenId implements TokenId {
                 LanguagePath lp, InputAttributes ia)
         {
             LatteTopTokenId id = token.id();
-            if (id == LatteTopTokenId.LATTE) {
-                return LanguageEmbedding.create(LatteTokenId.language(), 0, 0, false);
-            } else if (id == LatteTopTokenId.LATTE_ATTR) {
-                return LanguageEmbedding.create(LatteTokenId.language(), 0, 0, false);
-            /*} else if(id == LatteTopTokenId.LATTE_OPEN) {
-                return LanguageEmbedding.create(HTMLTokenId.language(), 0, 0, true);
-            } else if(id == LatteTopTokenId.LATTE_CLOSE) {
-                return LanguageEmbedding.create(HTMLTokenId.language(), 0, 0, true);*/
+            if (id == LatteTopTokenId.LATTE || id == LatteTopTokenId.LATTE_ATTR) {
+                return LanguageEmbedding.create(LatteTokenId.language(), 0, 0, false);	// if anything latte, process as latte
             } else {
-                return LanguageEmbedding.create(HTMLTokenId.language(), 0, 0, true);
+                return LanguageEmbedding.create(HTMLTokenId.language(), 0, 0, true);	// anything else is HTML
             }
         }
 

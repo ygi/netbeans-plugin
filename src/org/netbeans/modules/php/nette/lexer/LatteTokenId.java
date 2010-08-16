@@ -41,6 +41,7 @@ public enum LatteTokenId implements TokenId {
     AND("&", "text"),
     HASH("#", "text"),
     AT("@", "text"),
+	QUESTION("?", "text"),
     MACRO(null, "macro"),
     KEYWORD(null, "keyword"),
     TEXT(null, "text"),
@@ -84,7 +85,7 @@ public enum LatteTokenId implements TokenId {
         protected Lexer<LatteTokenId> createLexer(LexerRestartInfo<LatteTokenId> info) {
             return new LatteLexer(info);
         }
-
+		
         @Override
         protected String mimeType() {
             return "text/latte";
@@ -92,7 +93,7 @@ public enum LatteTokenId implements TokenId {
         
     }.language();
 
-    public static final Language<LatteTokenId> language() {
+    public static Language<LatteTokenId> language() {
         return language;
     }
 
