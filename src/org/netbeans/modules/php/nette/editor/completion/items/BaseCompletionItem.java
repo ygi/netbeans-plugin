@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.netbeans.modules.php.nette.editor;
+package org.netbeans.modules.php.nette.editor.completion.items;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -21,17 +21,17 @@ import org.netbeans.spi.editor.completion.support.CompletionUtilities;
 
 /**
  * Representers completion item for variable (is super class for others) //FIXME: ?
- * @author redhead
+ * @author Radek Ježdík
  */
-public class VariableCompletionItem implements CompletionItem {
+public class BaseCompletionItem implements CompletionItem {
 
-    protected Color fieldColor = Color.decode("0xEE7700");
+    protected Color fieldColor = Color.decode("0x000000");
     
     protected String text;
     protected int dotOffset;
     protected int caretOffset;
 
-    public VariableCompletionItem(String text, int dotOffset, int caretOffset) {
+    public BaseCompletionItem(String text, int dotOffset, int caretOffset) {
         this.text = text;
         this.dotOffset = dotOffset;
         this.caretOffset = caretOffset;

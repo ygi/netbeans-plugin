@@ -3,17 +3,17 @@
  * and open the template in the editor.
  */
 
-package org.netbeans.modules.php.nette.editor;
+package org.netbeans.modules.php.nette.editor.completion.items;
 
 import java.awt.Color;
 
 /**
- * Colors the control completion item
- * @author redhead
+ * Colors the presenter path completion item
+ * @author Radek Ježdík
  */
-public class ControlCompletionItem extends VariableCompletionItem {
+public class PresenterCompletionItem extends BaseCompletionItem {
 
-    public ControlCompletionItem(String text, int dotOffset, int caretOffset) {
+    public PresenterCompletionItem(String text, int dotOffset, int caretOffset) {
         super(text, dotOffset, caretOffset);
         fieldColor = Color.decode("0x000000");
     }
@@ -22,5 +22,4 @@ public class ControlCompletionItem extends VariableCompletionItem {
     public int getSortPriority() {
         return -2000;
     }
-
 }

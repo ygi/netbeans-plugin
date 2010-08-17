@@ -2,6 +2,7 @@
  */
 package org.netbeans.modules.php.nette.editor;
 
+import org.netbeans.modules.php.nette.editor.completion.LatteCompletionProvider;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.text.BadLocationException;
@@ -17,7 +18,7 @@ import org.openide.util.Exceptions;
 
 /**
  *
- * @author redhead
+ * @author Radek Ježdík
  */
 public class LatteBracesMatching implements BracesMatcher {
 

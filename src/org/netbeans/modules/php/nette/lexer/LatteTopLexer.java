@@ -12,7 +12,7 @@ import org.netbeans.spi.lexer.TokenPropertyProvider;
 
 /**
  * Top Lexer for text/latte-template mime-type
- * @author redhead
+ * @author Radek Ježdík
  */
 class LatteTopLexer implements Lexer<LatteTopTokenId> {
     

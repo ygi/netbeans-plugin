@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.netbeans.modules.php.nette.editor;
+package org.netbeans.modules.php.nette.editor.completion.items;
 
 import java.awt.Color;
 import java.util.logging.Level;
@@ -15,9 +15,9 @@ import org.netbeans.api.editor.completion.Completion;
 
 /**
  * Colors the macro completion item
- * @author redhead
+ * @author Radek Ježdík
  */
-public class MacroCompletionItem extends VariableCompletionItem {
+public class MacroCompletionItem extends BaseCompletionItem {
 
     int placeCaret = 0;
     boolean isAttr = false;

@@ -3,6 +3,7 @@
 
 package org.netbeans.modules.php.nette.editor;
 
+import org.netbeans.modules.php.nette.editor.completion.LatteCompletionProvider;
 import javax.swing.text.BadLocationException;
 import org.netbeans.modules.csl.api.Formatter;
 import org.netbeans.modules.csl.spi.ParserResult;
@@ -12,7 +13,7 @@ import org.openide.util.Exceptions;
 
 /**
  *
- * @author redhead
+ * @author Radek Ježdík
  */
 public class LatteFormatter implements Formatter {
 

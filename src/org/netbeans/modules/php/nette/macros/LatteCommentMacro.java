@@ -13,7 +13,7 @@ import javax.swing.text.StyledDocument;
 
 /**
  * Representing comment macro for completion
- * @author redhead
+ * @author Radek Ježdík
  */
 public class LatteCommentMacro extends LatteMacro {
 

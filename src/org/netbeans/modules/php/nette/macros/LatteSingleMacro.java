@@ -9,7 +9,7 @@ import javax.swing.text.JTextComponent;
 
 /**
  * Represents single macro (no pair; eg. {else})
- * @author redhead
+ * @author Radek Ježdík
  */
 public class LatteSingleMacro extends LatteMacro {
 

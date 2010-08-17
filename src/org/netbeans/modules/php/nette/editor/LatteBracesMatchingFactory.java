@@ -14,7 +14,7 @@ import org.netbeans.spi.editor.bracesmatching.MatcherContext;
 
 /**
  *
- * @author redhead
+ * @author Radek Ježdík
  */
 public class LatteBracesMatchingFactory implements BracesMatcherFactory {
 

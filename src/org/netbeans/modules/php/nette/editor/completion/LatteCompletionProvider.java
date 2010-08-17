@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.netbeans.modules.php.nette.editor;
+package org.netbeans.modules.php.nette.editor.completion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +17,9 @@ import org.netbeans.api.lexer.Token;
 import org.netbeans.api.lexer.TokenHierarchy;
 import org.netbeans.api.lexer.TokenSequence;
 import org.netbeans.modules.php.api.util.Pair;
+import org.netbeans.modules.php.nette.editor.completion.items.HelperCompletionItem;
+import org.netbeans.modules.php.nette.editor.completion.items.LatteCompletionItem;
+import org.netbeans.modules.php.nette.editor.completion.items.MacroCompletionItem;
 import org.netbeans.modules.php.nette.lexer.LatteTokenId;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 import org.netbeans.modules.php.nette.macros.LatteCommentMacro;
@@ -35,7 +38,7 @@ import org.openide.util.Exceptions;
  * Provides completion window
  * Is context-dependent (in-macro completion, out-side macro completion)
  * by token where caret is positioned at (LatteTopTokenId and LatteTokenId)
- * @author redhead
+ * @author Radek Ježdík
  */
 public class LatteCompletionProvider implements CompletionProvider {
 

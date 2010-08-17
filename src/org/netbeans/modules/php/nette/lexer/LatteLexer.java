@@ -11,7 +11,7 @@ import org.netbeans.spi.lexer.TokenFactory;
 
 /**
  * Lexer for inside-macro tokenizing (must be parsed out by LatteTopLexer as LatteTopTokenId.LATTE)
- * @author redhead
+ * @author Radek Ježdík
  */
 class LatteLexer implements Lexer<LatteTokenId> {
 

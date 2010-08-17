@@ -19,7 +19,7 @@ import org.openide.util.HelpCtx;
 
 /**
  *
- * @author redhead
+ * @author Radek Ježdík
  */
 public class NettePhpModuleExtender extends PhpModuleExtender {
 

@@ -18,7 +18,7 @@ import org.netbeans.modules.php.spi.phpmodule.PhpModuleIgnoredFilesExtender;
 
 /**
  *
- * @author redhead
+ * @author Radek Ježdík
  */
 public class NettePhpFrameworkProvider extends PhpFrameworkProvider {
     

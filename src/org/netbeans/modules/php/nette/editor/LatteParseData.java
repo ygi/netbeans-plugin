@@ -7,6 +7,7 @@ import org.netbeans.modules.php.nette.utils.EditorUtils;
 
 /**
  * Class for storing variables sent from presenters into templates.
+ * Inspired by PHP FUSE plugin
  * @author Martin Fousek
  */
 public class LatteParseData {

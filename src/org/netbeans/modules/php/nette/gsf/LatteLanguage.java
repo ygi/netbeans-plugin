@@ -13,7 +13,7 @@ import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 
 /**
  * Registers new language to mime-type text/latte-template for .phtml files
- * @author redhead
+ * @author Radek Ježdík
  */
 @LanguageRegistration(mimeType="text/latte-template")
 public class LatteLanguage extends DefaultLanguageConfig {

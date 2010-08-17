@@ -1,5 +1,5 @@
 
-package org.netbeans.modules.php.nette.editor;
+package org.netbeans.modules.php.nette.editor.completion.items;
 
 
 import java.awt.Color;
@@ -19,7 +19,7 @@ import org.netbeans.spi.editor.completion.support.CompletionUtilities;
 
 /**
  *
- * @author redhead
+ * @author Radek Ježdík
  */
 public class LatteCompletionItem implements CompletionItem {
 

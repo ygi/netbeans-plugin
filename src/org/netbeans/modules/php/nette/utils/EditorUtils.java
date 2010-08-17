@@ -23,10 +23,10 @@ import org.netbeans.api.lexer.TokenSequence;
 import org.netbeans.modules.parsing.api.Snapshot;
 import org.netbeans.modules.parsing.api.Source;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
-import org.netbeans.modules.php.nette.editor.ControlCompletionItem;
+import org.netbeans.modules.php.nette.editor.completion.items.ControlCompletionItem;
 import org.netbeans.modules.php.nette.editor.LatteParseData;
-import org.netbeans.modules.php.nette.editor.PresenterCompletionItem;
-import org.netbeans.modules.php.nette.editor.VariableCompletionItem;
+import org.netbeans.modules.php.nette.editor.completion.items.PresenterCompletionItem;
+import org.netbeans.modules.php.nette.editor.completion.items.VariableCompletionItem;
 import org.netbeans.modules.php.nette.lexer.LatteTokenId;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 import org.netbeans.spi.editor.completion.CompletionItem;
@@ -35,7 +35,7 @@ import org.openide.filesystems.FileUtil;
 
 /**
  * Some utils used for editor operations
- * @author redhead
+ * @author Radek Ježdík
  */
 public class EditorUtils {
 

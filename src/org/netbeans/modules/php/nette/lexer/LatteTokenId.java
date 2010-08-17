@@ -13,7 +13,7 @@ import org.netbeans.spi.lexer.LexerRestartInfo;
 
 /**
  * Enum of tokens for insed-macro language of latte template and inside-macro language specification
- * @author redhead
+ * @author Radek Ježdík
  */
 public enum LatteTokenId implements TokenId {
 

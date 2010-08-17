@@ -32,7 +32,7 @@ import org.openide.filesystems.FileObject;
 
 /**
  *
- * @author redhead
+ * @author Radek Ježdík
  */
 public class NetteEditorExtender extends EditorExtender {
 

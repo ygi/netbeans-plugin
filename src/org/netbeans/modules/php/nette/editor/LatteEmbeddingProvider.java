@@ -19,7 +19,7 @@ import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 
 /**
  * Provides embedded languages for HTML or LATTE tokens (language is denoted by mime-type)
- * @author redhead
+ * @author Radek Ježdík
  */
 public class LatteEmbeddingProvider extends EmbeddingProvider {
 

@@ -13,7 +13,7 @@ import javax.swing.text.StyledDocument;
 /**
  * Represents parametrized macro for completion
  * (adds whitespace character after opening macro name and sets caret position there for instant writing of params)
- * @author redhead
+ * @author Radek Ježdík
  */
 public class LatteParamMacro extends LatteMacro {
 
