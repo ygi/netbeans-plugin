@@ -27,9 +27,9 @@ public class BaseCompletionItem implements CompletionItem {
 
     protected Color fieldColor = Color.decode("0x000000");
     
-    protected String text;
-    protected int dotOffset;
-    protected int caretOffset;
+    protected String text;				// text to be inserted instead of that between these two:
+    protected int dotOffset;			// start offset where completion will happen
+    protected int caretOffset;			// caret (cursor) offset (where CTR+SPACE was pressed)
 
     public BaseCompletionItem(String text, int dotOffset, int caretOffset) {
         this.text = text;
@@ -37,29 +37,48 @@ public class BaseCompletionItem implements CompletionItem {
         this.caretOffset = caretOffset;
     }
 
-
+	/**
+	 * 
+	 * @param jtc
+	 */
     public void defaultAction(JTextComponent jtc) {
         try {
             StyledDocument doc = (StyledDocument) jtc.getDocument();
-            doc.remove(dotOffset, caretOffset-dotOffset);
-            doc.insertString(dotOffset, text, null);
-            Completion.get().hideAll();
+            doc.remove(dotOffset, caretOffset-dotOffset);						// remove from begining to caret
+            doc.insertString(dotOffset, text, null);							// complete the text
+            Completion.get().hideAll();											// hide completion box
         } catch (BadLocationException ex) {
             Logger.getLogger(LatteCompletionItem.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void processKeyEvent(KeyEvent ke) {
-        
+        // nothing? why? who?
     }
 
+	/**
+	 * Gets prefered width for completion box base on the text
+	 * @param grphcs
+	 * @param font
+	 * @return 
+	 */
     public int getPreferredWidth(Graphics grphcs, Font font) {
         String s = text.replace("<", "&lt;").replace("\"", "&quot;");
         return CompletionUtilities.getPreferredWidth(s, null, grphcs, font);
     }
 
+	/**
+	 * Renders the completion item for the completion box
+	 * @param grphcs
+	 * @param font
+	 * @param color
+	 * @param color1
+	 * @param width
+	 * @param height
+	 * @param selected
+	 */
     public void render(Graphics grphcs, Font font, Color color, Color color1, int width, int height, boolean selected) {
-        String s = text.replace("<", "&lt;").replace("\"", "&quot;");
+		String s = text.replace("<", "&lt;").replace("\"", "&quot;");
         CompletionUtilities.renderHtml(null, s, null, grphcs, font,
             (selected ? Color.white : fieldColor), width, height, selected);
     }
@@ -72,11 +91,17 @@ public class BaseCompletionItem implements CompletionItem {
         return null;
     }
 
+	/**
+	 * Triggered when there is only one item in completion box, so default action will be taken
+	 * @param jtc
+	 * @return
+	 */
     public boolean instantSubstitution(JTextComponent jtc) {
         defaultAction(jtc);
         return true;
     }
 
+	// lower number = higher priority in completion box
     public int getSortPriority() {
         return 0;
     }

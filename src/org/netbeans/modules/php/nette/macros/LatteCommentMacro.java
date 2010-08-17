@@ -28,7 +28,7 @@ public class LatteCommentMacro extends LatteMacro {
             super.process(jtc, dotOffset);
             jtc.setCaretPosition(jtc.getCaretPosition() - 2);
             if (sel != null) {
-                ((StyledDocument) jtc.getDocument()).insertString(dotOffset + 2, sel, null);
+                ((StyledDocument) jtc.getDocument()).insertString(dotOffset + 2, sel, null);	// sets caret between **
             }
         } catch (BadLocationException ex) {
             Logger.getLogger(LatteCommentMacro.class.getName()).log(Level.SEVERE, null, ex);

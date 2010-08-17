@@ -12,7 +12,12 @@ import org.netbeans.modules.php.nette.macros.LatteMacro;
 import org.openide.util.Exceptions;
 
 /**
- *
+ * FIXME !
+ * TODO !
+ * Nefunguje!
+ * Zprovoznit!
+ * Rychle!
+ * 
  * @author Radek Ježdík
  */
 public class LatteFormatter implements Formatter {

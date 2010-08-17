@@ -35,22 +35,33 @@ public class LatteMacro {
         this.endMacro = endMacro;
     }
 
+	/**
+	 * Completes the macro in the document
+	 * @param jtc
+	 * @param dotOffset
+	 */
     public void process(JTextComponent jtc, int dotOffset) {
         StyledDocument doc = (StyledDocument) jtc.getDocument();
         try {
             doc.insertString(dotOffset, "{"+macro+"}", null);
             if(isPair) {
+				// FIXME get rid of this
+				// used when text selected (useless since completion appears only after { char)
                 doc.insertString(jtc.getSelectionEnd(), "{/"+endMacro+"}", null);
             } else {
                 doc.remove(jtc.getSelectionStart(), jtc.getSelectionEnd()-jtc.getSelectionStart());
             }
-            jtc.setCaretPosition(dotOffset+macro.length()+2);
+            jtc.setCaretPosition(dotOffset + macro.length() + 2);		// moves caret after (start)
         }
         catch(Exception ex) {
             Logger.getLogger(LatteCommentMacro.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+	/**
+	 * Returns text to be used (shown) in completion box
+	 * @return
+	 */
     public String getText() {
         String text = getMacro();
         if(isPair)
@@ -58,22 +69,42 @@ public class LatteMacro {
         return text;
     }
 
+	/**
+	 * Return start macro itself (with delimiters)
+	 * @return
+	 */
     public String getMacro() {
         return '{'+macro+'}';
     }
 
+	/**
+	 * Return row macro name
+	 * @return
+	 */
     public String getMacroName() {
         return macro;
     }
 
+	/**
+	 * Returns end macro itself (with delimiters)
+	 * @return
+	 */
     public String getEndMacro() {
         return "{/"+endMacro+"}";
     }
 
+	/**
+	 * Returns end macro name (can differ from start macro name!)
+	 * @return
+	 */
     public String getEndMacroName() {
         return endMacro;
     }
 
+	/**
+	 * Is macro a pair macro?
+	 * @return
+	 */
     public boolean isPair() {
         return isPair;
     }

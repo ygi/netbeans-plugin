@@ -1,6 +1,3 @@
-/*
- */
-
 package org.netbeans.modules.php.nette;
 
 import java.util.ArrayList;
@@ -31,7 +28,8 @@ import org.netbeans.modules.php.spi.editor.EditorExtender;
 import org.openide.filesystems.FileObject;
 
 /**
- *
+ * Should parse out variables presenter sents to template
+ * FIXME dodelat!
  * @author Radek Ježdík
  */
 public class NetteEditorExtender extends EditorExtender {

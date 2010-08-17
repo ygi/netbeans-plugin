@@ -25,17 +25,20 @@ public class LatteParamMacro extends LatteMacro {
         super(macro, isPair, endMacro);
     }
 
+	
     @Override
     public void process(JTextComponent jtc, int dotOffset) {
         StyledDocument doc = (StyledDocument) jtc.getDocument();
         try {
-            doc.insertString(dotOffset, "{"+macro+" }", null);
+            doc.insertString(dotOffset, "{"+macro+" }", null);			// adds space for macro params
             if(isPair) {
+				// FIXME get rid of this
+				// used when text selected (useless since completion appears only after { char)
                 doc.insertString(jtc.getSelectionEnd(), "{/"+endMacro+"}", null);
             } else if(jtc.getSelectedText() != null) {
                 doc.remove(jtc.getSelectionStart(), jtc.getSelectionEnd()-jtc.getSelectionStart());
             }
-            jtc.setCaretPosition(dotOffset+macro.length()+2);
+            jtc.setCaretPosition(dotOffset + macro.length() + 2);		// moves caret to param position for user
         }
         catch(Exception ex) {
             Logger.getLogger(LatteCommentMacro.class.getName()).log(Level.SEVERE, null, ex);
@@ -43,7 +46,7 @@ public class LatteParamMacro extends LatteMacro {
     }
 
     @Override
-    public String getText() {
+    public String getText() {				// adds space for macro params
         String text = '{'+macro+" }";
         if(isPair)
             text += "{/"+endMacro+'}';

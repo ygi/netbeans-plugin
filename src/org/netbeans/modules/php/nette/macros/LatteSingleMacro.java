@@ -8,7 +8,7 @@ package org.netbeans.modules.php.nette.macros;
 import javax.swing.text.JTextComponent;
 
 /**
- * Represents single macro (no pair; eg. {else})
+ * Represents single macro (no pair, eg. {else})
  * @author Radek Ježdík
  */
 public class LatteSingleMacro extends LatteMacro {
@@ -20,6 +20,6 @@ public class LatteSingleMacro extends LatteMacro {
     @Override
     public void process(JTextComponent jtc, int dotOffset) {
         super.process(jtc, dotOffset);
-        jtc.setCaretPosition(jtc.getCaretPosition() - 1);
+        jtc.setCaretPosition(jtc.getCaretPosition() - 1);	// moves caret back (after macro)
     }
 }
