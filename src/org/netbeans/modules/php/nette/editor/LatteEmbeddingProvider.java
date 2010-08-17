@@ -14,6 +14,7 @@ import org.netbeans.modules.parsing.api.Snapshot;
 import org.netbeans.modules.parsing.spi.EmbeddingProvider;
 import org.netbeans.modules.parsing.spi.SchedulerTask;
 import org.netbeans.modules.parsing.spi.TaskFactory;
+import org.netbeans.modules.php.api.util.FileUtils;
 import org.netbeans.modules.php.nette.lexer.LatteTokenId;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 
@@ -150,11 +151,11 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 							if(tags.size() > 0) {									// if there are some tags
 								int c = tags.remove(tags.size() - 1);				// remove last tag (opening)
 								if(c > 0) {											// if there are some code blocks
-									htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
+									embedHtml("<?php ");
 									for(int i = 0; i < c; i++) {
-										htmlEmbeddings.add(snapshot.create("}", "text/x-php5")); // close all code blocks
+										embedHtml("}"); // close all code blocks
 									}
-									htmlEmbeddings.add(snapshot.create(" ?>", "text/x-php5"));
+									embedHtml(" ?>");
 								}
 							}
 							macroName = null;
@@ -163,12 +164,12 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 						}
 					}
 					// deals as html/php (will color all HTML tags appropriately)
-					htmlEmbeddings.add(snapshot.create(sequence.offset(), t.length(), "text/x-php5"));
+					embedHtml(sequence.offset(), t.length());
 				}
 			}
 			// there can be one {block} macro opened (in that case close it internally)
 			if(numOfBlocks == 1) {
-				htmlEmbeddings.add(snapshot.create("<?php } ?>", "text/x-php5"));
+				embedHtml("<?php } ?>");
 			}
 
 			List<Embedding> embeddings = new ArrayList<Embedding>();		// embedding result
@@ -255,14 +256,14 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 					
 					if(!toString) {
 						// if there is a string literal or variable, do not add quotes
-						htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
-						htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
-						htmlEmbeddings.add(snapshot.create(" ?>", "text/x-php5"));
+						embedHtml("<?php ");
+						embedHtml(start, length);
+						embedHtml(" ?>");
 					} else {
 						// otherwise encasulate parametr with double quotes
-						htmlEmbeddings.add(snapshot.create("<?php \"", "text/x-php5"));
-						htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
-						htmlEmbeddings.add(snapshot.create("\"?>", "text/x-php5"));
+						embedHtml("<?php \"");
+						embedHtml(start, length);
+						embedHtml("\"?>");
 					}
 					break;
 				}
@@ -279,9 +280,9 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 						length += t2.length();
 					} while(sequence2.moveNext());
 					// we don't need to write any echo or escaping (too long)
-					htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
-					htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
-					htmlEmbeddings.add(snapshot.create(" ?>", "text/x-php5"));
+					embedHtml("<?php ");
+					embedHtml(start, length);
+					embedHtml(" ?>");
 				}
 			}
 		}
@@ -327,16 +328,16 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 			if(numOfBrackets != 0) {
 				lengths.add(length);											// add last length
 			}
-			htmlEmbeddings.add(snapshot.create("<?php $v", "text/x-php5"));		// $v represents a Html object
+			embedHtml("<?php $v");		// $v represents a Html object
 			for(int i = 0; i < lengths.size(); i++) {
 				// the subsequence is empty or whitespace only
 				if(snapshot.getText().subSequence(starts.get(i), starts.get(i) + lengths.get(i)).toString().trim().equals("")) {
 					continue;
 				}
-				htmlEmbeddings.add(snapshot.create("->", "text/x-php5"));		// add -> object access
-				htmlEmbeddings.add(snapshot.create(starts.get(i), lengths.get(i), "text/x-php5"));	// and attr call itself
+				embedHtml("->");		// add -> object access
+				embedHtml(starts.get(i), lengths.get(i));	// and attr call itself
 			}
-			htmlEmbeddings.add(snapshot.create(";?>", "text/x-php5"));
+			embedHtml(";?>");
 		}
 
 		
@@ -365,22 +366,22 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 				
 				if(macro.equals("block") || macro.equals("snippet")) {
 					// for block and snippet process as string only
-					htmlEmbeddings.add(snapshot.create("<?php \"", "text/x-php5"));
-					htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
-					htmlEmbeddings.add(snapshot.create("\";{?>", "text/x-php5"));
+					embedHtml("<?php \"");
+					embedHtml(start, length);
+					embedHtml("\";{?>");
 					// if it is not n: tag or attribute and it is a block
 					if(macroName == null && macro.equals("block")) {
 						numOfBlocks++;			// counts number of {block} macros (last closing can be ommited)
 					}
 				} else {
 					// for if, foreach, ... process as <?php macro(attr) { ?>
-					htmlEmbeddings.add(snapshot.create("<?php " + macro + "(", "text/x-php5"));
-					htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
-					htmlEmbeddings.add(snapshot.create(");{", "text/x-php5"));
+					embedHtml("<?php " + macro + "(");
+					embedHtml(start, length);
+					embedHtml(");{");
 					if(macro.equals("foreach")) {		// in case of foreach create $iterator variable
-						htmlEmbeddings.add(snapshot.create("$iterator=new SmartCachingIterator;", "text/x-php5"));
+						embedHtml("$iterator=new SmartCachingIterator;");
 					}
-					htmlEmbeddings.add(snapshot.create("?>", "text/x-php5"));
+					embedHtml("?>");
 				}
 				// in case of n:tag
 				// FIXME: possible error, try <n:block tag and n:block="" attr at the same template?
@@ -390,7 +391,7 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 				}
 			} else {
 				// for closing macros just create block closing bracket }
-				htmlEmbeddings.add(snapshot.create("<?php } ?>", "text/x-php5"));
+				embedHtml("<?php } ?>");
 				if(macro.equals("block")) {
 					numOfBlocks--;				// in case of {block} macro only (last closing can be ommited)
 				}
@@ -411,14 +412,14 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 					 || macro.equals("!_"))
 			{
 				// in case of output macros process as php echo
-				htmlEmbeddings.add(snapshot.create("<?php echo", "text/x-php5"));
-				htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
-				htmlEmbeddings.add(snapshot.create(" ?>", "text/x-php5"));
+				embedHtml("<?php echo");
+				embedHtml(start, length);
+				embedHtml(" ?>");
 			} else {
 				// other process as regular php code
-				htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
-				htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
-				htmlEmbeddings.add(snapshot.create(" ?>", "text/x-php5"));
+				embedHtml("<?php ");
+				embedHtml(start, length);
+				embedHtml(" ?>");
 			}
 		}
 		
@@ -457,18 +458,18 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 			int trim = (fParam.endsWith(",") || fParam.endsWith(" ")) ? 1 : 0;	// will remove trailing comma or WS
 			if(!toString) {
 				// if variable or string literal was found in first param, do not encapsulte with quotes
-				htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
-				htmlEmbeddings.add(snapshot.create(firstStart, start - firstStart - trim, "text/x-php5"));
+				embedHtml("<?php ");
+				embedHtml(firstStart, start - firstStart - trim);
 			} else {
 				// otherwise process as php string
-				htmlEmbeddings.add(snapshot.create("<?php \"", "text/x-php5"));
-				htmlEmbeddings.add(snapshot.create(firstStart, start - firstStart - trim, "text/x-php5"));
-				htmlEmbeddings.add(snapshot.create("\"", "text/x-php5"));
+				embedHtml("<?php \"");
+				embedHtml(firstStart, start - firstStart - trim);
+				embedHtml("\"");
 			}
 			// for other params create array
-			htmlEmbeddings.add(snapshot.create("; array( ", "text/x-php5"));
-			htmlEmbeddings.add(snapshot.create(start, length, "text/x-php5"));
-			htmlEmbeddings.add(snapshot.create(")?>", "text/x-php5"));
+			embedHtml("; array( ");
+			embedHtml(start, length);
+			embedHtml(")?>");
 		}
 		
 		private void processArrayMacro(TokenSequence<LatteTokenId> sequence2, int start) {
@@ -527,20 +528,30 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 				}
 			} while (sequence2.moveNext());
 			
-			htmlEmbeddings.add(snapshot.create("<?php ", "text/x-php5"));
+			embedHtml("<?php ");
 			for (int i = 0; i < starts.size(); i += 2) {
 				if (starts.get(i) < 0) {										// if position negative prepend with $
-					htmlEmbeddings.add(snapshot.create("$", "text/x-php5"));
-					htmlEmbeddings.add(snapshot.create(-starts.get(i), lengths.get(i), "text/x-php5"));	// variable
+					embedHtml("$");
+					embedHtml(-starts.get(i), lengths.get(i));	// variable
 				} else {
-					htmlEmbeddings.add(snapshot.create(starts.get(i), lengths.get(i), "text/x-php5"));	// variable
+					embedHtml(starts.get(i), lengths.get(i));	// variable
 				}
 
-				htmlEmbeddings.add(snapshot.create("=", "text/x-php5"));		// assignment char
-				htmlEmbeddings.add(snapshot.create(starts.get(i + 1), lengths.get(i + 1), "text/x-php5")); // var value
-				htmlEmbeddings.add(snapshot.create(";", "text/x-php5"));
+				embedHtml("=");		// assignment char
+				embedHtml(starts.get(i + 1), lengths.get(i + 1)); // var value
+				embedHtml(";");
 			}
-			htmlEmbeddings.add(snapshot.create("?>", "text/x-php5"));
+			embedHtml("?>");
 		}
+		
+		private boolean embedHtml(String html) {
+			return htmlEmbeddings.add(snapshot.create(html, FileUtils.PHP_MIME_TYPE));
+		}
+
+		private boolean embedHtml(int start, int length) {
+			return htmlEmbeddings.add(snapshot.create(start, length, FileUtils.PHP_MIME_TYPE));
+		}
+
 	}
+
 }
