@@ -48,7 +48,7 @@ public class BaseCompletionItem implements CompletionItem {
             doc.insertString(dotOffset, text, null);							// complete the text
             Completion.get().hideAll();											// hide completion box
         } catch (BadLocationException ex) {
-            Logger.getLogger(LatteCompletionItem.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BaseCompletionItem.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

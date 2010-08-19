@@ -3,12 +3,12 @@
 
 package org.netbeans.modules.php.nette.editor;
 
-import org.netbeans.modules.php.nette.editor.completion.LatteCompletionProvider;
 import javax.swing.text.BadLocationException;
 import org.netbeans.modules.csl.api.Formatter;
 import org.netbeans.modules.csl.spi.ParserResult;
 import org.netbeans.modules.editor.indent.spi.Context;
 import org.netbeans.modules.php.nette.macros.LatteMacro;
+import org.netbeans.modules.php.nette.macros.MacroDefinitions;
 import org.openide.util.Exceptions;
 
 /**
@@ -41,7 +41,7 @@ public class LatteFormatter implements Formatter {
                         macro += c;
                     }
                 }
-                for(LatteMacro m : LatteCompletionProvider.macros) {
+                for(LatteMacro m : MacroDefinitions.macros) {
                     if(m.getMacroName().equals(macro) && m.isPair()) {
                         context.modifyIndent(lineStart, indent+indentSize());
                     }

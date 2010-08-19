@@ -2,7 +2,6 @@
  */
 package org.netbeans.modules.php.nette.editor;
 
-import org.netbeans.modules.php.nette.editor.completion.LatteCompletionProvider;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.text.BadLocationException;
@@ -12,6 +11,7 @@ import org.netbeans.api.lexer.TokenSequence;
 import org.netbeans.modules.php.nette.lexer.LatteTokenId;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 import org.netbeans.modules.php.nette.macros.LatteMacro;
+import org.netbeans.modules.php.nette.macros.MacroDefinitions;
 import org.netbeans.spi.editor.bracesmatching.BracesMatcher;
 import org.netbeans.spi.editor.bracesmatching.MatcherContext;
 import org.openide.util.Exceptions;
@@ -109,21 +109,21 @@ public class LatteBracesMatching implements BracesMatcher {
 
             if(!isEndMacro) {										// of not an end macro
                 boolean isPair = false;								// is not pair so far (check below)
-                for(LatteMacro m : LatteCompletionProvider.macros) {		// checking for pair macro
+                for(LatteMacro m : MacroDefinitions.macros) {		// checking for pair macro
                     if(m.getMacroName().equals(macroName) && m.isPair()) {
                         isPair = true;								// set isPair bool
                         break;
                     }
                 }
-                for(String m : LatteCompletionProvider.friendMacros.keySet()) {			// checking for friend macro
-                    for(LatteMacro f : LatteCompletionProvider.friendMacros.get(m)) {
+                for(String m : MacroDefinitions.friendMacros.keySet()) {			// checking for friend macro
+                    for(LatteMacro f : MacroDefinitions.friendMacros.get(m)) {
                         if(f.getMacroName().equals(macroName) || m.equals(macroName)) {
                             if(!m.equals(macroName)) {
                                 if(!friends.contains(m)) {
                                     friends.add(m);
                                 }
                             }
-                            for(LatteMacro macro : LatteCompletionProvider.friendMacros.get(m)) {
+                            for(LatteMacro macro : MacroDefinitions.friendMacros.get(m)) {
                                 if(!friends.contains(macro.getMacroName())) {
                                     friends.add(macro.getMacroName());
                                 }
@@ -141,7 +141,7 @@ public class LatteBracesMatching implements BracesMatcher {
                     return new int[] { searchOffset, searchOffset };
                 }
             }
-            for(LatteMacro m : LatteCompletionProvider.getMacrosByEnd(macroName)) {
+            for(LatteMacro m : MacroDefinitions.getMacrosByEnd(macroName)) {
                 if(!endMacros.contains(m.getMacroName())) {
                     endMacros.add(m.getMacroName());									// finds end macro
                 }
@@ -186,7 +186,7 @@ public class LatteBracesMatching implements BracesMatcher {
                                 }
                             }
 							// it is not a macro we want
-                            LatteMacro m = LatteCompletionProvider.getMacro(t2.text().toString());
+                            LatteMacro m = MacroDefinitions.getMacro(t2.text().toString());
                             if(m != null && m.isPair()) {				// if it is pair macro
                                 if(!isEndMacro2) {
                                     embeddedMacros++;					// add nesting level if start macro

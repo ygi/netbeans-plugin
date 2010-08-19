@@ -53,7 +53,7 @@ public class MacroCompletionItem extends BaseCompletionItem {
             }
             Completion.get().hideAll();
         } catch (BadLocationException ex) {
-            Logger.getLogger(LatteCompletionItem.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BaseCompletionItem.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
