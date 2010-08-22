@@ -1,7 +1,7 @@
 /*
  */
 
-package org.netbeans.modules.php.nette.editor.completion.processors;
+package org.netbeans.modules.php.nette.editor.completion;
 
 import java.util.ArrayList;
 import java.util.List;

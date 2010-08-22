@@ -1,12 +1,15 @@
 /*
  */
 
-package org.netbeans.modules.php.nette.editor.completion.processors;
+package org.netbeans.modules.php.nette.editor.completion;
 
 import javax.swing.text.Document;
 import org.netbeans.api.lexer.Token;
 import org.netbeans.api.lexer.TokenHierarchy;
 import org.netbeans.api.lexer.TokenSequence;
+import org.netbeans.modules.php.nette.editor.completion.processors.HelperCompletionProcessor;
+import org.netbeans.modules.php.nette.editor.completion.processors.MacroCompletionProcessor;
+import org.netbeans.modules.php.nette.editor.completion.processors.ParamCompletionProcessor;
 import org.netbeans.modules.php.nette.lexer.LatteTokenId;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 import org.netbeans.spi.editor.completion.CompletionResultSet;

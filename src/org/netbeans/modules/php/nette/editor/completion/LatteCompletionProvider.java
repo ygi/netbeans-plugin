@@ -15,8 +15,6 @@ import org.netbeans.api.lexer.Token;
 import org.netbeans.api.lexer.TokenHierarchy;
 import org.netbeans.api.lexer.TokenSequence;
 import org.netbeans.modules.php.api.util.Pair;
-import org.netbeans.modules.php.nette.editor.completion.processors.InsideMacroResolver;
-import org.netbeans.modules.php.nette.editor.completion.processors.OutsideMacroResolver;
 import org.netbeans.modules.php.nette.lexer.LatteTokenId;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 import org.netbeans.modules.php.nette.macros.LatteMacro;
