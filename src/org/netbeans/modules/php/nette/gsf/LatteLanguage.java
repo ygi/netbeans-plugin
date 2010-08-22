@@ -3,12 +3,14 @@
 
 package org.netbeans.modules.php.nette.gsf;
 
+import org.netbeans.modules.csl.api.KeystrokeHandler;
 import org.netbeans.modules.php.nette.gsf.LatteGSFParser;
 import org.netbeans.api.lexer.Language;
 import org.netbeans.modules.csl.api.StructureScanner;
 import org.netbeans.modules.csl.spi.DefaultLanguageConfig;
 import org.netbeans.modules.csl.spi.LanguageRegistration;
 import org.netbeans.modules.parsing.spi.Parser;
+import org.netbeans.modules.php.nette.editor.LatteBracketCompleter;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 
 /**
@@ -59,5 +61,10 @@ public class LatteLanguage extends DefaultLanguageConfig {
     public StructureScanner getStructureScanner() {
         return new LatteStructureScanner();
     }
+
+	@Override
+	public KeystrokeHandler getKeystrokeHandler() {
+		return new LatteBracketCompleter();
+	}
 
 }
