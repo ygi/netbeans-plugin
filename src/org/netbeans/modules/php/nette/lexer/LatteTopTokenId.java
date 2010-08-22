@@ -24,7 +24,6 @@ import org.netbeans.spi.lexer.LexerRestartInfo;
 public enum LatteTopTokenId implements TokenId {
 
     LATTE(null, "latte"),			// macros
-    LATTE_ATTR(null, "n_attr"),		// n:attr
     LATTE_TAG(null, "n_tag"),		// <n:tag
     HTML(null, "lattetop"),			// anything which is not latte
     HTML_TAG(null, "lattetop");		// starndard html <tag
@@ -68,7 +67,7 @@ public enum LatteTopTokenId implements TokenId {
                 LanguagePath lp, InputAttributes ia)
         {
             LatteTopTokenId id = token.id();
-            if (id == LatteTopTokenId.LATTE || id == LatteTopTokenId.LATTE_ATTR) {
+            if (id == LatteTopTokenId.LATTE) {
                 return LanguageEmbedding.create(LatteTokenId.language(), 0, 0, false);	// if anything latte, process as latte
             } else {
                 return LanguageEmbedding.create(HTMLTokenId.language(), 0, 0, true);	// anything else is HTML

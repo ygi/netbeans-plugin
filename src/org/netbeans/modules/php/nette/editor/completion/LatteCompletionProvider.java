@@ -73,7 +73,7 @@ public class LatteCompletionProvider implements CompletionProvider {
 				if(sequence.moveNext() || sequence.movePrevious()) {
 					Token<LatteTopTokenId> token = sequence.token();
 					
-					if(token.id() == LatteTopTokenId.LATTE || token.id() == LatteTopTokenId.LATTE_ATTR) {
+					if(token.id() == LatteTopTokenId.LATTE) {
 						//inside macro completion
 						InsideMacroResolver.resolve(completionResultSet, sequence, document, caretOffset);
 					} else {
