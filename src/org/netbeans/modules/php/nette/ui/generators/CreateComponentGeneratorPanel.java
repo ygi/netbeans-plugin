@@ -7,11 +7,16 @@
 
 package org.netbeans.modules.php.nette.ui.generators;
 
+import javax.swing.ImageIcon;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import org.openide.DialogDescriptor;
+
 /**
  *
  * @author Ondřej Brejla
  */
-public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
+public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements DocumentListener {
 
     /** Creates new form CreateComponentGeneratorPanel */
     public CreateComponentGeneratorPanel() {
@@ -42,6 +47,13 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
         componentName = new javax.swing.JTextField();
         componentClass = new javax.swing.JTextField();
         registerInConstructor = new javax.swing.JCheckBox();
+        warning = new javax.swing.JLabel();
+
+        tabPanel.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tabPanelStateChanged(evt);
+            }
+        });
 
         jLabel3.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jLabel3.text")); // NOI18N
 
@@ -74,19 +86,19 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
                 .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, formPanelLayout.createSequentialGroup()
                         .addComponent(createValidSubmit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                         .addComponent(createInvalidSubmit))
                     .addGroup(formPanelLayout.createSequentialGroup()
                         .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 81, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(formPanelLayout.createSequentialGroup()
                                 .addComponent(formClass, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(useAppForm))
-                            .addComponent(formName, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))))
+                            .addComponent(formName, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         formPanelLayout.setVerticalGroup(
@@ -126,11 +138,11 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(componentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(componentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(componentName, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
-                    .addComponent(componentClass, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
+                    .addComponent(componentName, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
+                    .addComponent(componentClass, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))
                 .addContainerGap())
         );
         componentPanelLayout.setVerticalGroup(
@@ -144,7 +156,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
                 .addGroup(componentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(componentName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         componentName.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jTextField1.AccessibleContext.accessibleName")); // NOI18N
@@ -153,15 +165,23 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
 
         registerInConstructor.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.registerInConstructor.text")); // NOI18N
 
+        warning.setForeground(javax.swing.UIManager.getDefaults().getColor("nb.errorForeground"));
+        warning.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        warning.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.warning.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPanel)
+            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 831, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(registerInConstructor)
-                .addContainerGap(340, Short.MAX_VALUE))
+                .addContainerGap(434, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(warning, javax.swing.GroupLayout.DEFAULT_SIZE, 807, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,13 +189,26 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
                 .addComponent(tabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(registerInConstructor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(warning, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        warning.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.warning.AccessibleContext.accessibleName")); // NOI18N
     }// </editor-fold>//GEN-END:initComponents
 
 	private void useAppFormStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_useAppFormStateChanged
 		formClass.setEnabled(!useAppForm.isSelected());
+		if (useAppForm.isSelected()) {
+			formClass.setText("AppForm");
+		}
 	}//GEN-LAST:event_useAppFormStateChanged
+
+	private void tabPanelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabPanelStateChanged
+		if (dd != null) {
+			doEnablement();
+		}
+	}//GEN-LAST:event_tabPanelStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -194,7 +227,11 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox registerInConstructor;
     private javax.swing.JTabbedPane tabPanel;
     private javax.swing.JCheckBox useAppForm;
+    private javax.swing.JLabel warning;
     // End of variables declaration//GEN-END:variables
+
+	private DialogDescriptor dd;
+	private ImageIcon warningIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/warning_icon.png"));
 
 	public String getComponentName() {
 		return componentName.getText();
@@ -226,6 +263,82 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel {
 
 	public boolean isFormTabSelected() {
 		return tabPanel.getSelectedIndex() == 0;
+	}
+
+	public void setDialogDescriptor(DialogDescriptor dd) {
+	   this.dd = dd;
+	   
+	   formName.getDocument().addDocumentListener(this);
+	   formClass.getDocument().addDocumentListener(this);
+	   componentName.getDocument().addDocumentListener(this);
+	   componentClass.getDocument().addDocumentListener(this);
+
+	   doEnablement();
+    }
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		doEnablement();
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		doEnablement();
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		doEnablement();
+	}
+
+	private void doEnablement() {
+		if (isFormTabSelected()) {
+			if (!isValidClass(getFormClass())) {
+				warning.setIcon(warningIcon);
+				setWarningText("Form class");
+				
+				dd.setValid(false);
+			} else if (!isValidComponentName(getFormName())) {
+				warning.setIcon(warningIcon);
+				setWarningText("Form name");
+
+				dd.setValid(false);
+			} else {
+				warning.setIcon(null);
+				warning.setText("");
+
+				dd.setValid(true);
+			}
+		} else {
+			if (!isValidClass(getComponentClass())) {
+				warning.setIcon(warningIcon);
+				setWarningText("Component class");
+
+				dd.setValid(false);
+			} else if (!isValidComponentName(getComponentName())) {
+				warning.setIcon(warningIcon);
+				setWarningText("Component name");
+
+				dd.setValid(false);
+			} else {
+				warning.setIcon(null);
+				warning.setText("");
+				
+				dd.setValid(true);
+			}
+		}
+	}
+
+	private void setWarningText(String text) {
+		warning.setText(text + " must be non-empty alphanumeric string.");
+	}
+
+	private boolean isValidClass(String className) {
+		return !className.trim().isEmpty() && className.matches("^[a-zA-Z0-9_]+$");
+	}
+
+	private boolean isValidComponentName(String componentName) {
+		return !componentName.trim().isEmpty() && componentName.matches("^[a-zA-Z0-9_]+$");
 	}
 
 }
