@@ -98,8 +98,12 @@ public class CreateComponentGenerator implements CodeGenerator {
 	private boolean processDialog() {
 		panel = new CreateComponentGeneratorPanel();
 
-		DialogDescriptor dd = new DialogDescriptor(panel, "Create component...");
+		DialogDescriptor dd = new DialogDescriptor(panel, "Create component...", true, DialogDescriptor.OK_CANCEL_OPTION, DialogDescriptor.OK_OPTION, null);
+		
+		panel.setDialogDescriptor(dd);
+
 		Object result = DialogDisplayer.getDefault().notify(dd);
+
 		if (result != NotifyDescriptor.OK_OPTION) {
 			return false;
 		} else {
