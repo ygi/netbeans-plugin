@@ -5,7 +5,7 @@
  * Created on 18.6.2010, 20:04:41
  */
 
-package org.netbeans.modules.php.nette.ui.generators;
+package org.netbeans.modules.php.nette.generators;
 
 import javax.swing.ImageIcon;
 import javax.swing.event.DocumentEvent;
@@ -95,7 +95,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
                 .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, formPanelLayout.createSequentialGroup()
                         .addComponent(createValidSubmit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
                         .addComponent(createInvalidSubmit))
                     .addGroup(formPanelLayout.createSequentialGroup()
                         .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,7 +107,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
                                 .addComponent(formClass, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(useAppForm))
-                            .addComponent(formName, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))))
+                            .addComponent(formName, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         formPanelLayout.setVerticalGroup(
@@ -135,7 +135,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 
         jLabel2.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jLabel2.text")); // NOI18N
 
-        componentName.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.null.text")); // NOI18N
+        componentName.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.null.text_1")); // NOI18N
 
         componentClass.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.componentClass.text")); // NOI18N
 
@@ -150,8 +150,8 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(componentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(componentName, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
-                    .addComponent(componentClass, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
+                    .addComponent(componentName, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
+                    .addComponent(componentClass, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE))
                 .addContainerGap())
         );
         componentPanelLayout.setVerticalGroup(
@@ -182,14 +182,14 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
+            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(registerInConstructor)
-                .addContainerGap(346, Short.MAX_VALUE))
+                .addContainerGap(492, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(warningLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
+                .addComponent(warningLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
