@@ -1,6 +1,5 @@
 package org.netbeans.modules.php.nette.generators;
 
-import org.netbeans.modules.php.nette.ui.generators.CreateComponentGeneratorPanel;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.text.JTextComponent;

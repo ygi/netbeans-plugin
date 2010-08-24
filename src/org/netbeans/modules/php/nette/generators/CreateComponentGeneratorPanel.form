@@ -16,15 +16,15 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="tabPanel" alignment="0" pref="597" max="32767" attributes="0"/>
+          <Component id="tabPanel" alignment="0" pref="743" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="registerInConstructor" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="346" max="32767" attributes="0"/>
+              <EmptySpace pref="492" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="warningLabel" pref="573" max="32767" attributes="0"/>
+              <Component id="warningLabel" pref="719" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -69,7 +69,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="createValidSubmit" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="118" max="32767" attributes="0"/>
+                              <EmptySpace pref="264" max="32767" attributes="0"/>
                               <Component id="createInvalidSubmit" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -84,7 +84,7 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="useAppForm" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="formName" pref="468" max="32767" attributes="0"/>
+                                  <Component id="formName" pref="614" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -196,8 +196,8 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="componentName" pref="429" max="32767" attributes="1"/>
-                          <Component id="componentClass" alignment="1" pref="429" max="32767" attributes="1"/>
+                          <Component id="componentName" pref="575" max="32767" attributes="1"/>
+                          <Component id="componentClass" alignment="1" pref="575" max="32767" attributes="1"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -239,7 +239,7 @@
             <Component class="javax.swing.JTextField" name="componentName">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.null.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.null.text_1" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <AccessibilityProperties>
@@ -276,7 +276,7 @@
         </Property>
         <Property name="horizontalAlignment" type="int" value="2"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/netbeans/modules/php/nette/ui/generators/Bundle.properties" key="CreateComponentGeneratorPanel.warningLabel.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.warningLabel.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AccessibilityProperties>
