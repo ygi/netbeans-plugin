@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
+import org.netbeans.modules.php.nette.wizards.NewNetteProjectPanel;
 import org.netbeans.modules.php.spi.phpmodule.PhpModuleExtender;
 import org.openide.filesystems.FileLock;
 import org.openide.filesystems.FileObject;
@@ -23,17 +24,21 @@ import org.openide.util.HelpCtx;
  */
 public class NettePhpModuleExtender extends PhpModuleExtender {
 
+	private NewNetteProjectPanel netteProjectPanel;
+
     @Override
     public void addChangeListener(ChangeListener cl) {
+		getPanel().addChangeListener(cl);
     }
 
     @Override
     public void removeChangeListener(ChangeListener cl) {
+		getPanel().removeChangeListener(cl);
     }
 
     @Override
     public JComponent getComponent() {
-        return null;
+        return getPanel();
     }
 
     @Override
@@ -43,12 +48,12 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
 
     @Override
     public boolean isValid() {
-        return true;
+        return getErrorMessage() == null;
     }
 
     @Override
     public String getErrorMessage() {
-        return null;
+        return getPanel().getErrorMessage();
     }
 
     @Override
@@ -226,4 +231,13 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
             set.add(fo);
         }
     }
+
+	private NewNetteProjectPanel getPanel() {
+		if (netteProjectPanel == null) {
+			netteProjectPanel = new NewNetteProjectPanel();
+		}
+
+		return netteProjectPanel;
+	}
+
 }
