@@ -29,7 +29,7 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
 
     LatteTopLexer(LexerRestartInfo<LatteTopTokenId> info) {
         State state = info.state() == null ? State.OUTER : ((LexerState)info.state()).getState();
-        State substate = info.state() == null ? State.OUTER : ((LexerState)info.state()).getState();
+        State substate = info.state() == null ? State.OUTER : ((LexerState)info.state()).getSubstate();
         this.input = info.input();
         this.tokenFactory = info.tokenFactory();
         this.scanner = new LatteTopColoringLexer(info, state, substate);
@@ -254,16 +254,18 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                         if(c == ':') {									// found nette namespace
                             property = "";								// clear macro name
                             while(c != EOF) {
+                                c = input.read();
                                 if(Character.isLetter(c))				// attribute name (macro name)
                                     property += (char)c;				// add next char of macro name
                                 else if(c == '-')						// for tag- and inner- prefixes
                                     property = "";						// do not want prefixes in macro name
-                                if(c == '"') {							// starting attr value
+								else if(c == '"') {							// starting attr value
                                     substate = state;					// stores top state
                                     state = State.IN_LATTE_ATTR;		// in latte attr
                                     return LatteTopTokenId.HTML;
-                                }
-                                c = input.read();
+                                } else {
+									return LatteTopTokenId.HTML;
+								}
                             }
                             property = null;
                         }
@@ -293,6 +295,9 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                 c = input.read();
             }
 
+			if(state == null) {
+				return LatteTopTokenId.HTML;
+			}
             switch (state) {
                 case IN_LATTE:
                     return LatteTopTokenId.LATTE;						// if in latte, process as Latte
