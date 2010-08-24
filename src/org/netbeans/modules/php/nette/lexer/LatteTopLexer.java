@@ -263,7 +263,7 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                                     substate = state;					// stores top state
                                     state = State.IN_LATTE_ATTR;		// in latte attr
                                     return LatteTopTokenId.HTML;
-                                } else {
+                                } else if(c != '=') {
 									return LatteTopTokenId.HTML;
 								}
                             }
