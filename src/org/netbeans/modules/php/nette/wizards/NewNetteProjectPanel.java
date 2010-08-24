@@ -105,7 +105,7 @@ public class NewNetteProjectPanel extends javax.swing.JPanel {
 			Validable emptyPathValidator = new NetteEmptyPathValidator();
 
 			if (emptyPathValidator.validate(NetteOptions.getInstance().getNettePath())) {
-				return "Nette folder is not set. Use Options to set a valid Nette folder.";
+				return "Nette directory is not set. Use Options to set a valid Nette directory.";
 			}
 
 			Validable loaderPathValidator = new NetteLoaderPathValidator();
