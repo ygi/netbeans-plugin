@@ -71,7 +71,7 @@ public class LatteBracketCompleter implements KeystrokeHandler {
 
 	public int beforeBreak(Document doc, int i, JTextComponent jtc)
 			throws BadLocationException {
-		return 0;
+		return -1;
 	}
 
 	public OffsetRange findMatching(Document doc, int i) {
