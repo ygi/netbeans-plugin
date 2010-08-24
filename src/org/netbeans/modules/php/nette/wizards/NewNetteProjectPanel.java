@@ -118,4 +118,8 @@ public class NewNetteProjectPanel extends javax.swing.JPanel {
 		return null;
 	}
 
+	public boolean isCopyNetteCheckboxSelected() {
+		return copyNetteCheckbox.isSelected();
+	}
+
 }
