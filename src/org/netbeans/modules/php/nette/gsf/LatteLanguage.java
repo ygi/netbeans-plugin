@@ -3,6 +3,7 @@
 
 package org.netbeans.modules.php.nette.gsf;
 
+import org.netbeans.modules.csl.api.Formatter;
 import org.netbeans.modules.csl.api.KeystrokeHandler;
 import org.netbeans.modules.php.nette.gsf.LatteGSFParser;
 import org.netbeans.api.lexer.Language;
@@ -11,6 +12,7 @@ import org.netbeans.modules.csl.spi.DefaultLanguageConfig;
 import org.netbeans.modules.csl.spi.LanguageRegistration;
 import org.netbeans.modules.parsing.spi.Parser;
 import org.netbeans.modules.php.nette.editor.LatteBracketCompleter;
+import org.netbeans.modules.php.nette.editor.LatteFormatter;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 
 /**
@@ -65,6 +67,16 @@ public class LatteLanguage extends DefaultLanguageConfig {
 	@Override
 	public KeystrokeHandler getKeystrokeHandler() {
 		return new LatteBracketCompleter();
+	}
+
+	@Override
+	public boolean hasFormatter() {
+		return true;
+	}
+
+	@Override
+	public Formatter getFormatter() {
+		return new LatteFormatter();
 	}
 
 }

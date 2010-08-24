@@ -31,7 +31,7 @@ public class LatteFormatter implements Formatter {
             int lineStart = context.lineStartOffset(context.caretOffset());
             int indent = context.lineIndent(lineStart);
             int lineStart2 = context.lineStartOffset(lineStart - indent - 1);
-            String start = context.document().getText(lineStart2, 10);
+            String start = context.document().getText(lineStart2, context.endOffset() - lineStart2);
             if(start.startsWith("{") && Character.isLetter(start.charAt(1))) {
                 int i = 1;
                 String macro = "";
@@ -40,12 +40,12 @@ public class LatteFormatter implements Formatter {
                     if(Character.isLetter(c)) {
                         macro += c;
                     }
+					i++;
                 }
-                for(LatteMacro m : MacroDefinitions.macros) {
-                    if(m.getMacroName().equals(macro) && m.isPair()) {
-                        context.modifyIndent(lineStart, indent+indentSize());
-                    }
-                }
+				LatteMacro m = MacroDefinitions.getMacro(macro);
+				if(m != null && m.isPair()) {
+					context.modifyIndent(lineStart, indent + indentSize());
+				}
             }
         } catch(BadLocationException ex) {
             Exceptions.printStackTrace(ex);
