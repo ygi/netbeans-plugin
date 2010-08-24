@@ -6,7 +6,6 @@ package org.netbeans.modules.php.nette;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
-import javax.tools.FileObject;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.phpmodule.PhpModuleProperties;
 import org.netbeans.modules.php.spi.commands.FrameworkCommandSupport;
@@ -25,7 +24,7 @@ public class NettePhpFrameworkProvider extends PhpFrameworkProvider {
     private static final NettePhpFrameworkProvider INSTANCE = new NettePhpFrameworkProvider();
 
     public NettePhpFrameworkProvider() {
-        super("Nette Framework", "Nette Framework is a powerful PHP framework for rapid and easy creation of high quality and innovative\nweb applications. It eliminates security risks, supports AJAX, DRY, KISS, MVC and code reusability.");
+        super("Nette Framework", "Nette Framework is a powerful PHP framework.");
     }
     
     public static NettePhpFrameworkProvider getInstance() {

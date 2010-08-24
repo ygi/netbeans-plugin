@@ -43,8 +43,9 @@ public class NetteEditorExtender extends EditorExtender {
         final Set<PhpVariable> phpVariables = new HashSet<PhpVariable>();
 
         FileObject presenter = EditorUtils.getPresenterFile(template);
-        if(presenter == null)
+        if (presenter == null) {
             return phpVariables;
+		}
         
         try {
             ParserManager.parse(Collections.singleton(Source.create(presenter)), new UserTask() {

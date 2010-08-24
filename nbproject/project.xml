@@ -106,6 +106,15 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
+                    <code-name-base>org.netbeans.modules.options.api</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <release-version>1</release-version>
+                        <specification-version>1.18.1</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
                     <code-name-base>org.netbeans.modules.parsing.api</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
@@ -134,6 +143,14 @@
                     <code-name-base>org.netbeans.modules.php.help</code-name-base>
                     <run-dependency>
                         <specification-version>1.5.1</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
+                    <code-name-base>org.openide.awt</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <specification-version>7.23.1</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>
@@ -166,6 +183,14 @@
                     <compile-dependency/>
                     <run-dependency>
                         <specification-version>7.31.2.1</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
+                    <code-name-base>org.openide.util.lookup</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <specification-version>8.3.1</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>

@@ -323,12 +323,17 @@ public class EditorUtils {
      * @return String presenter name
      */
     public static FileObject getPresenterFile(FileObject fo) {
-        String presenter = getPresenter(fo) + "Presenter.php";
+		String presenter = getPresenter(fo) + "Presenter.php";
 
         byte level = 0;
         while (true) {
             level++;
+
             fo = fo.getParent();
+			if (fo == null) {
+				return null;
+			}
+			
             if(fo.getName().equals("sessions")
                     || fo.getName().equals("temp") || fo.getName().equals("logs"))
                 continue;
