@@ -69,7 +69,7 @@ public class LatteLanguage extends DefaultLanguageConfig {
 		return new LatteBracketCompleter();
 	}
 
-	@Override
+	/*@Override
 	public boolean hasFormatter() {
 		return true;
 	}
@@ -77,6 +77,6 @@ public class LatteLanguage extends DefaultLanguageConfig {
 	@Override
 	public Formatter getFormatter() {
 		return new LatteFormatter();
-	}
+	}*/
 
 }
