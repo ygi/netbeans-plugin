@@ -80,7 +80,7 @@
     <folder name="Loaders">
         <folder name="text">
             <folder name="latte-template">
-                <attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/latte_icon2.png"/>
+                <attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/latte_icon.png"/>
                 <folder name="Actions">
                     <file name="org-openide-actions-CopyAction.shadow">
                         <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-CopyAction.instance"/>
@@ -163,6 +163,7 @@
 			<attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.resources.Bundle"/>
 			<file name="PresenterTemplate.php" url="PresenterTemplate.php">
 				<attr name="displayName" bundlevalue="org.netbeans.modules.php.nette.resources.Bundle#Templates/Nette-Framework/PresenterTemplate.php"/>
+                <attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/presenter_icon.png"/>
                 <attr name="template" boolvalue="true"/>
                 <attr name="SystemFileSystem.localizingBundle" stringvalue="org.myorg.additionalfiletemplates.Bundle"/>
                 <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/presenter_icon.png"/>
@@ -172,6 +173,7 @@
             </file>
 			<file name="ControlTemplate.php" url="ControlTemplate.php">
 				<attr name="displayName" bundlevalue="org.netbeans.modules.php.nette.resources.Bundle#Templates/Nette-Framework/ControlTemplate.php"/>
+				<attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/control_icon.png"/>
                 <attr name="template" boolvalue="true"/>
                 <attr name="SystemFileSystem.localizingBundle" stringvalue="org.myorg.additionalfiletemplates.Bundle"/>
                 <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/control_icon.png"/>
@@ -181,6 +183,7 @@
             </file>
             <file name="LatteTemplate.phtml" url="LatteTemplate.phtml">
 				<attr name="displayName" bundlevalue="org.netbeans.modules.php.nette.resources.Bundle#Templates/Nette-Framework/LatteTemplate.phtml"/>
+				<attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/latte_icon.png"/>
                 <attr name="template" boolvalue="true"/>
 				<attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.resources.Bundle"/>
                 <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/latte_icon.png"/>
