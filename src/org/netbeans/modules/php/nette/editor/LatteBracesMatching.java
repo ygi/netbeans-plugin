@@ -17,7 +17,7 @@ import org.netbeans.spi.editor.bracesmatching.MatcherContext;
 import org.openide.util.Exceptions;
 
 /**
- *
+ * FIXME: hi-lights some html tags wrong (as red)
  * @author Radek Ježdík
  */
 public class LatteBracesMatching implements BracesMatcher {
@@ -63,7 +63,7 @@ public class LatteBracesMatching implements BracesMatcher {
                     Token<LatteTokenId> t2 = ts2.token();
                     // macro has name
                     if(t2.id() == LatteTokenId.MACRO) {								// it has macro name
-                        macroName = t2.toString();
+                        macroName = t2.toString().toLowerCase();
                         mStart = ts.offset();
                         mLength = t.length();
                         return new int[] {
@@ -102,19 +102,18 @@ public class LatteBracesMatching implements BracesMatcher {
             TokenSequence<LatteTopTokenId> ts = th.tokenSequence(LatteTopTokenId.language());
 
             List<String> friends = new ArrayList<String>();			// stores macro friends (else, elseif)
-            List<String> endMacros = new ArrayList<String>();		// stores macro ends
+            List<String> pairMacroNames = new ArrayList<String>();		// stores macro ends
             int embeddedMacros = 0;									// counts nested macros
 
             ts.move(searchOffset);
 
             if(!isEndMacro) {										// of not an end macro
                 boolean isPair = false;								// is not pair so far (check below)
-                for(LatteMacro m : MacroDefinitions.macros) {		// checking for pair macro
-                    if(m.getMacroName().equals(macroName) && m.isPair()) {
-                        isPair = true;								// set isPair bool
-                        break;
-                    }
-                }
+                LatteMacro mcr = MacroDefinitions.getMacro(macroName);
+				if(mcr != null) {
+					isPair = mcr.isPair();
+					pairMacroNames.add(mcr.getEndMacroName());
+				}
                 for(String m : MacroDefinitions.friendMacros.keySet()) {			// checking for friend macro
                     for(LatteMacro f : MacroDefinitions.friendMacros.get(m)) {
                         if(f.getMacroName().equals(macroName) || m.equals(macroName)) {
@@ -140,12 +139,13 @@ public class LatteBracesMatching implements BracesMatcher {
                     // it is not pair macro, return zero length offset = hack against matching error (red hi-light)
                     return new int[] { searchOffset, searchOffset };
                 }
-            }
-            for(LatteMacro m : MacroDefinitions.getMacrosByEnd(macroName)) {
-                if(!endMacros.contains(m.getMacroName())) {
-                    endMacros.add(m.getMacroName());									// finds end macro
-                }
-            }
+            } else {
+				for(LatteMacro m : MacroDefinitions.getMacrosByEnd(macroName)) {
+					if(!pairMacroNames.contains(m.getMacroName())) {
+						pairMacroNames.add(m.getMacroName());									// finds start macro by end macro
+					}
+				}
+			}
 			// moves sequence offset accordingly to start/end macro (start forward, end backward )
             if(!isEndMacro) {
                 ts.moveNext();
@@ -176,9 +176,10 @@ public class LatteBracesMatching implements BracesMatcher {
                     while(ts2.moveNext() && i < 3) {
                         Token<LatteTokenId> t2 = ts2.token();
                         if(t2.id() == LatteTokenId.MACRO) {						// macro name token reached
+							String macroName2 = t2.text().toString().toLowerCase();
                             if(embeddedMacros == 0) {							// only if we are at the same nesting level
-                                if((endMacros.contains(t2.text().toString()) && isEndMacro != isEndMacro2)
-                                        || friends.contains(t2.text().toString())) {	// it is start/friend/end macro
+                                if((pairMacroNames.contains(macroName2) && isEndMacro != isEndMacro2)
+                                        || friends.contains(macroName2)) {			// it is start/friend/end macro
                                     return new int[] {
 											ts.offset(), ts.offset() + ts2.offset() + t2.length(), // hi-light {macro
 											ts.offset() + t.length() - 1, ts.offset() + t.length() // hi-light }
@@ -186,7 +187,7 @@ public class LatteBracesMatching implements BracesMatcher {
                                 }
                             }
 							// it is not a macro we want
-                            LatteMacro m = MacroDefinitions.getMacro(t2.text().toString());
+                            LatteMacro m = MacroDefinitions.getMacro(macroName2);
                             if(m != null && m.isPair()) {				// if it is pair macro
                                 if(!isEndMacro2) {
                                     embeddedMacros++;					// add nesting level if start macro
