@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import org.netbeans.api.lexer.Token;
@@ -19,12 +18,12 @@ import org.netbeans.modules.php.nette.lexer.LatteTokenId;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 import org.netbeans.modules.php.nette.macros.LatteMacro;
 import org.netbeans.modules.php.nette.macros.MacroDefinitions;
+import org.netbeans.modules.php.nette.utils.LexUtils;
 import org.netbeans.spi.editor.completion.CompletionProvider;
 import org.netbeans.spi.editor.completion.CompletionResultSet;
 import org.netbeans.spi.editor.completion.CompletionTask;
 import org.netbeans.spi.editor.completion.support.AsyncCompletionQuery;
 import org.netbeans.spi.editor.completion.support.AsyncCompletionTask;
-import org.openide.util.Exceptions;
 
 /**
  * Provides completion window
@@ -54,13 +53,7 @@ public class LatteCompletionProvider implements CompletionProvider {
 		return new AsyncCompletionTask(new AsyncCompletionQuery() {
 
 			protected void query(CompletionResultSet completionResultSet, Document document, int caretOffset) {
-				TokenHierarchy<String> th = null;
-				try {
-					th = TokenHierarchy.create(document.getText(0, document.getLength()), LatteTopTokenId.language());
-				} catch(BadLocationException ex) {
-					Exceptions.printStackTrace(ex);
-				}
-				TokenSequence<LatteTopTokenId> sequence = th.tokenSequence(LatteTopTokenId.language());
+				TokenSequence<LatteTopTokenId> sequence = LexUtils.getTopSequence(document);
 
 				sequence.move(caretOffset);
 
