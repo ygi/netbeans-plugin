@@ -100,6 +100,7 @@ public class MacroDefinitions {
 	 * @return
 	 */
     public static LatteMacro getMacro(String name) {
+		name = name.toLowerCase();
         for(LatteMacro m : macros) {
             if(m.getMacroName().equals(name)) {
                 return m;
@@ -114,9 +115,10 @@ public class MacroDefinitions {
 	 * @return
 	 */
     public static List<LatteMacro> getMacrosByEnd(String name) {
+		name = name.toLowerCase();
         List<LatteMacro> list = new ArrayList<LatteMacro>();
         for(LatteMacro m : macros) {
-            if(m.getEndMacroName().equals(name)) {
+            if(m.isPair && m.getEndMacroName().equals(name)) {
                 list.add(m);
             }
         }
