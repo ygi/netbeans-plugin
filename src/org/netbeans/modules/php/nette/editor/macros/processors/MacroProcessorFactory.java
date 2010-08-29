@@ -37,6 +37,7 @@ abstract public class MacroProcessorFactory {
 		blockMacros.add("ifcurrent");
 		blockMacros.add("block");
 		blockMacros.add("snippet");
+		blockMacros.add("capture");
 	};
 
 	private static final List<String> signMacros = new ArrayList<String>();

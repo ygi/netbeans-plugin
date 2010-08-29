@@ -41,7 +41,7 @@ public class MacroDefinitions {
         new LatteParamMacro("block", true),
         new LatteParamMacro("contentType", false),
         new LatteParamMacro("status", false),
-        new LatteParamMacro("capture", false),
+        new LatteParamMacro("capture", true),
         new LatteParamMacro("assign", false),
         new LatteParamMacro("default", false),
         new LatteParamMacro("var", false),
