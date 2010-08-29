@@ -17,31 +17,37 @@ public class SpecialMacroProcessor extends  MacroProcessor {
 	public void process(TokenSequence<LatteTopTokenId> sequence, TokenSequence<LatteTokenId> sequence2, int start, String macro, boolean endMacro, Embedder embedder) {
 		// include, widget, control, (p)link, extends, ...
 		int firstStart = start;
+		int firstEnd = 0;
 		int whiteSpace = 0;
 		boolean toString = true;
-
 		do {
 			Token<LatteTokenId> t2 = sequence2.token();
 			
-			if(whiteSpace < 2) {											// first param ( {mac param ...})
+			if(whiteSpace < 2) {												// first param ( {mac param ...})
 				if(t2.id() == LatteTokenId.VARIABLE || t2.id() == LatteTokenId.STRING) {
-					toString = false;										// do not encapsulate with quotes
+					toString = false;											// do not encapsulate with quotes
 				}
-				if(t2.id() == LatteTokenId.WHITESPACE						// delims parameters
-						|| (whiteSpace == 1 && t2.id() == LatteTokenId.COMA) // or delimted by coma!
+				if(t2.id() == LatteTokenId.WHITESPACE							// delimits parameters
+						|| (whiteSpace == 1 && t2.id() == LatteTokenId.COMA)	// or delimited by coma!
 						|| t2.id() == LatteTokenId.RD)
 				{
 					whiteSpace++;
-					start = sequence.offset() + sequence2.offset() + t2.length();	// start of other params
-					
-					if(t2.id() == LatteTokenId.RD) {
-						start--;											// exclude right delim
-						break;
+					firstEnd = sequence.offset() + sequence2.offset();			// end of first param
+					if(t2.id() == LatteTokenId.COMA) {
+						start = sequence.offset() + sequence2.offset() + t2.length();			// start of other params
 					}
 				}
 
 				continue;
 			}
+			if(firstEnd > 0 && start < firstEnd) {
+				if(t2.id() == LatteTokenId.COMA) {
+					start = sequence.offset() + sequence2.offset() + t2.length();			// start of other params
+					continue;
+				}
+				start = sequence.offset() + sequence2.offset();
+			}
+			
 			if(t2.id() == LatteTokenId.RD) {
 				break;
 			}
@@ -49,17 +55,14 @@ public class SpecialMacroProcessor extends  MacroProcessor {
 			length += t2.length();
 		} while(sequence2.moveNext());
 
-		String fParam = embedder.getSnapshot().getText().subSequence(firstStart, start).toString();	// get first param
-		int trim = (fParam.endsWith(",") || fParam.endsWith(" ")) ? 1 : 0;	// will remove trailing comma or WS
-
 		if(!toString) {
 			// if variable or string literal was found in first param, do not encapsulte with quotes
 			embedder.embed("<?php ");
-			embedder.embed(firstStart, start - firstStart - trim);
+			embedder.embed(firstStart, firstEnd - firstStart);
 		} else {
 			// otherwise process as php string
 			embedder.embed("<?php \"");
-			embedder.embed(firstStart, start - firstStart - trim);
+			embedder.embed(firstStart, firstEnd - firstStart);
 			embedder.embed("\"");
 		}
 		// for other params create array
