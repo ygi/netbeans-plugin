@@ -39,7 +39,7 @@ public class BlockMacroProcessor extends MacroProcessor {
 				length += t2.length();
 			} while(sequence2.moveNext());
 
-			if(macro.equals("block") || macro.equals("snippet")) {
+			if(macro.equals("block") || macro.equals("snippet") || macro.equals("ifcurrent")) {
 				// for block and snippet process as string only
 				embedder.embed("<?php \"");
 				embedder.embed(start, length);
