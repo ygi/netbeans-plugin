@@ -31,10 +31,10 @@ abstract public class MacroProcessorFactory {
 	static {
 		blockMacros.add("foreach");
 		blockMacros.add("for");
+		blockMacros.add("while");
 		blockMacros.add("if");
 		blockMacros.add("ifset");
 		blockMacros.add("ifcurrent");
-		blockMacros.add("while");
 		blockMacros.add("block");
 		blockMacros.add("snippet");
 	};
