@@ -15,5 +15,19 @@ class ${name} extends BasePresenter {
 	protected function startup() {
 		parent::startup();
 	}
+    <#list actions as action>
+        <#if action.action>
 
+        public function action${action.name?cap_first}() {
+
+        }
+        </#if>
+        <#if action.render>
+
+        public function render${action.name?cap_first}() {
+
+        }
+        </#if>
+    </#list>
+        
 }
