@@ -24,7 +24,7 @@
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="warningLabel" pref="719" max="32767" attributes="0"/>
+              <Component id="errorLabel" pref="719" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -36,7 +36,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="registerInConstructor" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="warningLabel" pref="16" max="32767" attributes="0"/>
+              <Component id="errorLabel" pref="16" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -269,14 +269,14 @@
         <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="CreateComponentGeneratorPanel_registerInConstructor"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="warningLabel">
+    <Component class="javax.swing.JLabel" name="errorLabel">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" id="nb.errorForeground" palette="3" red="ff" type="palette"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="2"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.warningLabel.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.errorLabel.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AccessibilityProperties>

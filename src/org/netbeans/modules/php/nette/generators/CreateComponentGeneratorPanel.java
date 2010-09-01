@@ -23,13 +23,13 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 
 	private DialogDescriptor dd;
 
-	private ImageIcon warningIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/warning_icon.png"));
+	private ImageIcon errorIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/error_icon.png"));
 
     /** Creates new form CreateComponentGeneratorPanel */
     public CreateComponentGeneratorPanel() {
         initComponents();
 		
-		warningLabel.setText("");
+		errorLabel.setText("");
     }
 
     /** This method is called from within the constructor to
@@ -56,7 +56,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
         componentName = new javax.swing.JTextField();
         componentClass = new javax.swing.JTextField();
         registerInConstructor = new javax.swing.JCheckBox();
-        warningLabel = new javax.swing.JLabel();
+        errorLabel = new javax.swing.JLabel();
 
         tabPanel.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -174,9 +174,9 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 
         registerInConstructor.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.registerInConstructor.text")); // NOI18N
 
-        warningLabel.setForeground(javax.swing.UIManager.getDefaults().getColor("nb.errorForeground"));
-        warningLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        warningLabel.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.warningLabel.text")); // NOI18N
+        errorLabel.setForeground(javax.swing.UIManager.getDefaults().getColor("nb.errorForeground"));
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        errorLabel.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.errorLabel.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -189,7 +189,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
                 .addContainerGap(492, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(warningLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+                .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -199,11 +199,11 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(registerInConstructor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(warningLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
+                .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        warningLabel.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.warning.AccessibleContext.accessibleName")); // NOI18N
+        errorLabel.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.warning.AccessibleContext.accessibleName")); // NOI18N
     }// </editor-fold>//GEN-END:initComponents
 
 	private void useAppFormStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_useAppFormStateChanged
@@ -226,6 +226,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
     private javax.swing.JPanel componentPanel;
     private javax.swing.JCheckBox createInvalidSubmit;
     private javax.swing.JCheckBox createValidSubmit;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JTextField formClass;
     private javax.swing.JTextField formName;
     private javax.swing.JPanel formPanel;
@@ -236,7 +237,6 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
     private javax.swing.JCheckBox registerInConstructor;
     private javax.swing.JTabbedPane tabPanel;
     private javax.swing.JCheckBox useAppForm;
-    private javax.swing.JLabel warningLabel;
     // End of variables declaration//GEN-END:variables
 
 	public String getComponentName() {
@@ -303,35 +303,35 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 
 		if (isFormTabSelected()) {
 			if (!classNameValidator.validate(getFormClass())) {
-				warningLabel.setIcon(warningIcon);
+				errorLabel.setIcon(errorIcon);
 				setWarningText("Form class");
 				
 				dd.setValid(false);
 			} else if (!componentNameValidator.validate(getFormName())) {
-				warningLabel.setIcon(warningIcon);
+				errorLabel.setIcon(errorIcon);
 				setWarningText("Form name");
 
 				dd.setValid(false);
 			} else {
-				warningLabel.setIcon(null);
-				warningLabel.setText("");
+				errorLabel.setIcon(null);
+				errorLabel.setText("");
 
 				dd.setValid(true);
 			}
 		} else {
 			if (!classNameValidator.validate(getComponentClass())) {
-				warningLabel.setIcon(warningIcon);
+				errorLabel.setIcon(errorIcon);
 				setWarningText("Component class");
 
 				dd.setValid(false);
 			} else if (!componentNameValidator.validate(getComponentName())) {
-				warningLabel.setIcon(warningIcon);
+				errorLabel.setIcon(errorIcon);
 				setWarningText("Component name");
 
 				dd.setValid(false);
 			} else {
-				warningLabel.setIcon(null);
-				warningLabel.setText("");
+				errorLabel.setIcon(null);
+				errorLabel.setText("");
 				
 				dd.setValid(true);
 			}
@@ -339,7 +339,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 	}
 
 	private void setWarningText(String text) {
-		warningLabel.setText(text + " must be non-empty alphanumeric string.");
+		errorLabel.setText(text + " must be non-empty alphanumeric string.");
 	}
 
 }
