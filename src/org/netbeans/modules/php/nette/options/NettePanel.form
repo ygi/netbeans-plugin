@@ -33,7 +33,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="browseButton" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="warningLabel" alignment="0" pref="397" max="32767" attributes="1"/>
+                  <Component id="errorLabel" alignment="0" pref="397" max="32767" attributes="1"/>
                   <Component id="jLabel2" alignment="1" max="32767" attributes="0"/>
                   <Component id="jSeparator1" alignment="0" pref="397" max="32767" attributes="0"/>
               </Group>
@@ -55,7 +55,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace pref="42" max="32767" attributes="0"/>
-              <Component id="warningLabel" min="-2" pref="14" max="-2" attributes="0"/>
+              <Component id="errorLabel" min="-2" pref="14" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -89,14 +89,14 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="browseButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="warningLabel">
+    <Component class="javax.swing.JLabel" name="errorLabel">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" id="nb.errorForeground" palette="3" red="ff" type="palette"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="2"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/netbeans/modules/php/nette/options/Bundle.properties" key="NettePanel.warningLabel.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="org/netbeans/modules/php/nette/options/Bundle.properties" key="NettePanel.errorLabel.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>

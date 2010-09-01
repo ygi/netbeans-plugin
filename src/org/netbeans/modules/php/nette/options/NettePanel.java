@@ -1,6 +1,5 @@
 package org.netbeans.modules.php.nette.options;
 
-import java.io.File;
 import javax.swing.ImageIcon;
 import org.netbeans.modules.php.nette.validators.NetteEmptyPathValidator;
 import org.netbeans.modules.php.nette.validators.NetteLoaderPathValidator;
@@ -10,13 +9,13 @@ final class NettePanel extends javax.swing.JPanel {
 
 	private final NetteOptionsPanelController controller;
 
-	private ImageIcon warningIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/warning_icon.png"));
+	private ImageIcon errorIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/error_icon.png"));
 
 	NettePanel(NetteOptionsPanelController controller) {
 		this.controller = controller;
 		initComponents();
 		// TODO listen to changes in form fields and call controller.changed()
-		warningLabel.setText("");
+		errorLabel.setText("");
 	}
 
 	/** This method is called from within the constructor to
@@ -31,7 +30,7 @@ final class NettePanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         nettePathTextField = new javax.swing.JTextField();
         browseButton = new javax.swing.JButton();
-        warningLabel = new javax.swing.JLabel();
+        errorLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
@@ -53,9 +52,9 @@ final class NettePanel extends javax.swing.JPanel {
             }
         });
 
-        warningLabel.setForeground(javax.swing.UIManager.getDefaults().getColor("nb.errorForeground"));
-        warningLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        org.openide.awt.Mnemonics.setLocalizedText(warningLabel, org.openide.util.NbBundle.getMessage(NettePanel.class, "NettePanel.warningLabel.text")); // NOI18N
+        errorLabel.setForeground(javax.swing.UIManager.getDefaults().getColor("nb.errorForeground"));
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        org.openide.awt.Mnemonics.setLocalizedText(errorLabel, org.openide.util.NbBundle.getMessage(NettePanel.class, "NettePanel.errorLabel.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(NettePanel.class, "NettePanel.jLabel2.text")); // NOI18N
 
@@ -72,7 +71,7 @@ final class NettePanel extends javax.swing.JPanel {
                         .addComponent(nettePathTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(browseButton))
-                    .addComponent(warningLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+                    .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE))
                 .addContainerGap())
@@ -90,7 +89,7 @@ final class NettePanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addComponent(warningLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -136,24 +135,24 @@ final class NettePanel extends javax.swing.JPanel {
 		Validable emptyPathValidator = new NetteEmptyPathValidator();
 
 		if (loaderPathValidator.validate(nettePathTextField.getText()) || emptyPathValidator.validate(nettePathTextField.getText())) {
-			warningLabel.setIcon(null);
-			warningLabel.setText("");
+			errorLabel.setIcon(null);
+			errorLabel.setText("");
 
 			return true;
 		}
 
-		warningLabel.setIcon(warningIcon);
-		warningLabel.setText("Selected folder is not a valid Nette folder (loader.php was not found). Use a valid folder or let it empty.");
+		errorLabel.setIcon(errorIcon);
+		errorLabel.setText("Selected folder is not a valid Nette folder (loader.php was not found). Use a valid folder or let it empty.");
 
 		return false;
 	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browseButton;
     private javax.swing.JFileChooser directoryChooser;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField nettePathTextField;
-    private javax.swing.JLabel warningLabel;
     // End of variables declaration//GEN-END:variables
 }
