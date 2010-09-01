@@ -24,22 +24,22 @@ import org.openide.util.HelpCtx;
  */
 public class NettePhpModuleExtender extends PhpModuleExtender {
 
-	private static final String NETTE_LIBS_DIR = "/libs/Nette";
+    private static final String NETTE_LIBS_DIR = "/libs/Nette";
 
-	private static final String NETTE_DOCUMENT_ROOT_DIR = "/document_root";
+    private static final String NETTE_DOCUMENT_ROOT_DIR = "/document_root";
 
-	private static final String NETTE_APP_DIR = "/app";
+    private static final String NETTE_APP_DIR = "/app";
 
-	private NewNetteProjectPanel netteProjectPanel;
+    private NewNetteProjectPanel netteProjectPanel;
 
     @Override
     public void addChangeListener(ChangeListener cl) {
-		getPanel().addChangeListener(cl);
+        getPanel().addChangeListener(cl);
     }
 
     @Override
     public void removeChangeListener(ChangeListener cl) {
-		getPanel().removeChangeListener(cl);
+        getPanel().removeChangeListener(cl);
     }
 
     @Override
@@ -76,11 +76,11 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
 
             createDocumentRoot(projectDir);
             createApp(projectDir);
-			createLibs(projectDir);
+            createLibs(projectDir);
 
-			if (getPanel().isCopyNetteCheckboxSelected()) {
-				copyNetteFiles(projectDir);
-			}
+            if (getPanel().isCopyNetteCheckboxSelected()) {
+                copyNetteFiles(projectDir);
+            }
 
             return set;
         } catch (IOException ex) {
@@ -123,22 +123,22 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
         FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/config.ini"), new File(d + NETTE_APP_DIR + "/config.ini"));
     }
 
-	private void createLibs(String d) throws IOException {
-		File folder = new File(d + NETTE_LIBS_DIR);
+    private void createLibs(String d) throws IOException {
+        File folder = new File(d + NETTE_LIBS_DIR);
         FileObject app = FileUtil.createFolder(folder);
         set.add(app);
-	}
+    }
 
-	private void copyNetteFiles(String projectDir) {
-		FileUtils.copyDirectory(new File(NetteOptions.getInstance().getNettePath()), new File(projectDir, NETTE_LIBS_DIR));
-	}
+    private void copyNetteFiles(String projectDir) {
+        FileUtils.copyDirectory(new File(NetteOptions.getInstance().getNettePath()), new File(projectDir, NETTE_LIBS_DIR));
+    }
 
-	private NewNetteProjectPanel getPanel() {
-		if (netteProjectPanel == null) {
-			netteProjectPanel = new NewNetteProjectPanel();
-		}
+    private NewNetteProjectPanel getPanel() {
+        if (netteProjectPanel == null) {
+            netteProjectPanel = new NewNetteProjectPanel();
+        }
 
-		return netteProjectPanel;
-	}
+        return netteProjectPanel;
+    }
 
 }
