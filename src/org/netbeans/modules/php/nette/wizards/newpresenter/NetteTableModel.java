@@ -18,7 +18,7 @@ public class NetteTableModel extends DefaultTableModel {
     };
 
     public NetteTableModel() {
-        super(new Object [][] {}, new String [] {"Action name:", "action<action>()", "render<action>()"});
+        super(new Object [][] {{"default", true, true}}, new String [] {"Action name:", "action<action>()", "render<action>()"});
     }
 
     @Override
