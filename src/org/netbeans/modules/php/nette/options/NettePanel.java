@@ -1,6 +1,7 @@
 package org.netbeans.modules.php.nette.options;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import org.netbeans.modules.php.nette.validators.NetteEmptyPathValidator;
 import org.netbeans.modules.php.nette.validators.NetteLoaderPathValidator;
 import org.netbeans.modules.php.nette.validators.Validable;
@@ -95,10 +96,12 @@ final class NettePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 	private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
-		directoryChooser.showOpenDialog(this);
+		int result = directoryChooser.showOpenDialog(this);
 
-		nettePathTextField.setText(directoryChooser.getSelectedFile().toString());
-		controller.changed();
+        if (result == JFileChooser.APPROVE_OPTION) {
+            nettePathTextField.setText(directoryChooser.getSelectedFile().toString());
+            controller.changed();
+        }
 	}//GEN-LAST:event_browseButtonActionPerformed
 
 	private void nettePathTextFieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_nettePathTextFieldCaretUpdate
