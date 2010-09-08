@@ -6,7 +6,10 @@ package org.netbeans.modules.php.nette.wizards.newpresenter;
 
 import java.awt.Component;
 import javax.swing.event.ChangeListener;
+import org.netbeans.spi.project.ui.templates.support.Templates;
 import org.openide.WizardDescriptor;
+import org.openide.filesystems.FileObject;
+import org.openide.loaders.DataFolder;
 import org.openide.util.HelpCtx;
 
 public class NewPresenterWizardPanel1 implements WizardDescriptor.Panel {
@@ -79,6 +82,12 @@ public class NewPresenterWizardPanel1 implements WizardDescriptor.Panel {
     // WizardDescriptor.getProperty & putProperty to store information entered
     // by the user.
     public void readSettings(Object settings) {
+        WizardDescriptor wd = (WizardDescriptor) settings;
+
+        FileObject dir = Templates.getTargetFolder(wd);
+        DataFolder df = DataFolder.findFolder(dir);
+
+        component.setTemplateDirectory(dir.getPath());
     }
 
     public void storeSettings(Object settings) {
