@@ -14,11 +14,16 @@ import javax.swing.table.DefaultTableModel;
 public class NetteTableModel extends DefaultTableModel {
 
     private Class[] types = new Class [] {
-        String.class, Boolean.class, Boolean.class
+        String.class, Boolean.class, Boolean.class, Boolean.class
     };
 
     public NetteTableModel() {
-        super(new Object [][] {{"default", true, true}}, new String [] {"Action name:", "action<action>()", "render<action>()"});
+        super(
+            new Object [][] {
+                {"default", true, true, true}
+            },
+            new String [] {"Action name:", "action<action>()", "render<action>()", "gen. template"}
+        );
     }
 
     @Override
