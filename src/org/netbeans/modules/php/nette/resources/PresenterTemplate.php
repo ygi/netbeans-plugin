@@ -5,7 +5,7 @@
  *
  * @author ${user}
  */
-class ${name} extends BasePresenter {
+class ${name} <#if parentPresenter != "">extends ${parentPresenter} </#if>{
 
 	/**
 	 * (non-phpDoc)
