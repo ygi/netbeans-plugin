@@ -130,7 +130,7 @@ public final class NewPresenterWizardIterator implements WizardDescriptor.Instan
 
                 if (generateTemplate) {
                     String actionName = (String) action.get("name");
-                    latteDTemplate.createFromTemplate(templatesDf, latteTemplatePrefix + actionName);
+                    latteDTemplate.createFromTemplate(templatesDf, latteTemplatePrefix + EditorUtils.firstLetterSmall(actionName));
                 }
             }
 
