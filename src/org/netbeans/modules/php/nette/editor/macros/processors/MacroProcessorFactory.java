@@ -25,6 +25,7 @@ abstract public class MacroProcessorFactory {
 		specialMacros.add("control");
 		specialMacros.add("include");
 		specialMacros.add("extends");
+		specialMacros.add("cache");
 	};
 
 	private static final List<String> blockMacros = new ArrayList<String>();
