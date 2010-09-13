@@ -12,13 +12,13 @@ import org.openide.filesystems.FileObject;
 import org.openide.loaders.DataFolder;
 import org.openide.util.HelpCtx;
 
-public class NewPresenterWizardPanel1 implements WizardDescriptor.Panel {
+public class NewPresenterActionRenderWizardPanel implements WizardDescriptor.Panel {
 
     /**
      * The visual component that displays this panel. If you need to access the
      * component from this class, just use getComponent().
      */
-    private NewPresenterVisualPanel1 component;
+    private NewPresenterActionRenderVisualPanel component;
 
     // Get the visual component for the panel. In this template, the component
     // is kept separate. This can be more efficient: if the wizard is created
@@ -26,7 +26,7 @@ public class NewPresenterWizardPanel1 implements WizardDescriptor.Panel {
     // create only those which really need to be visible.
     public Component getComponent() {
         if (component == null) {
-            component = new NewPresenterVisualPanel1();
+            component = new NewPresenterActionRenderVisualPanel();
         }
         return component;
     }
@@ -85,15 +85,17 @@ public class NewPresenterWizardPanel1 implements WizardDescriptor.Panel {
         WizardDescriptor wd = (WizardDescriptor) settings;
 
         FileObject dir = Templates.getTargetFolder(wd);
-        DataFolder df = DataFolder.findFolder(dir);
+        //DataFolder df = DataFolder.findFolder(dir);
 
-        component.setTemplateDirectory(dir.getPath());
+        component.setTemplatesDirectory(dir.getPath());
     }
 
     public void storeSettings(Object settings) {
         WizardDescriptor wd = (WizardDescriptor) settings;
 
         wd.putProperty("actions", component.getActions());
+        wd.putProperty("templatesDirectory", component.getTemplatesDirectory());
+        wd.putProperty("dottedNotation", component.isDottedNotationSelected());
     }
 
 }
