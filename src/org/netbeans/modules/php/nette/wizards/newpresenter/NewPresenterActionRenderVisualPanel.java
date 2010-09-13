@@ -4,6 +4,7 @@
  */
 package org.netbeans.modules.php.nette.wizards.newpresenter;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -187,13 +188,7 @@ public final class NewPresenterActionRenderVisualPanel extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        if (isValidAction(actionNameText.getText())) {
-            tableModel.addRow(new Object[]{actionNameText.getText(), true, false, true});
-            actionNameText.setText("");
-            addButton.setEnabled(false);
-            hideWarning();
-            actionNameText.requestFocus();
-        }
+        addAction();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void actionNameTextCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_actionNameTextCaretUpdate
@@ -225,6 +220,16 @@ public final class NewPresenterActionRenderVisualPanel extends JPanel {
             templatesDirectoryTextField.setText(directoryChooser.getSelectedFile().toString());
         }
     }//GEN-LAST:event_browseButtonActionPerformed
+
+    private void addAction() {
+        if (isValidAction(actionNameText.getText())) {
+            tableModel.addRow(new Object[]{actionNameText.getText(), true, false, true});
+            actionNameText.setText("");
+            addButton.setEnabled(false);
+            hideWarning();
+            actionNameText.requestFocus();
+        }
+    }
 
     private boolean isValidAction(String action) {
         if (isValidActionFormat(action) && actionNotExists(action)) {
