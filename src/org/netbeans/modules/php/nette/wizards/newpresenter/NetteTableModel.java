@@ -31,4 +31,9 @@ public class NetteTableModel extends DefaultTableModel {
         return types[columnIndex];
     }
 
+    @Override
+    public boolean isCellEditable(int row, int col) {
+        return col == 0 ? false : true;
+    }
+
 }
