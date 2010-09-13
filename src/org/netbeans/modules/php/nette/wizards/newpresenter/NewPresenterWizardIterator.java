@@ -72,6 +72,19 @@ public final class NewPresenterWizardIterator implements WizardDescriptor.Instan
         return panels;
     }
 
+    private boolean isTemplateForGeneration() {
+        Object[] actions = (Object[]) wizard.getProperty("actions");
+        for (Object wholeAction : actions) {
+            HashMap<String, Object> action = (HashMap<String, Object>) wholeAction;
+
+            if ((Boolean) action.get("template")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public Set instantiate() throws IOException {
         FileObject dir = Templates.getTargetFolder(wizard);
         String targetName = Templates.getTargetName(wizard);
@@ -88,39 +101,41 @@ public final class NewPresenterWizardIterator implements WizardDescriptor.Instan
         DataObject dTemplate = DataObject.find(template);
         DataObject dobj = dTemplate.createFromTemplate(df, targetName, hashMap);
 
-        String presenterName = EditorUtils.firstLetterCapital(targetName.replace("Presenter", ""));
-        String templatesDirectory = (String) wizard.getProperty("templatesDirectory");
-        
-        File templatesDir = null;
-        String latteTemplatePrefix = null;
-        boolean dottedNotation = (Boolean) wizard.getProperty("dottedNotation");
-        if (dottedNotation) {
-            templatesDir = new File(templatesDirectory);
-            latteTemplatePrefix = presenterName + ".";
-        } else {
-            templatesDir = new File(templatesDirectory + "/" + presenterName);
-            templatesDir.mkdirs();
-            latteTemplatePrefix = "";
-        }
+        if (isTemplateForGeneration()) {
+            String presenterName = EditorUtils.firstLetterCapital(targetName.replace("Presenter", ""));
+            String templatesDirectory = (String) wizard.getProperty("templatesDirectory");
 
-        FileObject foTemplatesDir = FileUtil.toFileObject(templatesDir);
-        DataFolder templatesDf = DataFolder.findFolder(foTemplatesDir);
-
-        FileObject latteTemplate = FileUtil.getConfigFile("Templates/Nette Framework/LatteTemplate.phtml");
-        DataObject latteDTemplate = DataObject.find(latteTemplate);
-
-        for (Object wholeAction : actions) {
-            HashMap<String, Object> action = (HashMap<String, Object>) wholeAction;
-
-            boolean generateTemplate = (Boolean) action.get("template");
-
-            if (generateTemplate) {
-                String actionName = (String) action.get("name");
-                latteDTemplate.createFromTemplate(templatesDf, latteTemplatePrefix + actionName);
+            File templatesDir = null;
+            String latteTemplatePrefix = null;
+            boolean dottedNotation = (Boolean) wizard.getProperty("dottedNotation");
+            if (dottedNotation) {
+                templatesDir = new File(templatesDirectory);
+                latteTemplatePrefix = presenterName + ".";
+            } else {
+                templatesDir = new File(templatesDirectory + "/" + presenterName);
+                templatesDir.mkdirs();
+                latteTemplatePrefix = "";
             }
-        }
 
-        FileUtil.refreshAll();
+            FileObject foTemplatesDir = FileUtil.toFileObject(templatesDir);
+            DataFolder templatesDf = DataFolder.findFolder(foTemplatesDir);
+
+            FileObject latteTemplate = FileUtil.getConfigFile("Templates/Nette Framework/LatteTemplate.phtml");
+            DataObject latteDTemplate = DataObject.find(latteTemplate);
+
+            for (Object wholeAction : actions) {
+                HashMap<String, Object> action = (HashMap<String, Object>) wholeAction;
+
+                boolean generateTemplate = (Boolean) action.get("template");
+
+                if (generateTemplate) {
+                    String actionName = (String) action.get("name");
+                    latteDTemplate.createFromTemplate(templatesDf, latteTemplatePrefix + actionName);
+                }
+            }
+
+            FileUtil.refreshAll();
+        }
 
         FileObject createdFile = dobj.getPrimaryFile();
 
