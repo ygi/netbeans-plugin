@@ -77,7 +77,13 @@ public class BlockMacroProcessor extends MacroProcessor {
 			} else {
 				// for if, foreach, ... process as <?php macro(attr) { ?>
 				embedder.embed("<?php " + macro + "(");
+				if(macro.equals("ifcurrent")) {
+					embedder.embed("\"");
+				}
 				embedder.embed(start, length);
+				if(macro.equals("ifcurrent")) {
+					embedder.embed("\"");
+				}
 				embedder.embed(");{");
 				if (macro.equals("foreach")) {		// in case of foreach create $iterator variable
 					embedder.embed("$iterator=new SmartCachingIterator;");
