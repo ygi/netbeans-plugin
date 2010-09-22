@@ -133,33 +133,35 @@ public class LatteBracesMatching implements BracesMatcher {
             ts.move(searchOffset);
 
             if(!isEndMacro) {										// of not an end macro
-                boolean isPair = false;								// is not pair so far (check below)
-                LatteMacro mcr = MacroDefinitions.getMacro(macroName);
-				if(mcr != null) {
-					isPair = mcr.isPair();
-					pairMacroNames.add(mcr.getEndMacroName());
+				boolean isPair = false;								// is not pair so far (check below)
+				if(macroName != null) {
+					LatteMacro mcr = MacroDefinitions.getMacro(macroName);
+					if(mcr != null) {
+						isPair = mcr.isPair();
+						pairMacroNames.add(mcr.getEndMacroName());
+					}
+					for(String m : MacroDefinitions.friendMacros.keySet()) {			// checking for friend macro
+						for(LatteMacro f : MacroDefinitions.friendMacros.get(m)) {
+							if(f.getMacroName().equals(macroName) || m.equals(macroName)) {
+								if(!m.equals(macroName)) {
+									if(!friends.contains(m)) {
+										friends.add(m);
+									}
+								}
+								for(LatteMacro macro : MacroDefinitions.friendMacros.get(m)) {
+									if(!friends.contains(macro.getMacroName())) {
+										friends.add(macro.getMacroName());
+									}
+									if(!friends.contains(macro.getEndMacroName())) {
+										friends.add(macro.getEndMacroName());
+									}
+								}
+								isPair = true;			// isPair = has friends
+								break;
+							}
+						}
+					}
 				}
-                for(String m : MacroDefinitions.friendMacros.keySet()) {			// checking for friend macro
-                    for(LatteMacro f : MacroDefinitions.friendMacros.get(m)) {
-                        if(f.getMacroName().equals(macroName) || m.equals(macroName)) {
-                            if(!m.equals(macroName)) {
-                                if(!friends.contains(m)) {
-                                    friends.add(m);
-                                }
-                            }
-                            for(LatteMacro macro : MacroDefinitions.friendMacros.get(m)) {
-                                if(!friends.contains(macro.getMacroName())) {
-                                    friends.add(macro.getMacroName());
-                                }
-                                if(!friends.contains(macro.getEndMacroName())) {
-                                    friends.add(macro.getEndMacroName());
-                                }
-                            }
-                            isPair = true;			// isPair = has friends
-                            break;
-                        }
-                    }
-                }
                 if(!isPair) {
                     // it is not pair macro, return zero length offset = hack against matching error (red hi-light)
                     return new int[] { searchOffset, searchOffset };
