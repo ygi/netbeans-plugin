@@ -19,7 +19,7 @@
           <Component id="tabPanel" alignment="0" pref="743" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="registerInConstructor" min="-2" max="-2" attributes="0"/>
+              <Component id="registerInConstructorCheckBox" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="492" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
@@ -34,7 +34,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="tabPanel" min="-2" pref="162" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="registerInConstructor" min="-2" max="-2" attributes="0"/>
+              <Component id="registerInConstructorCheckBox" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="errorLabel" pref="16" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -67,10 +67,12 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="createValidSubmit" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="264" max="32767" attributes="0"/>
-                              <Component id="createInvalidSubmit" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="createValidSubmitCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="createInvalidSubmitCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="65" max="32767" attributes="0"/>
+                              <Component id="createClosuresCheckBox" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -79,10 +81,10 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="formClass" min="-2" pref="362" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="formClass" pref="508" max="32767" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="useAppForm" min="-2" max="-2" attributes="0"/>
+                                      <Component id="useAppFormCheckBox" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="formName" pref="614" max="32767" attributes="0"/>
                               </Group>
@@ -99,7 +101,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel3" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                           <Component id="formClass" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="useAppForm" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="useAppFormCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -108,8 +110,9 @@
                       </Group>
                       <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="createInvalidSubmit" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="createValidSubmit" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="createValidSubmitCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="createInvalidSubmitCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="createClosuresCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -124,11 +127,11 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="createValidSubmit">
+            <Component class="javax.swing.JCheckBox" name="createValidSubmitCheckBox">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.createValidSubmit.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.createValidSubmitCheckBox.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
@@ -140,10 +143,10 @@
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="createInvalidSubmit">
+            <Component class="javax.swing.JCheckBox" name="createInvalidSubmitCheckBox">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.createInvalidSubmit.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.createInvalidSubmitCheckBox.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
                 </Property>
               </Properties>
             </Component>
@@ -161,16 +164,23 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="useAppForm">
+            <Component class="javax.swing.JCheckBox" name="useAppFormCheckBox">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.useAppForm.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+                  <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.useAppFormCheckBox.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="useAppFormStateChanged"/>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="useAppFormCheckBoxStateChanged"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="createClosuresCheckBox">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.createClosuresCheckBox.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+                </Property>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -259,10 +269,10 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JCheckBox" name="registerInConstructor">
+    <Component class="javax.swing.JCheckBox" name="registerInConstructorCheckBox">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.registerInConstructor.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="org/netbeans/modules/php/nette/generators/Bundle.properties" key="CreateComponentGeneratorPanel.registerInConstructorCheckBox.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
