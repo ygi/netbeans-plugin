@@ -106,6 +106,8 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
             createDocumentRoot(projectDir);
             createApp(projectDir);
             createLibs(projectDir);
+            createTemp(projectDir);
+            createLog(projectDir);
 
             if (getPanel().isCopyNetteCheckboxSelected()) {
                 copyNetteFiles(projectDir);
