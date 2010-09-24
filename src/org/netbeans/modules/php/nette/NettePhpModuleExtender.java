@@ -147,6 +147,9 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
         //set.add(FileUtil.createFolder(new File(app.getPath() + "/sessions")));
         //set.add(FileUtil.createFolder(new File(app.getPath() + "/logs")));
         
+        set.add(FileUtil.createFolder(new File(app.getPath() + "/presenters")));
+        set.add(FileUtil.createFolder(new File(app.getPath() + "/templates")));
+        
         FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/bootstrap.php"), new File(d + NETTE_APP_DIR + "/bootstrap.php"));
 
         FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/.htaccess-APP"), new File(d + NETTE_APP_DIR + "/.htaccess"));
