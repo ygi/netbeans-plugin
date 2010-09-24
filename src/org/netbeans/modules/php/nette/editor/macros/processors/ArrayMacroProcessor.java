@@ -29,9 +29,11 @@ package org.netbeans.modules.php.nette.editor.macros.processors;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.text.Document;
 import org.netbeans.api.lexer.Token;
 import org.netbeans.api.lexer.TokenSequence;
 import org.netbeans.modules.php.nette.editor.Embedder;
+import org.netbeans.modules.php.nette.editor.hints.HintFactory;
 import org.netbeans.modules.php.nette.lexer.LatteTokenId;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 
@@ -49,7 +51,8 @@ public class ArrayMacroProcessor extends MacroProcessor {
 		byte state = -1;									// -1,0 - variable; 1,2 - value
 		int numOfBrackets = 0;								// counts nested brackets
 		String var = "";									// stores var name and var value
-		
+
+		boolean assign = false;								// was assign (=>) used? Since Nette 1.0 equals sign is recommended
 		do {
 			Token<LatteTokenId> t2 = sequence2.token();
 			if (isVariable(state)) {								// var name
@@ -60,6 +63,8 @@ public class ArrayMacroProcessor extends MacroProcessor {
 					var = "";
 				}
 				if (t2.id() == LatteTokenId.ASSIGN || t2.id() == LatteTokenId.EQUALS) { // assign|equal found (equal added in nette 1.0)
+					if(t2.id() == LatteTokenId.ASSIGN)
+						assign = true;
 					starts.add(var.trim().startsWith("$") ? start : -start);// not $ = negative position (see below)
 					lengths.add(length);
 					length = 0;
@@ -112,6 +117,11 @@ public class ArrayMacroProcessor extends MacroProcessor {
 			embedder.embed(";");
 		}
 		embedder.embed("?>");
+
+		if(assign) {
+			Document doc = embedder.getSnapshot().getSource().getDocument(false);
+			HintFactory.add(doc, HintFactory.VAR_ASSIGN_SYNTAX, sequence.offset(), sequence.token().length());
+		}
 	}
 
 	private boolean isVariable(byte state) {
