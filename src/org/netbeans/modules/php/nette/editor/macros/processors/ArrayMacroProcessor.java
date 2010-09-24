@@ -52,7 +52,10 @@ public class ArrayMacroProcessor extends MacroProcessor {
 		int numOfBrackets = 0;								// counts nested brackets
 		String var = "";									// stores var name and var value
 
-		boolean assign = false;								// was assign (=>) used? Since Nette 1.0 equals sign is recommended
+		if(macro.equals("assign")) {
+			createDeprecatedHint(embedder, sequence.offset() + 1, "assign".length()); // '{' INTETIONALLY WEIRD COMMENT
+		}
+
 		do {
 			Token<LatteTokenId> t2 = sequence2.token();
 			if (isVariable(state)) {								// var name
@@ -63,8 +66,9 @@ public class ArrayMacroProcessor extends MacroProcessor {
 					var = "";
 				}
 				if (t2.id() == LatteTokenId.ASSIGN || t2.id() == LatteTokenId.EQUALS) { // assign|equal found (equal added in nette 1.0)
-					if(t2.id() == LatteTokenId.ASSIGN)
-						assign = true;
+					if(t2.id() == LatteTokenId.ASSIGN) {
+						createSyntaxHint(embedder, sequence.offset(), sequence.token().length());
+					}
 					starts.add(var.trim().startsWith("$") ? start : -start);// not $ = negative position (see below)
 					lengths.add(length);
 					length = 0;
@@ -117,11 +121,6 @@ public class ArrayMacroProcessor extends MacroProcessor {
 			embedder.embed(";");
 		}
 		embedder.embed("?>");
-
-		if(assign) {
-			Document doc = embedder.getSnapshot().getSource().getDocument(false);
-			HintFactory.add(doc, HintFactory.VAR_ASSIGN_SYNTAX, sequence.offset(), sequence.token().length());
-		}
 	}
 
 	private boolean isVariable(byte state) {
@@ -130,6 +129,16 @@ public class ArrayMacroProcessor extends MacroProcessor {
 
 	private boolean isValue(byte state) {
 		return state == 1 || state == 2;
+	}
+
+	private void createSyntaxHint(Embedder embedder, int start, int length) {
+		Document doc = embedder.getSnapshot().getSource().getDocument(false);
+		HintFactory.add(doc, HintFactory.VAR_ASSIGN_SYNTAX, start, length);
+	}
+
+	private void createDeprecatedHint(Embedder embedder, int start, int length) {
+		Document doc = embedder.getSnapshot().getSource().getDocument(false);
+		HintFactory.add(doc, HintFactory.ASSIGN_MACRO_DEPRECATED, start, length);
 	}
 
 }

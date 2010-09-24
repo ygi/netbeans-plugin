@@ -27,9 +27,11 @@
 
 package org.netbeans.modules.php.nette.editor.macros.processors;
 
+import javax.swing.text.Document;
 import org.netbeans.api.lexer.Token;
 import org.netbeans.api.lexer.TokenSequence;
 import org.netbeans.modules.php.nette.editor.Embedder;
+import org.netbeans.modules.php.nette.editor.hints.HintFactory;
 import org.netbeans.modules.php.nette.lexer.LatteTokenId;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 
@@ -46,6 +48,11 @@ public class SpecialMacroProcessor extends  MacroProcessor {
 		int firstEnd = 0;
 		int whiteSpace = 0;
 		boolean toString = true;
+
+		if(macro.equals("widget")) {
+			createDepracatedHint(embedder, sequence.offset() + 1, "widget".length());
+		}
+
 		do {
 			Token<LatteTokenId> t2 = sequence2.token();
 			
@@ -95,6 +102,11 @@ public class SpecialMacroProcessor extends  MacroProcessor {
 		embedder.embed("; array( ");
 		embedder.embed(start, length);
 		embedder.embed(")?>");
+	}
+
+	private void createDepracatedHint(Embedder embedder, int start, int length) {
+		Document doc = embedder.getSnapshot().getSource().getDocument(false);
+		HintFactory.add(doc, HintFactory.WIDGET_MACRO_DEPRECATED, start, length);
 	}
 
 }

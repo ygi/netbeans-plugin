@@ -32,13 +32,21 @@ import javax.swing.text.Document;
  */
 public enum HintFactory {
 
-	VAR_ASSIGN_SYNTAX;
+	VAR_ASSIGN_SYNTAX,
+	ASSIGN_MACRO_DEPRECATED,
+	WIDGET_MACRO_DEPRECATED;
 
 	public static void add(Document doc, HintFactory name, int start, int length) {
 		AbstractHint error = null;
 		switch(name) {
 			case VAR_ASSIGN_SYNTAX:
 				error = new VarAssignSyntaxHint(doc, start, length);
+				break;
+			case ASSIGN_MACRO_DEPRECATED:
+				error = new AssignMacroDeprecatedHint(doc, start, length);
+				break;
+			case WIDGET_MACRO_DEPRECATED:
+				error = new WidgetMacroDeprecatedHint(doc, start, length);
 				break;
 		}
 		HintsCollector.getFor(doc).addErrorDescription(error.getErrorDescription());
