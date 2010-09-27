@@ -32,6 +32,7 @@ import org.netbeans.api.lexer.TokenSequence;
 import org.netbeans.modules.php.nette.editor.Embedder;
 import org.netbeans.modules.php.nette.lexer.LatteTokenId;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
+import org.netbeans.modules.php.nette.macros.MacroDefinitions;
 
 /**
  *
@@ -54,16 +55,22 @@ public class CommonMacroProcessor extends MacroProcessor {
 			length += t2.length();
 		} while (sequence2.moveNext());
 
-		if (!toString) {
-			// if there is a string literal or variable, do not add quotes
-			embedder.embed("<?php ");
-			embedder.embed(start, length);
-			embedder.embed(" ?>");
-		} else {
-			// otherwise encasulate parametr with double quotes
-			embedder.embed("<?php \"");
-			embedder.embed(start, length);
-			embedder.embed("\"?>");
+		boolean ok = false;
+		if(!endMacro && macro != null && MacroDefinitions.getMacro(macro) != null) {
+			ok = true;
+		}
+		if(ok) {
+			if (!toString) {
+				// if there is a string literal or variable, do not add quotes
+				embedder.embed("<?php ");
+				embedder.embed(start, length);
+				embedder.embed(" ?>");
+			} else {
+				// otherwise encasulate parametr with double quotes
+				embedder.embed("<?php \"");
+				embedder.embed(start, length);
+				embedder.embed("\"?>");
+			}
 		}
 	}
 
