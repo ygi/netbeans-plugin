@@ -71,6 +71,7 @@ class VarAssignSyntaxHint extends AbstractHint {
 
 		public ChangeInfo implement() throws Exception {
 			String text = doc.getText(start, length);
+			//fixme
 			final String replaced = text.replaceAll("(\\$?[a-zA-Z0-9_]+ *=)(\\>)", "$1");
 			
 			final BaseDocument bdoc = (BaseDocument) doc;
