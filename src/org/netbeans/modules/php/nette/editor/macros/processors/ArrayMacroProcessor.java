@@ -59,7 +59,7 @@ public class ArrayMacroProcessor extends MacroProcessor {
 					length = 0;
 					var = "";
 				}
-				if (t2.id() == LatteTokenId.ASSIGN) {						// assign seq found
+				if (t2.id() == LatteTokenId.ASSIGN || t2.id() == LatteTokenId.EQUALS) { // assign|equal found (equal added in nette 1.0)
 					starts.add(var.trim().startsWith("$") ? start : -start);// not $ = negative position (see below)
 					lengths.add(length);
 					length = 0;

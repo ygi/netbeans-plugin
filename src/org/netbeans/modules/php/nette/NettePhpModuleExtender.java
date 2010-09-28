@@ -55,6 +55,10 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
 
     private static final String NETTE_APP_DIR = "/app";
 
+    private static final String NETTE_TEMP_DIR = "/temp";
+
+    private static final String NETTE_LOG_DIR = "/log";
+
     private NewNetteProjectPanel netteProjectPanel;
 
     @Override
@@ -102,6 +106,8 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
             createDocumentRoot(projectDir);
             createApp(projectDir);
             createLibs(projectDir);
+            createTemp(projectDir);
+            createLog(projectDir);
 
             if (getPanel().isCopyNetteCheckboxSelected()) {
                 copyNetteFiles(projectDir);
@@ -137,9 +143,12 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
         //make user choose what names
         //set.add(FileUtil.createFolder(new File(doc_root.getPath() + "/FrontModule")));
         
-        set.add(FileUtil.createFolder(new File(app.getPath() + "/temp")));
-        set.add(FileUtil.createFolder(new File(app.getPath() + "/sessions")));
-        set.add(FileUtil.createFolder(new File(app.getPath() + "/logs")));
+        //set.add(FileUtil.createFolder(new File(app.getPath() + "/temp")));
+        //set.add(FileUtil.createFolder(new File(app.getPath() + "/sessions")));
+        //set.add(FileUtil.createFolder(new File(app.getPath() + "/logs")));
+        
+        set.add(FileUtil.createFolder(new File(app.getPath() + "/presenters")));
+        set.add(FileUtil.createFolder(new File(app.getPath() + "/templates")));
         
         FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/bootstrap.php"), new File(d + NETTE_APP_DIR + "/bootstrap.php"));
 
@@ -150,6 +159,18 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
 
     private void createLibs(String d) throws IOException {
         File folder = new File(d + NETTE_LIBS_DIR);
+        FileObject app = FileUtil.createFolder(folder);
+        set.add(app);
+    }
+
+    private void createTemp(String d) throws IOException {
+        File folder = new File(d + NETTE_TEMP_DIR);
+        FileObject app = FileUtil.createFolder(folder);
+        set.add(app);
+    }
+
+    private void createLog(String d) throws IOException {
+        File folder = new File(d + NETTE_LOG_DIR);
         FileObject app = FileUtil.createFolder(folder);
         set.add(app);
     }
