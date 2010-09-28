@@ -47,9 +47,15 @@ import org.openide.NotifyDescriptor;
  */
 public class CreateComponentGenerator implements CodeGenerator {
 
-	JTextComponent textComp;
+	private JTextComponent textComp;
 
-	CreateComponentGeneratorPanel panel;
+	private CreateComponentGeneratorPanel panel;
+
+    private String smallComponentName;
+
+    private String capitalizedComponentName;
+    
+    private String componentClass;
 
 	/**
 	 *
@@ -100,21 +106,34 @@ public class CreateComponentGenerator implements CodeGenerator {
 	 * @return
 	 */
 	private String generateComponentFactoryCode(String componentName, String componentClass) {
-		String smallComponentName = EditorUtils.firstLetterSmall(componentName);
-		String capitalizedComponentName = EditorUtils.firstLetterCapital(componentName);
+		smallComponentName = EditorUtils.firstLetterSmall(componentName);
+		capitalizedComponentName = EditorUtils.firstLetterCapital(componentName);
+        this.componentClass = componentClass;
 
 		return "protected function createComponent" + capitalizedComponentName + "(" + (panel.isRegisterInConstructor() ? "$name" : "") + ") {"
 				+ "$" + smallComponentName + " = new " + componentClass + "(" + (panel.isRegisterInConstructor() ? "$this, $name" : "") + ");"
 				+ "\n"
 				+ "\n"
 				+ "\n"
-				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "$" + smallComponentName + "->onSubmit[] = callback($this, 'validSubmit" + capitalizedComponentName + "');" : "")
-				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "$" + smallComponentName + "->onInvalidSubmit[] = callback($this, 'invalidSubmit" + capitalizedComponentName + "');" : "")
-				+ (!panel.isRegisterInConstructor() ? "return $" + smallComponentName + ";" : "")
+				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "$" + smallComponentName + "->onSubmit[] = " + createValidSubmitCallback() : "")
+				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "$" + smallComponentName + "->onInvalidSubmit[] = " + createInvalidSubmitCallback() : "")
+				+ (!panel.isRegisterInConstructor() ? "\n\nreturn $" + smallComponentName + ";" : "")
 				+ "}"
-				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() ? "public function validSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\t\t\n\t}" : "")
-				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "public function invalidSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\t\t\n\t}" : "");
+				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() && !panel.isCreateClosures() ? "public function validSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\n}" : "")
+				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() && !panel.isCreateClosures() ? "public function invalidSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\n}" : "");
 	}
+
+    private String createClosureCallback() {
+        return "function(" + componentClass + " $" + smallComponentName + ") {\n\n};";
+    }
+
+    private String createValidSubmitCallback() {
+        return panel.isCreateClosures() ? createClosureCallback() : "callback($this, 'validSubmit" + capitalizedComponentName + "');";
+    }
+
+    private String createInvalidSubmitCallback() {
+        return panel.isCreateClosures() ? createClosureCallback() : "callback($this, 'invalidSubmit" + capitalizedComponentName + "');";
+    }
 
 	/**
 	 * Shows dialog for generating component factory code.
