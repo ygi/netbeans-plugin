@@ -296,6 +296,10 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 		return createValidSubmitCheckBox.isSelected();
 	}
 
+    public boolean isCreateClosures() {
+        return createClosuresCheckBox.isSelected();
+    }
+
 	public boolean isRegisterInConstructor() {
 		return registerInConstructorCheckBox.isSelected();
 	}
