@@ -16,18 +16,18 @@ class ${name} <#if parentPresenter != "">extends ${parentPresenter} </#if>{
 		parent::startup();
 	}
     <#list actions as action>
-        <#if action.action>
+    <#if action.action>
 
-        public function action${action.name?cap_first}() {
+	public function action${action.name?cap_first}() {
 
-        }
-        </#if>
-        <#if action.render>
+	}
+    </#if>
+    <#if action.render>
 
-        public function render${action.name?cap_first}() {
+	public function render${action.name?cap_first}() {
 
-        }
-        </#if>
+	}
+    </#if>
     </#list>
         
 }
