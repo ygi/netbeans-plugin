@@ -274,7 +274,7 @@ class LatteLexer implements Lexer<LatteTokenId> {
 						if(Character.isLetter(ch) || ch == '_') {	// any text
 							while(true) {
 								ch = input.read();
-								if(!Character.isLetterOrDigit(ch) && ch != '_') {
+								if(!Character.isLetterOrDigit(ch) && ch != '_' && ch != '.' && ch != ':') {
 									input.backup(1);
 									if(state == State.AFTER_LD) {	// after left delim, so it is a macro name!
 										state = State.AFTER_MACRO;
