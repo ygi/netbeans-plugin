@@ -70,18 +70,19 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
         tabPanel = new javax.swing.JTabbedPane();
         formPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        createValidSubmit = new javax.swing.JCheckBox();
+        createValidSubmitCheckBox = new javax.swing.JCheckBox();
         formClass = new javax.swing.JTextField();
-        createInvalidSubmit = new javax.swing.JCheckBox();
+        createInvalidSubmitCheckBox = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
         formName = new javax.swing.JTextField();
-        useAppForm = new javax.swing.JCheckBox();
+        useAppFormCheckBox = new javax.swing.JCheckBox();
+        createClosuresCheckBox = new javax.swing.JCheckBox();
         componentPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         componentName = new javax.swing.JTextField();
         componentClass = new javax.swing.JTextField();
-        registerInConstructor = new javax.swing.JCheckBox();
+        registerInConstructorCheckBox = new javax.swing.JCheckBox();
         errorLabel = new javax.swing.JLabel();
 
         tabPanel.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -92,25 +93,27 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 
         jLabel3.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jLabel3.text")); // NOI18N
 
-        createValidSubmit.setSelected(true);
-        createValidSubmit.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.createValidSubmit.text")); // NOI18N
+        createValidSubmitCheckBox.setSelected(true);
+        createValidSubmitCheckBox.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.createValidSubmitCheckBox.text")); // NOI18N
 
         formClass.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.formClass.text")); // NOI18N
         formClass.setEnabled(false);
 
-        createInvalidSubmit.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.createInvalidSubmit.text")); // NOI18N
+        createInvalidSubmitCheckBox.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.createInvalidSubmitCheckBox.text")); // NOI18N
 
         jLabel4.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.jLabel4.text")); // NOI18N
 
         formName.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.formName.text")); // NOI18N
 
-        useAppForm.setSelected(true);
-        useAppForm.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.useAppForm.text")); // NOI18N
-        useAppForm.addChangeListener(new javax.swing.event.ChangeListener() {
+        useAppFormCheckBox.setSelected(true);
+        useAppFormCheckBox.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.useAppFormCheckBox.text")); // NOI18N
+        useAppFormCheckBox.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                useAppFormStateChanged(evt);
+                useAppFormCheckBoxStateChanged(evt);
             }
         });
+
+        createClosuresCheckBox.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.createClosuresCheckBox.text")); // NOI18N
 
         javax.swing.GroupLayout formPanelLayout = new javax.swing.GroupLayout(formPanel);
         formPanel.setLayout(formPanelLayout);
@@ -119,20 +122,22 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
             .addGroup(formPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, formPanelLayout.createSequentialGroup()
-                        .addComponent(createValidSubmit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
-                        .addComponent(createInvalidSubmit))
+                    .addGroup(formPanelLayout.createSequentialGroup()
+                        .addComponent(createValidSubmitCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(createInvalidSubmitCheckBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                        .addComponent(createClosuresCheckBox))
                     .addGroup(formPanelLayout.createSequentialGroup()
                         .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(formPanelLayout.createSequentialGroup()
-                                .addComponent(formClass, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, formPanelLayout.createSequentialGroup()
+                                .addComponent(formClass, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(useAppForm))
+                                .addComponent(useAppFormCheckBox))
                             .addComponent(formName, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE))))
                 .addContainerGap())
         );
@@ -143,15 +148,16 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
                 .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(formClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(useAppForm))
+                    .addComponent(useAppFormCheckBox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(formName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(createInvalidSubmit)
-                    .addComponent(createValidSubmit))
+                    .addComponent(createValidSubmitCheckBox)
+                    .addComponent(createInvalidSubmitCheckBox)
+                    .addComponent(createClosuresCheckBox))
                 .addContainerGap())
         );
 
@@ -198,7 +204,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 
         tabPanel.addTab(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.componentPanel.TabConstraints.tabTitle"), componentPanel); // NOI18N
 
-        registerInConstructor.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.registerInConstructor.text")); // NOI18N
+        registerInConstructorCheckBox.setText(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.registerInConstructorCheckBox.text")); // NOI18N
 
         errorLabel.setForeground(javax.swing.UIManager.getDefaults().getColor("nb.errorForeground"));
         errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -211,7 +217,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
             .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(registerInConstructor)
+                .addComponent(registerInConstructorCheckBox)
                 .addContainerGap(492, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -223,7 +229,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
             .addGroup(layout.createSequentialGroup()
                 .addComponent(tabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(registerInConstructor)
+                .addComponent(registerInConstructorCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
                 .addContainerGap())
@@ -232,12 +238,12 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
         errorLabel.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(CreateComponentGeneratorPanel.class, "CreateComponentGeneratorPanel.warning.AccessibleContext.accessibleName")); // NOI18N
     }// </editor-fold>//GEN-END:initComponents
 
-	private void useAppFormStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_useAppFormStateChanged
-		formClass.setEnabled(!useAppForm.isSelected());
-		if (useAppForm.isSelected()) {
+	private void useAppFormCheckBoxStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_useAppFormCheckBoxStateChanged
+		formClass.setEnabled(!useAppFormCheckBox.isSelected());
+		if (useAppFormCheckBox.isSelected()) {
 			formClass.setText("AppForm");
 		}
-	}//GEN-LAST:event_useAppFormStateChanged
+	}//GEN-LAST:event_useAppFormCheckBoxStateChanged
 
 	private void tabPanelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabPanelStateChanged
 		if (dd != null) {
@@ -250,8 +256,9 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
     private javax.swing.JTextField componentClass;
     private javax.swing.JTextField componentName;
     private javax.swing.JPanel componentPanel;
-    private javax.swing.JCheckBox createInvalidSubmit;
-    private javax.swing.JCheckBox createValidSubmit;
+    private javax.swing.JCheckBox createClosuresCheckBox;
+    private javax.swing.JCheckBox createInvalidSubmitCheckBox;
+    private javax.swing.JCheckBox createValidSubmitCheckBox;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JTextField formClass;
     private javax.swing.JTextField formName;
@@ -260,9 +267,9 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JCheckBox registerInConstructor;
+    private javax.swing.JCheckBox registerInConstructorCheckBox;
     private javax.swing.JTabbedPane tabPanel;
-    private javax.swing.JCheckBox useAppForm;
+    private javax.swing.JCheckBox useAppFormCheckBox;
     // End of variables declaration//GEN-END:variables
 
 	public String getComponentName() {
@@ -282,15 +289,19 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 	}
 
 	public boolean isCreateInvalidSubmit() {
-		return createInvalidSubmit.isSelected();
+		return createInvalidSubmitCheckBox.isSelected();
 	}
 
 	public boolean isCreateValidSubmit() {
-		return createValidSubmit.isSelected();
+		return createValidSubmitCheckBox.isSelected();
 	}
 
+    public boolean isCreateClosures() {
+        return createClosuresCheckBox.isSelected();
+    }
+
 	public boolean isRegisterInConstructor() {
-		return registerInConstructor.isSelected();
+		return registerInConstructorCheckBox.isSelected();
 	}
 
 	public boolean isFormTabSelected() {
