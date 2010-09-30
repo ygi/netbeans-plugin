@@ -37,14 +37,14 @@ import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import org.openide.util.Exceptions;
 
-public final class NewPresenterActionRenderVisualPanel extends JPanel {
+public final class ActionRenderVisualPanel extends JPanel {
 
     private DefaultTableModel tableModel = new NetteTableModel();
 
     private ImageIcon warningIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/warning_icon.png"));
 
     /** Creates new form NewPresenterVisualPanel1 */
-    public NewPresenterActionRenderVisualPanel() {
+    public ActionRenderVisualPanel() {
         initComponents();
 
         warningLabel.setText("");
@@ -83,18 +83,18 @@ public final class NewPresenterActionRenderVisualPanel extends JPanel {
 
         directoryChooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.jLabel1.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.jLabel1.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.jLabel2.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.jLabel2.text")); // NOI18N
 
-        actionNameText.setText(org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.actionNameText.text")); // NOI18N
+        actionNameText.setText(org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.actionNameText.text")); // NOI18N
         actionNameText.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 actionNameTextCaretUpdate(evt);
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(addButton, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.addButton.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(addButton, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.addButton.text")); // NOI18N
         addButton.setEnabled(false);
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,32 +106,32 @@ public final class NewPresenterActionRenderVisualPanel extends JPanel {
         actionTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(actionTable);
 
-        org.openide.awt.Mnemonics.setLocalizedText(deleteButton, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.deleteButton.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(deleteButton, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.deleteButton.text")); // NOI18N
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(warningLabel, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.warningLabel.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(warningLabel, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.warningLabel.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.jLabel3.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.jLabel3.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel4, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.jLabel4.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel4, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.jLabel4.text")); // NOI18N
 
         templatesDirectoryTextField.setEditable(false);
-        templatesDirectoryTextField.setText(org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.templatesDirectoryTextField.text")); // NOI18N
+        templatesDirectoryTextField.setText(org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.templatesDirectoryTextField.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(browseButton, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.browseButton.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(browseButton, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.browseButton.text")); // NOI18N
         browseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 browseButtonActionPerformed(evt);
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel5, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.jLabel5.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel5, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.jLabel5.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(dottedNotationCheckBox, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.dottedNotationCheckBox.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(dottedNotationCheckBox, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.dottedNotationCheckBox.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

@@ -28,23 +28,19 @@
 package org.netbeans.modules.php.nette.wizards.newpresenter;
 
 import java.awt.Component;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.netbeans.spi.project.ui.templates.support.Templates;
 import org.openide.WizardDescriptor;
+import org.openide.filesystems.FileObject;
 import org.openide.util.HelpCtx;
 
-public class NewPresenterParentPresenterWizardPanel implements WizardDescriptor.Panel {
+public class ActionRenderWizardPanel implements WizardDescriptor.Panel {
 
     /**
      * The visual component that displays this panel. If you need to access the
      * component from this class, just use getComponent().
      */
-    private NewPresenterParentPresenterVisualPanel component;
-
-    private boolean isValid = true;
+    private ActionRenderVisualPanel component;
 
     // Get the visual component for the panel. In this template, the component
     // is kept separate. This can be more efficient: if the wizard is created
@@ -52,7 +48,7 @@ public class NewPresenterParentPresenterWizardPanel implements WizardDescriptor.
     // create only those which really need to be visible.
     public Component getComponent() {
         if (component == null) {
-            component = new NewPresenterParentPresenterVisualPanel(this);
+            component = new ActionRenderVisualPanel();
         }
         return component;
     }
@@ -61,27 +57,25 @@ public class NewPresenterParentPresenterWizardPanel implements WizardDescriptor.
         // Show no Help button for this panel:
         return HelpCtx.DEFAULT_HELP;
         // If you have context help:
-        // return new HelpCtx(SampleWizardPanel2.class);
+        // return new HelpCtx(SampleWizardPanel1.class);
     }
 
     public boolean isValid() {
         // If it is always OK to press Next or Finish, then:
-        // return true;
+         return true;
         // If it depends on some condition (form filled out...), then:
         //return validate();
         // and when this condition changes (last form field filled in...) then:
-        //fireChangeEvent();
+        // fireChangeEvent();
         // and uncomment the complicated stuff below.
-        validate();
-        return isValid;
     }
-    /*
+
     public final void addChangeListener(ChangeListener l) {
     }
 
     public final void removeChangeListener(ChangeListener l) {
     }
-    */
+    /*
     private final Set<ChangeListener> listeners = new HashSet<ChangeListener>(1); // or can use ChangeSupport in NB 6.0
     public final void addChangeListener(ChangeListener l) {
     synchronized (listeners) {
@@ -103,28 +97,27 @@ public class NewPresenterParentPresenterWizardPanel implements WizardDescriptor.
     it.next().stateChanged(ev);
     }
     }
-    
+     */
 
     // You can use a settings object to keep track of state. Normally the
     // settings object will be the WizardDescriptor, so you can use
     // WizardDescriptor.getProperty & putProperty to store information entered
     // by the user.
     public void readSettings(Object settings) {
+        WizardDescriptor wd = (WizardDescriptor) settings;
 
+        FileObject dir = Templates.getTargetFolder(wd);
+        //DataFolder df = DataFolder.findFolder(dir);
+
+        component.setTemplatesDirectory(dir.getPath());
     }
 
     public void storeSettings(Object settings) {
         WizardDescriptor wd = (WizardDescriptor) settings;
 
-        wd.putProperty("parentPresenter", component.getParentPresenter());
-    }
-
-    public void validate() {
-        if (!component.validateParentPresenter()) {
-            isValid = false;
-        } else {
-            isValid = true;
-        }
+        wd.putProperty("actions", component.getActions());
+        wd.putProperty("templatesDirectory", component.getTemplatesDirectory());
+        wd.putProperty("dottedNotation", component.isDottedNotationSelected());
     }
 
 }

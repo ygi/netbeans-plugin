@@ -47,7 +47,7 @@ import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataFolder;
 import org.openide.loaders.DataObject;
 
-public final class NewPresenterWizardIterator implements WizardDescriptor.InstantiatingIterator {
+public final class WizardIterator implements WizardDescriptor.InstantiatingIterator {
 
     private int index;
     private WizardDescriptor wizard;
@@ -64,8 +64,8 @@ public final class NewPresenterWizardIterator implements WizardDescriptor.Instan
 
         if (panels == null) {
             panels = new WizardDescriptor.Panel[]{
-                        Templates.buildSimpleTargetChooser(project, groups).bottomPanel(new NewPresenterParentPresenterWizardPanel()).create(),
-                        new NewPresenterActionRenderWizardPanel(),
+                        Templates.buildSimpleTargetChooser(project, groups).bottomPanel(new ParentPresenterWizardPanel()).create(),
+                        new ActionRenderWizardPanel(),
                     };
             String[] steps = createSteps();
             for (int i = 0; i < panels.length; i++) {
