@@ -72,6 +72,9 @@ public class MacroDefinitions {
         new LatteMacro("debugbreak", false),
         new LatteMacro("l", false),
         new LatteMacro("r", false),
+        new LatteMacro("first", true),
+        new LatteMacro("last", true),
+        new LatteMacro("sep", true),
     };
 
 	/**
@@ -92,6 +95,11 @@ public class MacroDefinitions {
             new LatteMacro("else"),
             new LatteParamMacro("elseif", false)
         });
+        /*friendMacros.put("foreach", new LatteMacro[] {
+            new LatteMacro("first", true),
+            new LatteMacro("last", true),
+            new LatteMacro("sep", true)
+        });*/
     };
 
 	/**
