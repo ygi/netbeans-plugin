@@ -41,10 +41,18 @@ public class SignMacroProcessor extends MacroProcessor {
 
 	@Override
 	public void process(TokenSequence<LatteTopTokenId> sequence, TokenSequence<LatteTokenId> sequence2, int start, String macro, boolean endMacro, Embedder embedder) {
+		boolean pipe = false;
 		do {
 			Token<LatteTokenId> t2 = sequence2.token();
 
 			if(t2.id() == LatteTokenId.RD) {
+				break;
+			}
+			if(t2.id() == LatteTokenId.PIPE) {
+				pipe = !pipe;
+			} else if(pipe) {
+				pipe = false;
+				length--;
 				break;
 			}
 
@@ -52,7 +60,7 @@ public class SignMacroProcessor extends MacroProcessor {
 		} while (sequence2.moveNext());
 
 		if (isOutputMacro(macro)) {
-			embedder.embed("<?php echo");
+			embedder.embed("<?php echo ");
 			embedder.embed(start, length);
 			embedder.embed(" ?>");
 		} else {
