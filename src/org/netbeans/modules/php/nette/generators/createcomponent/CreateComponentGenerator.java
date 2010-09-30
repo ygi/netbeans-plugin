@@ -25,7 +25,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.netbeans.modules.php.nette.generators;
+package org.netbeans.modules.php.nette.generators.createcomponent;
 
 import java.util.Collections;
 import java.util.List;

@@ -31,7 +31,7 @@
  * Created on 18.6.2010, 20:04:41
  */
 
-package org.netbeans.modules.php.nette.generators;
+package org.netbeans.modules.php.nette.generators.createcomponent;
 
 import javax.swing.ImageIcon;
 import javax.swing.event.DocumentEvent;
