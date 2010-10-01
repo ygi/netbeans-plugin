@@ -27,16 +27,18 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.text.JTextComponent;
-import org.netbeans.modules.parsing.api.Source;
+import org.netbeans.modules.php.nette.utils.FileUtils;
 import org.netbeans.modules.php.nette.wizards.newpresenter.ActionRenderVisualPanel;
-import org.netbeans.modules.php.nette.wizards.newpresenter.ActionTemplatesGenerator;
 import org.netbeans.spi.editor.codegen.CodeGenerator;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
-import org.openide.filesystems.FileUtil;
 import org.openide.util.Lookup;
 
+/**
+ * 
+ * @author Ondřej Brejla <ondrej@brejla.cz>
+ */
 public class ActionRenderCodeGenerator implements CodeGenerator {
 
 	JTextComponent textComp;
@@ -71,14 +73,24 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	 */
 	public void invoke() {
 		if (processDialog()) {
-			ActionTemplatesGenerator atg = new ActionTemplatesGenerator();
-			atg.generate(panel.getActions(), getPresenterFile().getName(), panel.getTemplatesDirectory(), panel.isDottedNotationSelected());
+			ActionRenderMethodsGenerator armg = new ActionRenderMethodsGenerator();
+			armg.generate(panel.getActions(), textComp);
+
+			ActionRenderTemplatesGenerator artg = new ActionRenderTemplatesGenerator();
+			artg.generate(panel.getActions(), getPresenterFile().getName(), panel.getTemplatesDirectory(), panel.isDottedNotationSelected());
 		}
 	}
 
+	/**
+	 * Processes dialog for adding action and/or render methods.
+	 *
+	 * @return
+	 */
 	private boolean processDialog() {
-		panel = new ActionRenderVisualPanel();
+		ActionRenderMethodChecker methodChecker = new ActionRenderMethodChecker(getPresenterFile());
+		panel = new ActionRenderVisualPanel(new ActionRenderCodeGeneratorTableModel(methodChecker));
 
+		panel.setMethodChecker(methodChecker);
 		panel.setPresentersDirectory(getPresenterDir());
 
 		DialogDescriptor dd = new DialogDescriptor(panel, "Add action and/or render method...", true, DialogDescriptor.OK_CANCEL_OPTION, DialogDescriptor.OK_OPTION, null);
@@ -92,10 +104,13 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 		}
 	}
 
+	/**
+	 * Returns presenter file.
+	 *
+	 * @return
+	 */
 	private File getPresenterFile() {
-		Source source = Source.create(textComp.getDocument());
-		
-		return FileUtil.toFile(source.getFileObject());
+		return FileUtils.getFile(textComp);
 	}
 
 	/**
