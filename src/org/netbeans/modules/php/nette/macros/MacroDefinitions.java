@@ -49,7 +49,7 @@ public class MacroDefinitions {
         new LatteParamMacro("plink", false),
         new LatteParamMacro("if", true),
         new LatteParamMacro("ifset", true, "if"),
-        new LatteParamMacro("ifcurrent", true, "if"),
+        new LatteParamMacro("ifCurrent", true, "if"),
         new LatteParamMacro("for", true),
         new LatteParamMacro("foreach", true),
         new LatteParamMacro("while", true),
