@@ -33,14 +33,18 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Ondřej Brejla <ondrej@brejla.cz>
  */
-public class NetteTableModel extends DefaultTableModel {
+public class ActionRenderTableModel extends DefaultTableModel {
 
     private Class[] types = new Class [] {
         String.class, Boolean.class, Boolean.class, Boolean.class
     };
 
-    public NetteTableModel() {
-        super(
+	public ActionRenderTableModel(Object[][] data, Object[] columnNames) {
+		super(data, columnNames);
+	}
+
+    public ActionRenderTableModel() {
+        this(
             new Object [][] {
                 {"default", true, true, true}
             },
