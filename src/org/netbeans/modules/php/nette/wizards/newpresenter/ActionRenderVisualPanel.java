@@ -37,6 +37,11 @@ import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import org.openide.util.Exceptions;
 
+/**
+ * Panel for adding action and/or render methods and for generating their templates.
+ * 
+ * @author Ondřej Brejla <ondrej@brejla.cz>
+ */
 public final class ActionRenderVisualPanel extends JPanel {
 
     private DefaultTableModel tableModel = new NetteTableModel();
@@ -243,6 +248,9 @@ public final class ActionRenderVisualPanel extends JPanel {
         }
     }//GEN-LAST:event_browseButtonActionPerformed
 
+	/**
+	 * Adds action into the table.
+	 */
     private void addAction() {
         if (isValidAction(actionNameText.getText())) {
             tableModel.addRow(new Object[]{actionNameText.getText(), true, false, true});
@@ -253,6 +261,12 @@ public final class ActionRenderVisualPanel extends JPanel {
         }
     }
 
+	/**
+	 * Checks if passed action is valid.
+	 *
+	 * @param action
+	 * @return
+	 */
     private boolean isValidAction(String action) {
         if (isValidActionFormat(action) && actionNotExists(action)) {
             hideWarning();
@@ -263,6 +277,12 @@ public final class ActionRenderVisualPanel extends JPanel {
         return false;
     }
 
+	/**
+	 * Checks if passed action has a valid format.
+	 *
+	 * @param action
+	 * @return
+	 */
     private boolean isValidActionFormat(String action) {
         if (action.trim().matches("^[a-zA-Z0-9][a-zA-Z0-9_]*$")) {
             return true;
@@ -273,6 +293,12 @@ public final class ActionRenderVisualPanel extends JPanel {
         return false;
     }
 
+	/**
+	 * Checks if passed action does not exists.
+	 *
+	 * @param newAction
+	 * @return
+	 */
     private boolean actionNotExists(String newAction) {
         String oldAction = null;
         for (int i = 0; i < tableModel.getRowCount(); i++) {
@@ -287,16 +313,29 @@ public final class ActionRenderVisualPanel extends JPanel {
         return true;
     }
 
+	/**
+	 * Shows warning message.
+	 *
+	 * @param warning
+	 */
     private void showWarning(String warning) {
         warningLabel.setIcon(warningIcon);
         warningLabel.setText(warning);
     }
 
+	/**
+	 * Hides warning message.
+	 */
     private void hideWarning() {
         warningLabel.setIcon(null);
         warningLabel.setText("");
     }
 
+	/**
+	 * Returns all actions which shoud be created.
+	 *
+	 * @return
+	 */
     public Object[] getActions() {
         Object[] actions = new Object[tableModel.getRowCount()];
 
@@ -314,6 +353,11 @@ public final class ActionRenderVisualPanel extends JPanel {
         return actions;
     }
 
+	/**
+	 * Sets presenter directory -> transformed into template directory.
+	 *
+	 * @param presentersDir
+	 */
     public void setTemplatesDirectory(String presentersDir) {
         File f = new File(presentersDir + "/../templates");
 
@@ -331,10 +375,20 @@ public final class ActionRenderVisualPanel extends JPanel {
         directoryChooser.setCurrentDirectory(f);
     }
 
+	/**
+	 * Returns template directory.
+	 *
+	 * @return
+	 */
     public String getTemplatesDirectory() {
         return templatesDirectoryTextField.getText();
     }
 
+	/**
+	 * Returns true if 'the dotted notation' shoud be used.
+	 *
+	 * @return
+	 */
     public boolean isDottedNotationSelected() {
         return dottedNotationCheckBox.isSelected();
     }
