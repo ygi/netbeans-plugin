@@ -109,7 +109,7 @@ public class ActionRenderWizardPanel implements WizardDescriptor.Panel {
         FileObject dir = Templates.getTargetFolder(wd);
         //DataFolder df = DataFolder.findFolder(dir);
 
-        component.setTemplatesDirectory(dir.getPath());
+        component.setPresentersDirectory(dir.getPath());
     }
 
     public void storeSettings(Object settings) {

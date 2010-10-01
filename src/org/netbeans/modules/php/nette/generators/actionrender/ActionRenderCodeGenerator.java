@@ -75,7 +75,7 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	private boolean processDialog() {
 		panel = new ActionRenderVisualPanel();
 
-		panel.setTemplatesDirectory(getPresenterDir());
+		panel.setPresentersDirectory(getPresenterDir());
 
 		DialogDescriptor dd = new DialogDescriptor(panel, "Add action and/or render method...", true, DialogDescriptor.OK_CANCEL_OPTION, DialogDescriptor.OK_OPTION, null);
 
