@@ -91,7 +91,7 @@ public class MacroDefinitions {
             new LatteParamMacro("elseif", false),
             new LatteParamMacro("elseifset", false)
         });
-        friendMacros.put("ifcurrent", new LatteMacro[] {
+        friendMacros.put("ifCurrent", new LatteMacro[] {
             new LatteMacro("else"),
             new LatteParamMacro("elseif", false)
         });
@@ -143,7 +143,6 @@ public class MacroDefinitions {
 	 * @return
 	 */
     public static LatteMacro getMacro(String name) {
-		name = name.toLowerCase();
         for(LatteMacro m : macros) {
             if(m.getMacroName().equals(name)) {
                 return m;
@@ -158,7 +157,6 @@ public class MacroDefinitions {
 	 * @return
 	 */
     public static List<LatteMacro> getMacrosByEnd(String name) {
-		name = name.toLowerCase();
         List<LatteMacro> list = new ArrayList<LatteMacro>();
         for(LatteMacro m : macros) {
             if(m.isPair && m.getEndMacroName().equals(name)) {

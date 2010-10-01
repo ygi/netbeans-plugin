@@ -65,7 +65,7 @@ public class BlockMacroProcessor extends MacroProcessor {
 				length += t2.length();
 			} while(sequence2.moveNext());
 
-			if(macro.equals("block") || macro.equals("snippet") || macro.equals("ifcurrent") || macro.equals("capture")) {
+			if(macro.equals("block") || macro.equals("snippet") || macro.equals("ifCurrent") || macro.equals("capture")) {
 				// for block and snippet process as string only
 				embedder.embed("<?php \"");
 				embedder.embed(start, length);
@@ -77,11 +77,11 @@ public class BlockMacroProcessor extends MacroProcessor {
 			} else {
 				// for if, foreach, ... process as <?php macro(attr) { ?>
 				embedder.embed("<?php " + macro + "(");
-				if(macro.equals("ifcurrent")) {
+				if(macro.equals("ifCurrent")) {
 					embedder.embed("\"");
 				}
 				embedder.embed(start, length);
-				if(macro.equals("ifcurrent")) {
+				if(macro.equals("ifCurrent")) {
 					embedder.embed("\"");
 				}
 				embedder.embed(");{");

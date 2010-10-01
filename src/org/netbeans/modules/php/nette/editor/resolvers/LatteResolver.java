@@ -84,7 +84,7 @@ public class LatteResolver extends TemplateResolver {
 				setMacroName(null);
 				continue;
 			}
-			macro = macro.toLowerCase();
+			macro = macro;
 
 			int start = sequence2.offset() + sequence.offset();
 			if (!macro.equals("")) {

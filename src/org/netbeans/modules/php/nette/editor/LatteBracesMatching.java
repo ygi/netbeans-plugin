@@ -88,7 +88,7 @@ public class LatteBracesMatching implements BracesMatcher {
                     Token<LatteTokenId> t2 = ts2.token();
                     // macro has name
                     if(t2.id() == LatteTokenId.MACRO) {								// it has macro name
-                        macroName = t2.toString().toLowerCase();
+                        macroName = t2.toString();
                         mStart = ts.offset();
                         mLength = t.length();
                         return new int[] {
@@ -203,7 +203,7 @@ public class LatteBracesMatching implements BracesMatcher {
                     while(ts2.moveNext() && i < 3) {
                         Token<LatteTokenId> t2 = ts2.token();
                         if(t2.id() == LatteTokenId.MACRO) {						// macro name token reached
-							String macroName2 = t2.text().toString().toLowerCase();
+							String macroName2 = t2.text().toString();
                             if(embeddedMacros == 0) {							// only if we are at the same nesting level
                                 if((pairMacroNames.contains(macroName2) && isEndMacro != isEndMacro2)
                                         || friends.contains(macroName2)) {			// it is start/friend/end macro
