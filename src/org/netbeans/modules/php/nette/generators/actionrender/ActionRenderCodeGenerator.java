@@ -23,14 +23,17 @@
  */
 package org.netbeans.modules.php.nette.generators.actionrender;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.text.JTextComponent;
+import org.netbeans.modules.parsing.api.Source;
 import org.netbeans.modules.php.nette.wizards.newpresenter.ActionRenderVisualPanel;
 import org.netbeans.spi.editor.codegen.CodeGenerator;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
+import org.openide.filesystems.FileUtil;
 import org.openide.util.Lookup;
 
 public class ActionRenderCodeGenerator implements CodeGenerator {
@@ -38,7 +41,7 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	JTextComponent textComp;
 	
 	private ActionRenderVisualPanel panel;
-
+	
 	/**
 	 *
 	 * @param context containing JTextComponent and possibly other items registered by {@link CodeGeneratorContextProvider}
@@ -71,7 +74,9 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 
 	private boolean processDialog() {
 		panel = new ActionRenderVisualPanel();
-panel.setTemplatesDirectory("/");
+
+		panel.setTemplatesDirectory(getPresenterDir());
+
 		DialogDescriptor dd = new DialogDescriptor(panel, "Add action and/or render method...", true, DialogDescriptor.OK_CANCEL_OPTION, DialogDescriptor.OK_OPTION, null);
 
 		Object result = DialogDisplayer.getDefault().notify(dd);
@@ -81,6 +86,19 @@ panel.setTemplatesDirectory("/");
 		} else {
 			return true;
 		}
+	}
+
+	/**
+	 * Returns directory of the current textComp's presenter file.
+	 *
+	 * @return
+	 */
+	private String getPresenterDir() {
+		Source source = Source.create(textComp.getDocument());
+		File presenterFile = FileUtil.toFile(source.getFileObject());
+        String presenterPath = presenterFile.getPath();
+		
+		return presenterPath.replaceAll("/" + presenterFile.getName(), "");
 	}
 
 }
