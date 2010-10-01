@@ -95,6 +95,18 @@ public class MacroDefinitions {
             new LatteMacro("else"),
             new LatteParamMacro("elseif", false)
         });
+        friendMacros.put("while", new LatteMacro[] {
+            new LatteParamMacro("continueIf", false),
+            new LatteParamMacro("breakIf", false)
+        });
+        friendMacros.put("foreach", new LatteMacro[] {
+            new LatteParamMacro("continueIf", false),
+            new LatteParamMacro("breakIf", false)
+        });
+        friendMacros.put("for", new LatteMacro[] {
+            new LatteParamMacro("continueIf", false),
+            new LatteParamMacro("breakIf", false)
+        });
         /*friendMacros.put("foreach", new LatteMacro[] {
             new LatteMacro("first", true),
             new LatteMacro("last", true),
