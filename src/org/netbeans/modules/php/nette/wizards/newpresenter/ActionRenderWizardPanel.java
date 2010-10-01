@@ -48,7 +48,7 @@ public class ActionRenderWizardPanel implements WizardDescriptor.Panel {
     // create only those which really need to be visible.
     public Component getComponent() {
         if (component == null) {
-            component = new ActionRenderVisualPanel();
+            component = new ActionRenderVisualPanel(new ActionRenderTableModel());
         }
         return component;
     }
