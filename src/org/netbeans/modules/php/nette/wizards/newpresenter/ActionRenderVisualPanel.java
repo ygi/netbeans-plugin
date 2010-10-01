@@ -35,6 +35,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import org.netbeans.modules.php.nette.generators.actionrender.ActionRenderMethodChecker;
 import org.openide.util.Exceptions;
 
 /**
@@ -44,12 +45,16 @@ import org.openide.util.Exceptions;
  */
 public final class ActionRenderVisualPanel extends JPanel {
 
-    private DefaultTableModel tableModel = new NetteTableModel();
+    private DefaultTableModel tableModel;
 
     private ImageIcon warningIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/warning_icon.png"));
 
+	private ActionRenderMethodChecker methodChecker;
+
     /** Creates new form NewPresenterVisualPanel1 */
-    public ActionRenderVisualPanel() {
+    public ActionRenderVisualPanel(DefaultTableModel tableModel) {
+		this.tableModel = tableModel;
+
         initComponents();
 
         warningLabel.setText("");
@@ -58,6 +63,86 @@ public final class ActionRenderVisualPanel extends JPanel {
     @Override
     public String getName() {
         return "Action and Render";
+    }
+
+	/**
+	 * Returns template directory.
+	 *
+	 * @return
+	 */
+    public String getTemplatesDirectory() {
+        return templatesDirectoryTextField.getText();
+    }
+
+	/**
+	 * Returns all actions which shoud be created.
+	 *
+	 * @return
+	 */
+    public Object[] getActions() {
+        Object[] actions = new Object[tableModel.getRowCount()];
+
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            HashMap<String, Object> action = new HashMap<String, Object>();
+
+            action.put("name", tableModel.getValueAt(i, 0));
+            action.put("action", tableModel.getValueAt(i, 1));
+            action.put("render", tableModel.getValueAt(i, 2));
+            action.put("template", tableModel.getValueAt(i, 3));
+
+            actions[i] = action;
+        }
+
+        return actions;
+    }
+
+	/**
+	 * Sets a method checker.
+	 *
+	 * @param methodChecker
+	 */
+	public void setMethodChecker(ActionRenderMethodChecker methodChecker) {
+		this.methodChecker = methodChecker;
+	}
+
+	/**
+	 * Sets presenter directory -> transformed into template directory.
+	 *
+	 * @param presentersDir
+	 */
+    public void setPresentersDirectory(String presentersDir) {
+        File f = new File(presentersDir + "/../templates");
+
+        if (!f.exists()) {
+            f = new File(presentersDir + "/../");
+        }
+
+        try {
+            f = new File(f.getCanonicalPath());
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+
+		setTemplatesDirectory(f.getPath());
+    }
+
+	/**
+	 * sets templates directory.
+	 *
+	 * @param templatesDir
+	 */
+	public void setTemplatesDirectory(String templatesDir) {
+		templatesDirectoryTextField.setText(templatesDir);
+        directoryChooser.setCurrentDirectory(new File(templatesDir));
+	}
+
+	/**
+	 * Returns true if 'the dotted notation' shoud be used.
+	 *
+	 * @return
+	 */
+    public boolean isDottedNotationSelected() {
+        return dottedNotationCheckBox.isSelected();
     }
 
     /** This method is called from within the constructor to
@@ -253,7 +338,7 @@ public final class ActionRenderVisualPanel extends JPanel {
 	 */
     private void addAction() {
         if (isValidAction(actionNameText.getText())) {
-            tableModel.addRow(new Object[]{actionNameText.getText(), true, false, true});
+            tableModel.addRow(new Object[]{actionNameText.getText(), false, false, true});
             actionNameText.setText("");
             addButton.setEnabled(false);
             hideWarning();
@@ -268,7 +353,7 @@ public final class ActionRenderVisualPanel extends JPanel {
 	 * @return
 	 */
     private boolean isValidAction(String action) {
-        if (isValidActionFormat(action) && actionNotExists(action)) {
+        if (isValidActionFormat(action) && !actionExists(action)) {
             hideWarning();
 
             return true;
@@ -299,18 +384,26 @@ public final class ActionRenderVisualPanel extends JPanel {
 	 * @param newAction
 	 * @return
 	 */
-    private boolean actionNotExists(String newAction) {
+    private boolean actionExists(String newAction) {
         String oldAction = null;
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             oldAction = (String) tableModel.getValueAt(i, 0);
             if (oldAction.equals(newAction)) {
                 showWarning("Action with this name already exists.");
                 
-                return false;
+                return true;
             }
         }
 
-        return true;
+		if (methodChecker != null) {
+			if (methodChecker.existsActionMethod(newAction) && methodChecker.existsRenderMethod(newAction)) {
+				showWarning("Action and render method for this action already exist.");
+
+                return true;
+			}
+		}
+
+        return false;
     }
 
 	/**
@@ -329,77 +422,6 @@ public final class ActionRenderVisualPanel extends JPanel {
     private void hideWarning() {
         warningLabel.setIcon(null);
         warningLabel.setText("");
-    }
-
-	/**
-	 * Returns all actions which shoud be created.
-	 *
-	 * @return
-	 */
-    public Object[] getActions() {
-        Object[] actions = new Object[tableModel.getRowCount()];
-
-        for (int i = 0; i < tableModel.getRowCount(); i++) {
-            HashMap<String, Object> action = new HashMap<String, Object>();
-            
-            action.put("name", tableModel.getValueAt(i, 0));
-            action.put("action", tableModel.getValueAt(i, 1));
-            action.put("render", tableModel.getValueAt(i, 2));
-            action.put("template", tableModel.getValueAt(i, 3));
-
-            actions[i] = action;
-        }
-
-        return actions;
-    }
-
-	/**
-	 * Sets presenter directory -> transformed into template directory.
-	 *
-	 * @param presentersDir
-	 */
-    public void setPresentersDirectory(String presentersDir) {
-        File f = new File(presentersDir + "/../templates");
-
-        if (!f.exists()) {
-            f = new File(presentersDir + "/../");
-        }
-
-        try {
-            f = new File(f.getCanonicalPath());
-        } catch (IOException ex) {
-            Exceptions.printStackTrace(ex);
-        }
-
-		setTemplatesDirectory(f.getPath());
-    }
-
-	/**
-	 * sets templates directory.
-	 *
-	 * @param templatesDir
-	 */
-	public void setTemplatesDirectory(String templatesDir) {
-		templatesDirectoryTextField.setText(templatesDir);
-        directoryChooser.setCurrentDirectory(new File(templatesDir));
-	}
-
-	/**
-	 * Returns template directory.
-	 *
-	 * @return
-	 */
-    public String getTemplatesDirectory() {
-        return templatesDirectoryTextField.getText();
-    }
-
-	/**
-	 * Returns true if 'the dotted notation' shoud be used.
-	 *
-	 * @return
-	 */
-    public boolean isDottedNotationSelected() {
-        return dottedNotationCheckBox.isSelected();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
