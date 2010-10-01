@@ -49,16 +49,6 @@ import org.openide.util.HelpCtx;
  */
 public class NettePhpModuleExtender extends PhpModuleExtender {
 
-    private static final String NETTE_LIBS_DIR = "/libs/Nette";
-
-    private static final String NETTE_DOCUMENT_ROOT_DIR = "/document_root";
-
-    private static final String NETTE_APP_DIR = "/app";
-
-    private static final String NETTE_TEMP_DIR = "/temp";
-
-    private static final String NETTE_LOG_DIR = "/log";
-
     private NewNetteProjectPanel netteProjectPanel;
 
     @Override
@@ -121,7 +111,7 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
     }
 
     private void createDocumentRoot(String d) throws IOException {
-        File folder = new File(d + NETTE_DOCUMENT_ROOT_DIR);
+        File folder = new File(d + NetteFramework.NETTE_DOCUMENT_ROOT_DIR);
         FileObject doc_root = FileUtil.createFolder(folder);
         set.add(doc_root);
         
@@ -129,13 +119,13 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
         set.add(FileUtil.createFolder(new File(doc_root.getPath() + "/js")));
         set.add(FileUtil.createFolder(new File(doc_root.getPath() + "/images")));
 
-        FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/index.php"), new File(d + NETTE_DOCUMENT_ROOT_DIR + "/index.php"));
+        FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/index.php"), new File(d + NetteFramework.NETTE_DOCUMENT_ROOT_DIR + "/index.php"));
         
-        FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/.htaccess-DOCUMENT_ROOT"), new File(d + NETTE_DOCUMENT_ROOT_DIR + "/.htaccess"));
+        FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/.htaccess-DOCUMENT_ROOT"), new File(d + NetteFramework.NETTE_DOCUMENT_ROOT_DIR + "/.htaccess"));
     }
 
     private void createApp(String d) throws IOException {
-        File folder = new File(d + NETTE_APP_DIR);
+        File folder = new File(d + NetteFramework.NETTE_APP_DIR);
         FileObject app = FileUtil.createFolder(folder);
         set.add(app);
 
@@ -150,33 +140,33 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
         set.add(FileUtil.createFolder(new File(app.getPath() + "/presenters")));
         set.add(FileUtil.createFolder(new File(app.getPath() + "/templates")));
         
-        FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/bootstrap.php"), new File(d + NETTE_APP_DIR + "/bootstrap.php"));
+        FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/bootstrap.php"), new File(d + NetteFramework.NETTE_APP_DIR + "/bootstrap.php"));
 
-        FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/.htaccess-APP"), new File(d + NETTE_APP_DIR + "/.htaccess"));
+        FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/.htaccess-APP"), new File(d + NetteFramework.NETTE_APP_DIR + "/.htaccess"));
 
-        FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/config.ini"), new File(d + NETTE_APP_DIR + "/config.ini"));
+        FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/config.ini"), new File(d + NetteFramework.NETTE_APP_DIR + "/config.ini"));
     }
 
     private void createLibs(String d) throws IOException {
-        File folder = new File(d + NETTE_LIBS_DIR);
+        File folder = new File(d + NetteFramework.NETTE_LIBS_DIR);
         FileObject app = FileUtil.createFolder(folder);
         set.add(app);
     }
 
     private void createTemp(String d) throws IOException {
-        File folder = new File(d + NETTE_TEMP_DIR);
+        File folder = new File(d + NetteFramework.NETTE_TEMP_DIR);
         FileObject app = FileUtil.createFolder(folder);
         set.add(app);
     }
 
     private void createLog(String d) throws IOException {
-        File folder = new File(d + NETTE_LOG_DIR);
+        File folder = new File(d + NetteFramework.NETTE_LOG_DIR);
         FileObject app = FileUtil.createFolder(folder);
         set.add(app);
     }
 
     private void copyNetteFiles(String projectDir) {
-        FileUtils.copyDirectory(new File(NetteOptions.getInstance().getNettePath()), new File(projectDir, NETTE_LIBS_DIR));
+        FileUtils.copyDirectory(new File(NetteOptions.getInstance().getNettePath()), new File(projectDir, NetteFramework.NETTE_LIBS_DIR));
     }
 
     private NewNetteProjectPanel getPanel() {
