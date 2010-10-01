@@ -28,7 +28,6 @@
 package org.netbeans.modules.php.nette.wizards.newpresenter;
 
 import java.awt.Component;
-import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,11 +38,9 @@ import javax.swing.event.ChangeListener;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.SourceGroup;
 import org.netbeans.api.project.Sources;
-import org.netbeans.modules.php.nette.utils.EditorUtils;
 import org.netbeans.spi.project.ui.templates.support.Templates;
 import org.openide.WizardDescriptor;
 import org.openide.filesystems.FileObject;
-import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataFolder;
 import org.openide.loaders.DataObject;
 
@@ -95,20 +92,7 @@ public final class WizardIterator implements WizardDescriptor.InstantiatingItera
         return panels;
     }
 
-    private boolean isTemplateForGeneration() {
-        Object[] actions = (Object[]) wizard.getProperty("actions");
-        for (Object wholeAction : actions) {
-            HashMap<String, Object> action = (HashMap<String, Object>) wholeAction;
-
-            if ((Boolean) action.get("template")) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public Set instantiate() throws IOException {
+	public Set instantiate() throws IOException {
         FileObject dir = Templates.getTargetFolder(wizard);
         String targetName = Templates.getTargetName(wizard);
         DataFolder df = DataFolder.findFolder(dir);
@@ -124,41 +108,8 @@ public final class WizardIterator implements WizardDescriptor.InstantiatingItera
         DataObject dTemplate = DataObject.find(template);
         DataObject dobj = dTemplate.createFromTemplate(df, targetName, hashMap);
 
-        if (isTemplateForGeneration()) {
-            String presenterName = EditorUtils.firstLetterCapital(targetName.replace("Presenter", ""));
-            String templatesDirectory = (String) wizard.getProperty("templatesDirectory");
-
-            File templatesDir = null;
-            String latteTemplatePrefix = null;
-            boolean dottedNotation = (Boolean) wizard.getProperty("dottedNotation");
-            if (dottedNotation) {
-                templatesDir = new File(templatesDirectory);
-                latteTemplatePrefix = presenterName + ".";
-            } else {
-                templatesDir = new File(templatesDirectory + "/" + presenterName);
-                templatesDir.mkdirs();
-                latteTemplatePrefix = "";
-            }
-
-            FileObject foTemplatesDir = FileUtil.toFileObject(templatesDir);
-            DataFolder templatesDf = DataFolder.findFolder(foTemplatesDir);
-
-            FileObject latteTemplate = FileUtil.getConfigFile("Templates/Nette Framework/LatteTemplate.phtml");
-            DataObject latteDTemplate = DataObject.find(latteTemplate);
-
-            for (Object wholeAction : actions) {
-                HashMap<String, Object> action = (HashMap<String, Object>) wholeAction;
-
-                boolean generateTemplate = (Boolean) action.get("template");
-
-                if (generateTemplate) {
-                    String actionName = (String) action.get("name");
-                    latteDTemplate.createFromTemplate(templatesDf, latteTemplatePrefix + EditorUtils.firstLetterSmall(actionName));
-                }
-            }
-
-            FileUtil.refreshAll();
-        }
+		ActionTemplatesGenerator atg = new ActionTemplatesGenerator();
+		atg.generate(actions, targetName, (String) wizard.getProperty("templatesDirectory"), (Boolean) wizard.getProperty("dottedNotation"));
 
         FileObject createdFile = dobj.getPrimaryFile();
 
