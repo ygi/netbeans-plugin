@@ -119,18 +119,33 @@ public class CreateComponentGenerator implements CodeGenerator {
 				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() ? "$" + smallComponentName + "->onInvalidSubmit[] = " + createInvalidSubmitCallback() : "")
 				+ (!panel.isRegisterInConstructor() ? "\n\nreturn $" + smallComponentName + ";" : "")
 				+ "}"
-				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() && !panel.isCreateClosures() ? "public function validSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\n}" : "")
-				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() && !panel.isCreateClosures() ? "public function invalidSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n\n}" : "");
+				+ (panel.isFormTabSelected() && panel.isCreateValidSubmit() && !panel.isCreateClosures() ? "public function validSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n \n}" : "")
+				+ (panel.isFormTabSelected() && panel.isCreateInvalidSubmit() && !panel.isCreateClosures() ? "public function invalidSubmit" + capitalizedComponentName + "(" + componentClass + " $" + smallComponentName + ") {\n \n}" : "");
 	}
 
+	/**
+	 * Creates php closure for handling component.
+	 *
+	 * @return
+	 */
     private String createClosureCallback() {
-        return "function(" + componentClass + " $" + smallComponentName + ") {\n\n};";
+        return "function(" + componentClass + " $" + smallComponentName + ") {\n \n};";
     }
 
+	/**
+	 * Creates valid submit callback.
+	 *
+	 * @return
+	 */
     private String createValidSubmitCallback() {
         return panel.isCreateClosures() ? createClosureCallback() : "callback($this, 'validSubmit" + capitalizedComponentName + "');";
     }
 
+	/**
+	 * Creates invalid submit callback.
+	 *
+	 * @return
+	 */
     private String createInvalidSubmitCallback() {
         return panel.isCreateClosures() ? createClosureCallback() : "callback($this, 'invalidSubmit" + capitalizedComponentName + "');";
     }
