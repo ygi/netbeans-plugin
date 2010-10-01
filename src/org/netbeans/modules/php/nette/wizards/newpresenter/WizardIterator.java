@@ -27,6 +27,7 @@
 
 package org.netbeans.modules.php.nette.wizards.newpresenter;
 
+import org.netbeans.modules.php.nette.generators.actionrender.ActionRenderTemplatesGenerator;
 import java.awt.Component;
 import java.io.IOException;
 import java.util.Collections;
@@ -108,7 +109,7 @@ public final class WizardIterator implements WizardDescriptor.InstantiatingItera
         DataObject dTemplate = DataObject.find(template);
         DataObject dobj = dTemplate.createFromTemplate(df, targetName, hashMap);
 
-		ActionTemplatesGenerator atg = new ActionTemplatesGenerator();
+		ActionRenderTemplatesGenerator atg = new ActionRenderTemplatesGenerator();
 		atg.generate(actions, targetName, (String) wizard.getProperty("templatesDirectory"), (Boolean) wizard.getProperty("dottedNotation"));
 
         FileObject createdFile = dobj.getPrimaryFile();

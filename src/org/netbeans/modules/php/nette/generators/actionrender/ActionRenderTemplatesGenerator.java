@@ -22,11 +22,12 @@
  *  THE SOFTWARE.
  */
 
-package org.netbeans.modules.php.nette.wizards.newpresenter;
+package org.netbeans.modules.php.nette.generators.actionrender;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import org.netbeans.modules.php.nette.NetteFramework;
 import org.netbeans.modules.php.nette.utils.EditorUtils;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
@@ -57,7 +58,7 @@ public class ActionRenderTemplatesGenerator {
 		if (isTemplateForGeneration()) {
             File templatesDir = null;
             String latteTemplatePrefix = null;
-			presenterName = presenterName.replaceAll(".php", "");
+			presenterName = EditorUtils.firstLetterCapital(presenterName.replaceAll(NetteFramework.NETTE_PRESENTER_EXTENSION, "").replaceFirst("^(.*)_", ""));
 
             if (dottedNotation) {
                 templatesDir = new File(templatesDirectory);
@@ -68,23 +69,26 @@ public class ActionRenderTemplatesGenerator {
                 latteTemplatePrefix = "";
             }
 
-            FileObject foTemplatesDir = FileUtil.toFileObject(templatesDir);
+			FileObject foTemplatesDir = FileUtil.toFileObject(templatesDir);
             DataFolder templatesDf = DataFolder.findFolder(foTemplatesDir);
 
 			try {
-            FileObject latteTemplate = FileUtil.getConfigFile("Templates/Nette Framework/LatteTemplate.phtml");
-            DataObject latteDTemplate = DataObject.find(latteTemplate);
+				FileObject latteTemplate = FileUtil.getConfigFile("Templates/Nette Framework/LatteTemplate.phtml");
+				DataObject latteDTemplate = DataObject.find(latteTemplate);
 
-            for (Object wholeAction : actions) {
-                HashMap<String, Object> action = (HashMap<String, Object>) wholeAction;
+				ActionRenderTemplateChecker artc = new ActionRenderTemplateChecker(presenterName, templatesDirectory);
 
-                boolean generateTemplate = (Boolean) action.get("template");
+				for (Object wholeAction : actions) {
+					HashMap<String, Object> action = (HashMap<String, Object>) wholeAction;
 
-                if (generateTemplate) {
-                    String actionName = (String) action.get("name");
-                    latteDTemplate.createFromTemplate(templatesDf, latteTemplatePrefix + EditorUtils.firstLetterSmall(actionName));
-                }
-            }
+					boolean generateTemplate = (Boolean) action.get("template");
+
+					String actionName = (String) action.get("name");
+
+					if (generateTemplate && !artc.existsActionTemplate(actionName)) {
+						latteDTemplate.createFromTemplate(templatesDf, latteTemplatePrefix + EditorUtils.firstLetterSmall(actionName));
+					}
+				}
 			} catch (IOException ex) {
 				Exceptions.printStackTrace(ex);
 			}
