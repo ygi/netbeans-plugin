@@ -29,6 +29,7 @@ import java.util.List;
 import javax.swing.text.JTextComponent;
 import org.netbeans.modules.parsing.api.Source;
 import org.netbeans.modules.php.nette.wizards.newpresenter.ActionRenderVisualPanel;
+import org.netbeans.modules.php.nette.wizards.newpresenter.ActionTemplatesGenerator;
 import org.netbeans.spi.editor.codegen.CodeGenerator;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
@@ -69,7 +70,10 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	 * dialog
 	 */
 	public void invoke() {
-		processDialog();
+		if (processDialog()) {
+			ActionTemplatesGenerator atg = new ActionTemplatesGenerator();
+			atg.generate(panel.getActions(), getPresenterFile().getName(), panel.getTemplatesDirectory(), panel.isDottedNotationSelected());
+		}
 	}
 
 	private boolean processDialog() {
@@ -88,17 +92,21 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 		}
 	}
 
+	private File getPresenterFile() {
+		Source source = Source.create(textComp.getDocument());
+		
+		return FileUtil.toFile(source.getFileObject());
+	}
+
 	/**
 	 * Returns directory of the current textComp's presenter file.
 	 *
 	 * @return
 	 */
 	private String getPresenterDir() {
-		Source source = Source.create(textComp.getDocument());
-		File presenterFile = FileUtil.toFile(source.getFileObject());
-        String presenterPath = presenterFile.getPath();
+        String presenterPath = getPresenterFile().getPath();
 		
-		return presenterPath.replaceAll("/" + presenterFile.getName(), "");
+		return presenterPath.replaceAll("/" + getPresenterFile().getName(), "");
 	}
 
 }
