@@ -64,7 +64,13 @@ import org.openide.filesystems.FileUtil;
  * Some utils used for editor operations
  * @author Radek Ježdík
  */
-public class EditorUtils {
+public final class EditorUtils {
+
+	/**
+	 * @author Ondřej Brejla <ondrej@brejla.cz>
+	 */
+	private EditorUtils() {
+	}
 
     /**
      * Get index of white character in the line.
