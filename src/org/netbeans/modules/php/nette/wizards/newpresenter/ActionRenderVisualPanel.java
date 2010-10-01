@@ -358,7 +358,7 @@ public final class ActionRenderVisualPanel extends JPanel {
 	 *
 	 * @param presentersDir
 	 */
-    public void setTemplatesDirectory(String presentersDir) {
+    public void setPresentersDirectory(String presentersDir) {
         File f = new File(presentersDir + "/../templates");
 
         if (!f.exists()) {
@@ -370,10 +370,19 @@ public final class ActionRenderVisualPanel extends JPanel {
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
-        
-        templatesDirectoryTextField.setText(f.getPath());
-        directoryChooser.setCurrentDirectory(f);
+
+		setTemplatesDirectory(f.getPath());
     }
+
+	/**
+	 * sets templates directory.
+	 *
+	 * @param templatesDir
+	 */
+	public void setTemplatesDirectory(String templatesDir) {
+		templatesDirectoryTextField.setText(templatesDir);
+        directoryChooser.setCurrentDirectory(new File(templatesDir));
+	}
 
 	/**
 	 * Returns template directory.
