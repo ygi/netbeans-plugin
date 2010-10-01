@@ -35,16 +35,26 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import org.netbeans.modules.php.nette.generators.actionrender.ActionRenderMethodChecker;
 import org.openide.util.Exceptions;
 
-public final class NewPresenterActionRenderVisualPanel extends JPanel {
+/**
+ * Panel for adding action and/or render methods and for generating their templates.
+ * 
+ * @author Ondřej Brejla <ondrej@brejla.cz>
+ */
+public final class ActionRenderVisualPanel extends JPanel {
 
-    private DefaultTableModel tableModel = new NetteTableModel();
+    private DefaultTableModel tableModel;
 
     private ImageIcon warningIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/warning_icon.png"));
 
+	private ActionRenderMethodChecker methodChecker;
+
     /** Creates new form NewPresenterVisualPanel1 */
-    public NewPresenterActionRenderVisualPanel() {
+    public ActionRenderVisualPanel(DefaultTableModel tableModel) {
+		this.tableModel = tableModel;
+
         initComponents();
 
         warningLabel.setText("");
@@ -53,6 +63,86 @@ public final class NewPresenterActionRenderVisualPanel extends JPanel {
     @Override
     public String getName() {
         return "Action and Render";
+    }
+
+	/**
+	 * Returns template directory.
+	 *
+	 * @return
+	 */
+    public String getTemplatesDirectory() {
+        return templatesDirectoryTextField.getText();
+    }
+
+	/**
+	 * Returns all actions which shoud be created.
+	 *
+	 * @return
+	 */
+    public Object[] getActions() {
+        Object[] actions = new Object[tableModel.getRowCount()];
+
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            HashMap<String, Object> action = new HashMap<String, Object>();
+
+            action.put("name", tableModel.getValueAt(i, 0));
+            action.put("action", tableModel.getValueAt(i, 1));
+            action.put("render", tableModel.getValueAt(i, 2));
+            action.put("template", tableModel.getValueAt(i, 3));
+
+            actions[i] = action;
+        }
+
+        return actions;
+    }
+
+	/**
+	 * Sets a method checker.
+	 *
+	 * @param methodChecker
+	 */
+	public void setMethodChecker(ActionRenderMethodChecker methodChecker) {
+		this.methodChecker = methodChecker;
+	}
+
+	/**
+	 * Sets presenter directory -> transformed into template directory.
+	 *
+	 * @param presentersDir
+	 */
+    public void setPresentersDirectory(String presentersDir) {
+        File f = new File(presentersDir + "/../templates");
+
+        if (!f.exists()) {
+            f = new File(presentersDir + "/../");
+        }
+
+        try {
+            f = new File(f.getCanonicalPath());
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+
+		setTemplatesDirectory(f.getPath());
+    }
+
+	/**
+	 * sets templates directory.
+	 *
+	 * @param templatesDir
+	 */
+	public void setTemplatesDirectory(String templatesDir) {
+		templatesDirectoryTextField.setText(templatesDir);
+        directoryChooser.setCurrentDirectory(new File(templatesDir));
+	}
+
+	/**
+	 * Returns true if 'the dotted notation' shoud be used.
+	 *
+	 * @return
+	 */
+    public boolean isDottedNotationSelected() {
+        return dottedNotationCheckBox.isSelected();
     }
 
     /** This method is called from within the constructor to
@@ -83,18 +173,18 @@ public final class NewPresenterActionRenderVisualPanel extends JPanel {
 
         directoryChooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.jLabel1.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.jLabel1.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.jLabel2.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.jLabel2.text")); // NOI18N
 
-        actionNameText.setText(org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.actionNameText.text")); // NOI18N
+        actionNameText.setText(org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.actionNameText.text")); // NOI18N
         actionNameText.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 actionNameTextCaretUpdate(evt);
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(addButton, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.addButton.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(addButton, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.addButton.text")); // NOI18N
         addButton.setEnabled(false);
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,32 +196,32 @@ public final class NewPresenterActionRenderVisualPanel extends JPanel {
         actionTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(actionTable);
 
-        org.openide.awt.Mnemonics.setLocalizedText(deleteButton, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.deleteButton.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(deleteButton, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.deleteButton.text")); // NOI18N
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(warningLabel, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.warningLabel.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(warningLabel, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.warningLabel.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.jLabel3.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.jLabel3.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel4, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.jLabel4.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel4, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.jLabel4.text")); // NOI18N
 
         templatesDirectoryTextField.setEditable(false);
-        templatesDirectoryTextField.setText(org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.templatesDirectoryTextField.text")); // NOI18N
+        templatesDirectoryTextField.setText(org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.templatesDirectoryTextField.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(browseButton, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.browseButton.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(browseButton, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.browseButton.text")); // NOI18N
         browseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 browseButtonActionPerformed(evt);
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel5, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.jLabel5.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel5, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.jLabel5.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(dottedNotationCheckBox, org.openide.util.NbBundle.getMessage(NewPresenterActionRenderVisualPanel.class, "NewPresenterActionRenderVisualPanel.dottedNotationCheckBox.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(dottedNotationCheckBox, org.openide.util.NbBundle.getMessage(ActionRenderVisualPanel.class, "ActionRenderVisualPanel.dottedNotationCheckBox.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -243,9 +333,12 @@ public final class NewPresenterActionRenderVisualPanel extends JPanel {
         }
     }//GEN-LAST:event_browseButtonActionPerformed
 
+	/**
+	 * Adds action into the table.
+	 */
     private void addAction() {
         if (isValidAction(actionNameText.getText())) {
-            tableModel.addRow(new Object[]{actionNameText.getText(), true, false, true});
+            tableModel.addRow(new Object[]{actionNameText.getText(), false, false, true});
             actionNameText.setText("");
             addButton.setEnabled(false);
             hideWarning();
@@ -253,8 +346,14 @@ public final class NewPresenterActionRenderVisualPanel extends JPanel {
         }
     }
 
+	/**
+	 * Checks if passed action is valid.
+	 *
+	 * @param action
+	 * @return
+	 */
     private boolean isValidAction(String action) {
-        if (isValidActionFormat(action) && actionNotExists(action)) {
+        if (isValidActionFormat(action) && !actionExists(action)) {
             hideWarning();
 
             return true;
@@ -263,6 +362,12 @@ public final class NewPresenterActionRenderVisualPanel extends JPanel {
         return false;
     }
 
+	/**
+	 * Checks if passed action has a valid format.
+	 *
+	 * @param action
+	 * @return
+	 */
     private boolean isValidActionFormat(String action) {
         if (action.trim().matches("^[a-zA-Z0-9][a-zA-Z0-9_]*$")) {
             return true;
@@ -273,70 +378,50 @@ public final class NewPresenterActionRenderVisualPanel extends JPanel {
         return false;
     }
 
-    private boolean actionNotExists(String newAction) {
+	/**
+	 * Checks if passed action does not exists.
+	 *
+	 * @param newAction
+	 * @return
+	 */
+    private boolean actionExists(String newAction) {
         String oldAction = null;
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             oldAction = (String) tableModel.getValueAt(i, 0);
             if (oldAction.equals(newAction)) {
                 showWarning("Action with this name already exists.");
                 
-                return false;
+                return true;
             }
         }
 
-        return true;
+		if (methodChecker != null) {
+			if (methodChecker.existsActionMethod(newAction) && methodChecker.existsRenderMethod(newAction)) {
+				showWarning("Action and render method for this action already exist.");
+
+                return true;
+			}
+		}
+
+        return false;
     }
 
+	/**
+	 * Shows warning message.
+	 *
+	 * @param warning
+	 */
     private void showWarning(String warning) {
         warningLabel.setIcon(warningIcon);
         warningLabel.setText(warning);
     }
 
+	/**
+	 * Hides warning message.
+	 */
     private void hideWarning() {
         warningLabel.setIcon(null);
         warningLabel.setText("");
-    }
-
-    public Object[] getActions() {
-        Object[] actions = new Object[tableModel.getRowCount()];
-
-        for (int i = 0; i < tableModel.getRowCount(); i++) {
-            HashMap<String, Object> action = new HashMap<String, Object>();
-            
-            action.put("name", tableModel.getValueAt(i, 0));
-            action.put("action", tableModel.getValueAt(i, 1));
-            action.put("render", tableModel.getValueAt(i, 2));
-            action.put("template", tableModel.getValueAt(i, 3));
-
-            actions[i] = action;
-        }
-
-        return actions;
-    }
-
-    public void setTemplatesDirectory(String presentersDir) {
-        File f = new File(presentersDir + "/../templates");
-
-        if (!f.exists()) {
-            f = new File(presentersDir + "/../");
-        }
-
-        try {
-            f = new File(f.getCanonicalPath());
-        } catch (IOException ex) {
-            Exceptions.printStackTrace(ex);
-        }
-        
-        templatesDirectoryTextField.setText(f.getPath());
-        directoryChooser.setCurrentDirectory(f);
-    }
-
-    public String getTemplatesDirectory() {
-        return templatesDirectoryTextField.getText();
-    }
-
-    public boolean isDottedNotationSelected() {
-        return dottedNotationCheckBox.isSelected();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

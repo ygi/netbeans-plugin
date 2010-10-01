@@ -33,13 +33,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import javax.swing.text.JTextComponent;
+import org.netbeans.modules.parsing.api.Source;
+import org.openide.filesystems.FileUtil;
 import org.openide.util.Exceptions;
 
 /**
  *
  * @author Ondřej Brejla
  */
-public class FileUtils {
+public final class FileUtils {
+
+	private FileUtils() {
+	}
 
 	public static void copyDirectory(File srcDir, File dstDir) {
 		if (srcDir.isDirectory()) {
@@ -85,6 +91,12 @@ public class FileUtils {
 
 		is.close();
 		fos.close();
+	}
+
+	public static File getFile(JTextComponent textComp) {
+		Source source = Source.create(textComp.getDocument());
+
+		return FileUtil.toFile(source.getFileObject());
 	}
 
 }

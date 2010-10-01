@@ -38,7 +38,13 @@ import org.openide.util.Exceptions;
  *
  * @author Radek Ježdík
  */
-public class LexUtils {
+public final class LexUtils {
+
+	/**
+	 * @author Ondřej Brejla <ondrej@brejla.cz>
+	 */
+	private LexUtils() {
+	}
 
 	public static TokenSequence<LatteTopTokenId> getTopSequence(Document document) {
 		try {
