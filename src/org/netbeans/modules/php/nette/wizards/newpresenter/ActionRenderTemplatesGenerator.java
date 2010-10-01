@@ -39,7 +39,7 @@ import org.openide.util.Exceptions;
  *
  * @author Ondřej Brejla <ondrej@brejla.cz>
  */
-public class ActionTemplatesGenerator {
+public class ActionRenderTemplatesGenerator {
 
 	private Object[] actions;
 
