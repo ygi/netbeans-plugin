@@ -95,6 +95,15 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
+                    <code-name-base>org.netbeans.modules.form</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <release-version>2</release-version>
+                        <specification-version>1.31.1.2</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
                     <code-name-base>org.netbeans.modules.html.lexer</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
@@ -168,6 +177,15 @@
                     <run-dependency>
                         <release-version>1</release-version>
                         <specification-version>1.47.2.8</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
+                    <code-name-base>org.netbeans.spi.editor.hints</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <release-version>0</release-version>
+                        <specification-version>1.14.1.7.2</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>

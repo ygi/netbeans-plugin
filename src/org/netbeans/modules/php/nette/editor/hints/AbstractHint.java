@@ -35,7 +35,7 @@ import org.openide.util.NbBundle;
  *
  * @author Radek Ježdík
  */
-abstract class AbstractHint {
+public abstract class AbstractHint {
 
 	protected Document doc;
 	protected int start;
