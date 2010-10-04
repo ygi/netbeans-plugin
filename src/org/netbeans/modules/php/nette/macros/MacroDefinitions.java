@@ -49,7 +49,7 @@ public class MacroDefinitions {
         new LatteParamMacro("plink", false),
         new LatteParamMacro("if", true),
         new LatteParamMacro("ifset", true, "if"),
-        new LatteParamMacro("ifcurrent", true, "if"),
+        new LatteParamMacro("ifCurrent", true, "if"),
         new LatteParamMacro("for", true),
         new LatteParamMacro("foreach", true),
         new LatteParamMacro("while", true),
@@ -72,6 +72,9 @@ public class MacroDefinitions {
         new LatteMacro("debugbreak", false),
         new LatteMacro("l", false),
         new LatteMacro("r", false),
+        new LatteMacro("first", true),
+        new LatteMacro("last", true),
+        new LatteMacro("sep", true),
     };
 
 	/**
@@ -88,10 +91,27 @@ public class MacroDefinitions {
             new LatteParamMacro("elseif", false),
             new LatteParamMacro("elseifset", false)
         });
-        friendMacros.put("ifcurrent", new LatteMacro[] {
+        friendMacros.put("ifCurrent", new LatteMacro[] {
             new LatteMacro("else"),
             new LatteParamMacro("elseif", false)
         });
+        friendMacros.put("while", new LatteMacro[] {
+            new LatteParamMacro("continueIf", false),
+            new LatteParamMacro("breakIf", false)
+        });
+        friendMacros.put("foreach", new LatteMacro[] {
+            new LatteParamMacro("continueIf", false),
+            new LatteParamMacro("breakIf", false)
+        });
+        friendMacros.put("for", new LatteMacro[] {
+            new LatteParamMacro("continueIf", false),
+            new LatteParamMacro("breakIf", false)
+        });
+        /*friendMacros.put("foreach", new LatteMacro[] {
+            new LatteMacro("first", true),
+            new LatteMacro("last", true),
+            new LatteMacro("sep", true)
+        });*/
     };
 
 	/**
@@ -123,7 +143,6 @@ public class MacroDefinitions {
 	 * @return
 	 */
     public static LatteMacro getMacro(String name) {
-		name = name.toLowerCase();
         for(LatteMacro m : macros) {
             if(m.getMacroName().equals(name)) {
                 return m;
@@ -138,7 +157,6 @@ public class MacroDefinitions {
 	 * @return
 	 */
     public static List<LatteMacro> getMacrosByEnd(String name) {
-		name = name.toLowerCase();
         List<LatteMacro> list = new ArrayList<LatteMacro>();
         for(LatteMacro m : macros) {
             if(m.isPair && m.getEndMacroName().equals(name)) {

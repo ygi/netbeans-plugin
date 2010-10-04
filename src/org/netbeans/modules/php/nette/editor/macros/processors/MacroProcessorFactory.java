@@ -61,7 +61,7 @@ abstract public class MacroProcessorFactory {
 		blockMacros.add("while");
 		blockMacros.add("if");
 		blockMacros.add("ifset");
-		blockMacros.add("ifcurrent");
+		blockMacros.add("ifCurrent");
 		blockMacros.add("block");
 		blockMacros.add("snippet");
 		blockMacros.add("capture");
