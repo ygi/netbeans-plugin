@@ -32,14 +32,14 @@ import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public final class NewPresenterParentPresenterVisualPanel extends JPanel implements DocumentListener {
+public final class ParentPresenterVisualPanel extends JPanel implements DocumentListener {
 
-    private NewPresenterParentPresenterWizardPanel panel;
+    private ParentPresenterWizardPanel panel;
 
     private ImageIcon errorIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/error_icon.png"));
 
     /** Creates new form NewPresenterVisualPanel2 */
-    public NewPresenterParentPresenterVisualPanel(NewPresenterParentPresenterWizardPanel panel) {
+    public ParentPresenterVisualPanel(ParentPresenterWizardPanel panel) {
         initComponents();
         this.panel = panel;
         errorLabel.setText("");
@@ -63,9 +63,9 @@ public final class NewPresenterParentPresenterVisualPanel extends JPanel impleme
         parentPresenterTextField = new javax.swing.JTextField();
         errorLabel = new javax.swing.JLabel();
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(NewPresenterParentPresenterVisualPanel.class, "NewPresenterParentPresenterVisualPanel.jLabel1.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(ParentPresenterVisualPanel.class, "ParentPresenterVisualPanel.jLabel1.text")); // NOI18N
 
-        parentPresenterTextField.setText(org.openide.util.NbBundle.getMessage(NewPresenterParentPresenterVisualPanel.class, "NewPresenterParentPresenterVisualPanel.parentPresenterTextField.text")); // NOI18N
+        parentPresenterTextField.setText(org.openide.util.NbBundle.getMessage(ParentPresenterVisualPanel.class, "ParentPresenterVisualPanel.parentPresenterTextField.text")); // NOI18N
         parentPresenterTextField.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 parentPresenterTextFieldCaretUpdate(evt);
@@ -73,7 +73,7 @@ public final class NewPresenterParentPresenterVisualPanel extends JPanel impleme
         });
 
         errorLabel.setForeground(javax.swing.UIManager.getDefaults().getColor("nb.errorForeground"));
-        org.openide.awt.Mnemonics.setLocalizedText(errorLabel, org.openide.util.NbBundle.getMessage(NewPresenterParentPresenterVisualPanel.class, "NewPresenterParentPresenterVisualPanel.errorLabel.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(errorLabel, org.openide.util.NbBundle.getMessage(ParentPresenterVisualPanel.class, "ParentPresenterVisualPanel.errorLabel.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
