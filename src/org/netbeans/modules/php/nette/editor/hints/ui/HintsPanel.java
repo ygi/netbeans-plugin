@@ -55,8 +55,8 @@ final class HintsPanel extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox3 = new javax.swing.JCheckBox();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
@@ -67,11 +67,11 @@ final class HintsPanel extends javax.swing.JPanel {
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(HintsPanel.class, "HintsPanel.jLabel1.text")); // NOI18N
         jPanel1.add(jLabel1);
 
-        org.openide.awt.Mnemonics.setLocalizedText(jCheckBox1, org.openide.util.NbBundle.getMessage(HintsPanel.class, "HintsPanel.jCheckBox1.text")); // NOI18N
-        jPanel1.add(jCheckBox1);
-
         org.openide.awt.Mnemonics.setLocalizedText(jCheckBox2, org.openide.util.NbBundle.getMessage(HintsPanel.class, "HintsPanel.jCheckBox2.text")); // NOI18N
         jPanel1.add(jCheckBox2);
+
+        org.openide.awt.Mnemonics.setLocalizedText(jCheckBox1, org.openide.util.NbBundle.getMessage(HintsPanel.class, "HintsPanel.jCheckBox1.text")); // NOI18N
+        jPanel1.add(jCheckBox1);
 
         org.openide.awt.Mnemonics.setLocalizedText(jCheckBox3, org.openide.util.NbBundle.getMessage(HintsPanel.class, "HintsPanel.jCheckBox3.text")); // NOI18N
         jPanel1.add(jCheckBox3);
