@@ -20,10 +20,12 @@
     <folder name="Editors">
         <folder name="text">
             <folder name="latte-template">
+				<!--
                 <file name="language.instance">
                     <attr name="instanceCreate" methodvalue="org.netbeans.modules.php.nette.lexer.LatteTopTokenId.language"/>
                     <attr name="instanceOf" stringvalue="org.netbeans.api.lexer.Language"/>
                 </file>
+				-->
                 <folder name="CompletionProviders">
                     <file name="org-netbeans-modules-html-editor-completion-HtmlCompletionProvider.instance"/>
                     <file name="org-netbeans-modules-php-editor-comletion-PHPCodeCompletion.instance"/>
@@ -33,28 +35,23 @@
                 </folder>
                 <!--file name="org-netbeans-modules-html-editor-coloring-EmbeddingHighlightsLayerFactory.instance"/-->
                 <file name="org-netbeans-modules-php-nette-editor-LatteEmbeddingProvider$Factory.instance"/>
-                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.lexer.Bundle"/>
-                <folder name="FontsColors">
-                    <folder name="NetBeans">
-                        <folder name="Defaults">
-                            <file name="org-netbeans-modules-php-nette-FontAndColors.xml" url="FontAndColors.xml">
-                                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.lexer.Bundle"/>
-                            </file>
-                        </folder>
-                    </folder>
-                </folder>
             </folder>
 
             <folder name="latte">
+				<file name="language.instance">
+                    <attr name="instanceCreate" methodvalue="org.netbeans.modules.php.nette.lexer.LatteTopTokenId.language"/>
+                    <attr name="instanceOf" stringvalue="org.netbeans.api.lexer.Language"/>
+                </file>
                 <folder name="BracesMatchers">
                     <file name="org-netbeans-modules-php-nette-editor-LatteBracesMatchingFactory.instance">
                         <attr name="position" intvalue="0"/>
                     </file>
                 </folder>
+				<attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.lexer.Bundle"/>
                 <folder name="FontsColors">
                     <folder name="NetBeans">
                         <folder name="Defaults">
-                            <file name="org-netbeans-modules-php-nette-FontAndColors.xml" url="FontAndColors.xml">
+                            <file name="org-netbeans-modules-php-nette-resources-FontAndColors.xml" url="FontAndColors.xml">
                                 <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.lexer.Bundle"/>
                             </file>
                         </folder>
@@ -73,7 +70,7 @@
     <folder name="OptionsDialog">
         <folder name="PreviewExamples">
             <folder name="text">
-                <file name="latte-template" url="LatteSample.phtml"/>
+				<file name="latte" url="LatteSample.phtml"/>
             </folder>
         </folder>
     </folder>
