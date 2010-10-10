@@ -7,6 +7,6 @@ and open the template in the editor.
 <MIME-resolver>
     <file>
         <ext name="phtml"/>
-        <resolver mime="text/latte-template"/>
+        <resolver mime="text/x-latte-template"/>
     </file>
 </MIME-resolver>
