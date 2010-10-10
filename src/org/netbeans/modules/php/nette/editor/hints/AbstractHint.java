@@ -67,7 +67,7 @@ public abstract class AbstractHint {
 		return null;
 	}
 
-	protected static String getDescription(String name) {
+	public static String getDescription(String name) {
 		return NbBundle.getMessage(AbstractHint.class, name);
 	}
 }

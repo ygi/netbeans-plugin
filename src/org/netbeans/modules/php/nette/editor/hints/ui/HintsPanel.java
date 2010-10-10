@@ -23,12 +23,13 @@
  */
 package org.netbeans.modules.php.nette.editor.hints.ui;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javax.swing.JCheckBox;
-import javax.swing.tree.DefaultTreeCellRenderer;
-
-//import org.netbeans.modules.maven.hints.pom.spi.POMErrorFixBase;
+import org.netbeans.modules.php.nette.editor.hints.AbstractHint;
+import org.netbeans.modules.php.nette.editor.hints.HintsSettings;
 import org.openide.filesystems.FileObject;
 import org.openide.util.NbBundle;
 
@@ -38,11 +39,37 @@ import org.openide.util.NbBundle;
  */
 final class HintsPanel extends javax.swing.JPanel {
 
+	private boolean changed = false;
+
+	private HashMap<String, Boolean> settings;
+
 	HintsPanel() {
 		initComponents();
 
-		update();
+		settings = HintsSettings.getSettings();
 		
+		for(Map.Entry<String, Boolean> entry : settings.entrySet()) {
+			boolean b = entry.getValue();
+
+			JCheckBox chbox = new JCheckBox(AbstractHint.getDescription(entry.getKey()));
+			chbox.setName(entry.getKey());
+			chbox.setSelected(b);
+			chbox.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					checkboxClicked(evt);
+				}
+			});
+
+			boxContainer.add(chbox);
+		}
+
+		update();
+	}
+	
+	private void checkboxClicked(java.awt.event.ActionEvent evt) {
+		JCheckBox chbox = (JCheckBox) evt.getSource();
+		settings.put(chbox.getName(), chbox.isSelected());
+		changed = true;
 	}
 
 	/** This method is called from within the constructor to
@@ -53,31 +80,19 @@ final class HintsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        boxContainer = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         setLayout(null);
 
-        jPanel1.setLayout(new java.awt.GridLayout(4, 0));
+        boxContainer.setLayout(new java.awt.GridLayout(4, 0));
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(HintsPanel.class, "HintsPanel.jLabel1.text")); // NOI18N
-        jPanel1.add(jLabel1);
+        boxContainer.add(jLabel1);
 
-        org.openide.awt.Mnemonics.setLocalizedText(jCheckBox2, org.openide.util.NbBundle.getMessage(HintsPanel.class, "HintsPanel.jCheckBox2.text")); // NOI18N
-        jPanel1.add(jCheckBox2);
-
-        org.openide.awt.Mnemonics.setLocalizedText(jCheckBox1, org.openide.util.NbBundle.getMessage(HintsPanel.class, "HintsPanel.jCheckBox1.text")); // NOI18N
-        jPanel1.add(jCheckBox1);
-
-        org.openide.awt.Mnemonics.setLocalizedText(jCheckBox3, org.openide.util.NbBundle.getMessage(HintsPanel.class, "HintsPanel.jCheckBox3.text")); // NOI18N
-        jPanel1.add(jCheckBox3);
-
-        add(jPanel1);
-        jPanel1.setBounds(8, 8, 520, 110);
+        add(boxContainer);
+        boxContainer.setBounds(8, 8, 520, 80);
 
         getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(HintsPanel.class, "HintsPanel.AccessibleContext.accessibleName")); // NOI18N
         getAccessibleContext().setAccessibleDescription(org.openide.util.NbBundle.getMessage(HintsPanel.class, "HintsPanel.AccessibleContext.accessibleDescription")); // NOI18N
@@ -91,11 +106,11 @@ final class HintsPanel extends javax.swing.JPanel {
 	}
 
 	boolean isChanged() {
-		return false;
+		return changed;
 	}
 
 	void applyChanges() {
-		
+		HintsSettings.saveSettings(settings);
 	}
 
 	private String getFileObjectLocalizedName(FileObject fo) {
@@ -115,10 +130,7 @@ final class HintsPanel extends javax.swing.JPanel {
 	
 	// Variables declaration - do not modify
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JPanel boxContainer;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

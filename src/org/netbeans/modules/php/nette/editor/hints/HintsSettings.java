@@ -24,45 +24,43 @@
 
 package org.netbeans.modules.php.nette.editor.hints;
 
-import javax.swing.text.Document;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.prefs.Preferences;
+import org.openide.util.NbPreferences;
 
 /**
  *
  * @author Radek Ježdík
  */
-public enum HintFactory {
+public class HintsSettings {
 
-	WIDGET_MACRO_DEPRECATED("widgetMacroDeprecated"),
-	ASSIGN_MACRO_DEPRECATED("assignMacroDeprecated"),
-	VAR_ASSIGN_SYNTAX("varMacroAssignSyntax");
-
-	private final String name;
-
-	private HintFactory(String s) {
-		name = s;
+	public static HashMap<String, Boolean> getSettings() {
+		Preferences p = getPreferences();
+		HintFactory[] values = HintFactory.values();
+		
+		HashMap<String, Boolean> settings = new HashMap<String, Boolean>();
+		for(HintFactory hf : values) {
+			settings.put(hf.getName(), p.getBoolean(hf.getName(), true));
+		}
+		
+		return settings;
 	}
 
-	public String getName() {
-		return name;
+	public static void saveSettings(HashMap<String, Boolean> settings) {
+		Preferences p = getPreferences();
+
+		for(Map.Entry<String, Boolean> entry : settings.entrySet()) {
+			p.putBoolean(entry.getKey(), entry.getValue());
+		}
 	}
 
-	public static void add(Document doc, HintFactory name, int start, int length) {
-		if(!HintsSettings.isVisible(name)) {
-			return;
-		}
-		AbstractHint error = null;
-		switch(name) {
-			case VAR_ASSIGN_SYNTAX:
-				error = new VarAssignSyntaxHint(doc, start, length);
-				break;
-			case ASSIGN_MACRO_DEPRECATED:
-				error = new AssignMacroDeprecatedHint(doc, start, length);
-				break;
-			case WIDGET_MACRO_DEPRECATED:
-				error = new WidgetMacroDeprecatedHint(doc, start, length);
-				break;
-		}
-		HintsCollector.getFor(doc).addErrorDescription(error.getErrorDescription());
+	public static boolean isVisible(HintFactory hint) {
+		return getPreferences().getBoolean(hint.getName(), true);
+	}
+
+	private static Preferences getPreferences() {
+		return NbPreferences.forModule(HintsSettings.class);
 	}
 
 }

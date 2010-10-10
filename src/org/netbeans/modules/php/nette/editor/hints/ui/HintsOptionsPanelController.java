@@ -68,7 +68,7 @@ public class HintsOptionsPanelController extends OptionsPanelController {
     }
 
     public HelpCtx getHelpCtx() {
-        return new HelpCtx("netbeans.optionsDialog.pom.hints");
+        return null;
     }
 
     public synchronized JComponent getComponent(Lookup masterLookup) {

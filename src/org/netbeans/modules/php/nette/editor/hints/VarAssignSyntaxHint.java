@@ -44,7 +44,7 @@ import org.openide.util.Exceptions;
  */
 class VarAssignSyntaxHint extends AbstractHint {
 
-	private static final String name = "hint.varMacroAssignSyntax";
+	private static final String name = "varMacroAssignSyntax.hint";
 
 	public VarAssignSyntaxHint(Document doc, int start, int length) {
 		super(doc, start, length);
@@ -59,7 +59,7 @@ class VarAssignSyntaxHint extends AbstractHint {
 
 	private class RemoveAssignFix implements EnhancedFix {
 
-		private static final String name = "hint.varMacroAssignSyntax.fix";
+		private static final String name = "varMacroAssignSyntax.fix";
 
 		public CharSequence getSortText() {
 			return "a";

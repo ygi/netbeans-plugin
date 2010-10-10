@@ -44,7 +44,7 @@ import org.openide.util.Exceptions;
  */
 class AssignMacroDeprecatedHint extends AbstractHint {
 
-	private static final String name = "hint.assignMacroDeprecated";
+	private static final String name = "assignMacroDeprecated.hint";
 
 	public AssignMacroDeprecatedHint(Document doc, int start, int length) {
 		super(doc, start, length);
@@ -59,7 +59,7 @@ class AssignMacroDeprecatedHint extends AbstractHint {
 
 	private class ReplaceFix implements EnhancedFix {
 
-		private static final String name = "hint.assignMacroDeprecated.fix";
+		private static final String name = "assignMacroDeprecated.fix";
 
 		public CharSequence getSortText() {
 			return "a";
