@@ -41,36 +41,43 @@ public class HintsOptionsPanelController extends OptionsPanelController {
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private boolean changed;
 
+	@Override
     public void update() {
         if (panel != null) {
             panel.update();
         }
     }
 
+	@Override
     public void applyChanges() {
         if (isChanged()) {
             panel.applyChanges();
         }
     }
 
+	@Override
     public void cancel() {
         if (panel != null) {
             panel.cancel();
         }
     }
 
+	@Override
     public boolean isValid() {
         return true;
     }
 
+	@Override
     public boolean isChanged() {
         return panel == null ? false : panel.isChanged();
     }
 
+	@Override
     public HelpCtx getHelpCtx() {
         return null;
     }
 
+	@Override
     public synchronized JComponent getComponent(Lookup masterLookup) {
         if (panel == null) {
             panel = new HintsPanel();
@@ -78,10 +85,12 @@ public class HintsOptionsPanelController extends OptionsPanelController {
         return panel;
     }
 
+	@Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
         pcs.addPropertyChangeListener(l);
     }
 
+	@Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
         pcs.removePropertyChangeListener(l);
     }
