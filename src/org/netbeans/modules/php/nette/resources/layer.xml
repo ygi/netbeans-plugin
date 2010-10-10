@@ -75,7 +75,7 @@
         <folder name="Editor">
             <folder name="Hints">
                 <folder name="text">
-                    <folder name="latte-template">
+                    <folder name="x-latte-template">
                         <file name="org.netbeans.modules.php.nette.editor.hints.ui.HintsOptionsPanelController.instance"/>
                     </folder>
                 </folder>
