@@ -114,7 +114,7 @@ public enum LatteTokenId implements TokenId {
 		
         @Override
         protected String mimeType() {
-            return "text/latte";
+            return "text/x-latte";
         }
         
     }.language();

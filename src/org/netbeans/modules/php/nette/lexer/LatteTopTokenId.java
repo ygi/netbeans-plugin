@@ -102,7 +102,7 @@ public enum LatteTopTokenId implements TokenId {
 
         @Override
         protected String mimeType() {
-            return "text/latte-template";
+            return "text/x-latte-template";
         }
     }.language();
 

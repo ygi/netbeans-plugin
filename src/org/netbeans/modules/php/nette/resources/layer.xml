@@ -4,7 +4,7 @@
 
     <folder name="CslPlugins">
         <folder name="text">
-            <folder name="latte-template">
+            <folder name="x-latte-template">
                 <attr name="useCustomEditorKit" boolvalue="false"/>
                 <file name="language.instance">
                     <attr name="instanceClass" stringvalue="org.netbeans.modules.php.nette.gsf.LatteLanguage"/>
@@ -19,7 +19,7 @@
 
     <folder name="Editors">
         <folder name="text">
-            <folder name="latte-template">
+            <folder name="x-latte-template">
 				<!--
                 <file name="language.instance">
                     <attr name="instanceCreate" methodvalue="org.netbeans.modules.php.nette.lexer.LatteTopTokenId.language"/>
@@ -37,7 +37,7 @@
                 <file name="org-netbeans-modules-php-nette-editor-LatteEmbeddingProvider$Factory.instance"/>
             </folder>
 
-            <folder name="latte">
+            <folder name="x-latte">
 				<file name="language.instance">
                     <attr name="instanceCreate" methodvalue="org.netbeans.modules.php.nette.lexer.LatteTopTokenId.language"/>
                     <attr name="instanceOf" stringvalue="org.netbeans.api.lexer.Language"/>
@@ -69,7 +69,7 @@
     <folder name="OptionsDialog">
         <folder name="PreviewExamples">
             <folder name="text">
-				<file name="latte" url="LatteSample.phtml"/>
+				<file name="x-latte" url="LatteSample.phtml"/>
             </folder>
         </folder>
         <folder name="Editor">
@@ -85,7 +85,7 @@
 
     <folder name="Loaders">
         <folder name="text">
-            <folder name="latte-template">
+            <folder name="x-latte-template">
                 <attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/latte_icon.png"/>
                 <folder name="Actions">
                     <file name="org-openide-actions-CopyAction.shadow">

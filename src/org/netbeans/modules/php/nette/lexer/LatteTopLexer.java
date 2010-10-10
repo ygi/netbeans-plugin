@@ -35,7 +35,7 @@ import org.netbeans.spi.lexer.TokenFactory;
 import org.netbeans.spi.lexer.TokenPropertyProvider;
 
 /**
- * Top Lexer for text/latte-template mime-type
+ * Top Lexer for text/x-latte-template mime-type
  * @author Radek Ježdík
  */
 class LatteTopLexer implements Lexer<LatteTopTokenId> {
@@ -117,7 +117,7 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
         }
 
         /**
-         * Top lexer tokenizer for latte-template
+         * Top lexer tokenizer for x-latte-template
          * Parses out macros as LatteTopTokenId.LATTE and other as LatteTopTokenId.HTML
          * (+ started concept for n:attributes)
          * @return LatteTopTokenId

@@ -37,10 +37,10 @@ import org.netbeans.modules.php.nette.editor.LatteBracketCompleter;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 
 /**
- * Registers new language to mime-type text/latte-template for .phtml files
+ * Registers new language to mime-type text/x-latte-template for .phtml files
  * @author Radek Ježdík
  */
-@LanguageRegistration(mimeType="text/latte-template")
+@LanguageRegistration(mimeType="text/x-latte-template")
 public class LatteLanguage extends DefaultLanguageConfig {
 
     @Override
