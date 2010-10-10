@@ -90,7 +90,7 @@ public class AttrMacroProcessor extends MacroProcessor {
 			lengths.add(length);											// add last length
 		}
 
-		embedder.embed("<?php $v");		// $v represents a Html object
+		embedder.embed("<?php v()");		// v() represents a Html object (no variable, it would be added to scope)
 		for (int i = 0; i < lengths.size(); i++) {
 			// the subsequence is empty or whitespace only
 			if(embedder.getSnapshot().getText().subSequence(starts.get(i), starts.get(i) + lengths.get(i)).toString().trim().equals("")) {
