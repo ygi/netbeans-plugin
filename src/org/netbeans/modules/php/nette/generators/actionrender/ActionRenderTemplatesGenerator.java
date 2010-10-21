@@ -27,7 +27,6 @@ package org.netbeans.modules.php.nette.generators.actionrender;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import org.netbeans.modules.php.nette.NetteFramework;
 import org.netbeans.modules.php.nette.utils.EditorUtils;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
@@ -48,17 +47,17 @@ public class ActionRenderTemplatesGenerator {
 	 * Generates templates for passed actions array.
 	 *
 	 * @param actions
-	 * @param presenterName
+	 * @param presenterFileName
 	 * @param templatesDirectory
 	 * @param dottedNotation
 	 */
-	public void generate(Object[] actions, String presenterName, String templatesDirectory, boolean dottedNotation) {
+	public void generate(Object[] actions, String presenterFileName, String templatesDirectory, boolean dottedNotation) {
 		this.actions = actions;
 		
 		if (isTemplateForGeneration()) {
             File templatesDir = null;
             String latteTemplatePrefix = null;
-			presenterName = EditorUtils.firstLetterCapital(presenterName.replaceAll(NetteFramework.NETTE_PRESENTER_EXTENSION, "").replaceFirst("^(.*)_", ""));
+			String presenterName = EditorUtils.extractPresenterName(presenterFileName);
 
             if (dottedNotation) {
                 templatesDir = new File(templatesDirectory);
