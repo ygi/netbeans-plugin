@@ -50,6 +50,7 @@ import org.netbeans.api.lexer.TokenSequence;
 import org.netbeans.modules.parsing.api.Snapshot;
 import org.netbeans.modules.parsing.api.Source;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
+import org.netbeans.modules.php.nette.NetteFramework;
 import org.netbeans.modules.php.nette.editor.completion.items.ControlCompletionItem;
 import org.netbeans.modules.php.nette.editor.LatteParseData;
 import org.netbeans.modules.php.nette.editor.completion.items.PresenterCompletionItem;
@@ -62,7 +63,7 @@ import org.openide.filesystems.FileUtil;
 
 /**
  * Some utils used for editor operations
- * @author Radek Ježdík
+ * @author Radek Ježdík, Ondřej Brejla
  */
 public final class EditorUtils {
 
@@ -486,6 +487,7 @@ public final class EditorUtils {
                 break;
         }
         List<FileObject> fos = getFilesRecursive(fp, new FilenameFilter() {
+			@Override
             public boolean accept(File dir, String name) {
                 return name.startsWith("@") && name.endsWith(".phtml");
             }
@@ -552,6 +554,7 @@ public final class EditorUtils {
             File f = FileUtil.toFile(child);
             if(f.isDirectory()) {
                 File[] folders = f.listFiles(new FileFilter() {
+					@Override
                     public boolean accept(File file) {
                         return file.isDirectory();
                     }
@@ -596,6 +599,12 @@ public final class EditorUtils {
         return th;
     }
 
+	/**
+	 * Returns string with first letter capital.
+	 *
+	 * @param s
+	 * @return
+	 */
 	public static String firstLetterCapital(String s) {
         if (s.length() == 0) {
 			return s;
@@ -604,12 +613,30 @@ public final class EditorUtils {
         return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
 
+	/**
+	 * Returns string with first letter small.
+	 *
+	 * @param s
+	 * @return
+	 */
 	public static String firstLetterSmall(String s) {
 		if (s.length() == 0) {
 			return s;
 		}
 
 		return s.substring(0, 1).toLowerCase() + s.substring(1);
+	}
+
+	/**
+	 * Gets 'Whatever_MyPresenter.php' and returns 'My'.
+	 *
+	 * @param presenterFileName
+	 * @return
+	 */
+	public static String extractPresenterName(String presenterFileName) {
+		String modulePrefixPattern = "^(.*)_";
+		
+		return firstLetterCapital(presenterFileName.replaceAll(NetteFramework.NETTE_PRESENTER_EXTENSION, "").replaceAll("Presenter", "").replaceFirst(modulePrefixPattern, ""));
 	}
 
 }

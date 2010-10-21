@@ -35,18 +35,18 @@ import org.netbeans.modules.php.nette.utils.EditorUtils;
  */
 public class ActionRenderTemplateChecker {
 
-	private String presenterName;
+	private String presenterFileName;
 
 	private String templatesDir;
 
 	/**
 	 * Initializes template checker.
 	 *
-	 * @param presenterName
+	 * @param presenterFileName
 	 * @param templatesDir
 	 */
-	public ActionRenderTemplateChecker(String presenterName, String templatesDir) {
-		this.presenterName = presenterName;
+	public ActionRenderTemplateChecker(String presenterFileName, String templatesDir) {
+		this.presenterFileName = presenterFileName;
 		this.templatesDir = templatesDir;
 	}
 
@@ -67,13 +67,13 @@ public class ActionRenderTemplateChecker {
 	 * @return
 	 */
 	public boolean existsActionTemplate(String action) {
-		presenterName = EditorUtils.firstLetterCapital(presenterName.replaceAll(NetteFramework.NETTE_PRESENTER_EXTENSION, "").replaceFirst("^(.*)_", ""));
+		String presenterName = EditorUtils.extractPresenterName(presenterFileName);
 		action = EditorUtils.firstLetterSmall(action);
 
 		File newTemplateFile = new File(templatesDir + "/" + presenterName + "/" + action + NetteFramework.NETTE_LATTE_TEMPLATE_EXTENSION);
 		File newDottedTemplateFile = new File(templatesDir + "/" + presenterName + "." + action + NetteFramework.NETTE_LATTE_TEMPLATE_EXTENSION);
 
-		return newTemplateFile.exists() || newDottedTemplateFile.exists() ? true : false;
+		return newTemplateFile.exists() || newDottedTemplateFile.exists();
 	}
 
 }

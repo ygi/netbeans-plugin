@@ -98,10 +98,18 @@ public class SpecialMacroProcessor extends  MacroProcessor {
 			embedder.embed(firstStart, firstEnd - firstStart);
 			embedder.embed("\"");
 		}
-		// for other params create array
-		embedder.embed("; array( ");
-		embedder.embed(start, length);
-		embedder.embed(")?>");
+
+		// TODO FAST FIX: Syntax error: {plink Public: class => xxx} #issue2
+		if (macro.equals("plink") || macro.equals("link")) {
+			embedder.embed("; array( \"");
+			embedder.embed(start, length);
+			embedder.embed("\")?>");
+		} else {
+			// for other params create array
+			embedder.embed("; array( ");
+			embedder.embed(start, length);
+			embedder.embed(")?>");
+		}
 	}
 
 	private void createDepracatedHint(Embedder embedder, int start, int length) {
