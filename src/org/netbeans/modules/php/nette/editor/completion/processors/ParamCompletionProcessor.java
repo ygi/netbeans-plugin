@@ -58,7 +58,8 @@ public class ParamCompletionProcessor {
 				String ttext = token2.text().toString();
 				if (ttext.equals("plink") || ttext.equals("link")
 						|| ttext.equals("widget") || ttext.equals("control")
-						|| ttext.equals("extends") || ttext.equals("include"))
+						|| ttext.equals("extends") || ttext.equals("include")
+						|| ttext.equals("syntax"))
 				{
 					String written = "";					// text written to caret pos
 					String whole = "";						// whole text of the param (overwritten by completion)
@@ -101,6 +102,9 @@ public class ParamCompletionProcessor {
 					}
 					if (ok && (ttext.equals("extends") || ttext.equals("include"))) {
 						list.addAll(EditorUtils.parseLayout(document, written, whiteOffset + whiteLength, whole.length()));
+					}
+					if (ok && ttext.equals("syntax")) {
+						list.addAll(EditorUtils.getSyntaxCompletions(written, whiteOffset + whiteLength, whole.length()));
 					}
 				}
 			}

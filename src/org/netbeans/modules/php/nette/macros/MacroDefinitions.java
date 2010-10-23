@@ -69,6 +69,7 @@ public class MacroDefinitions {
         new LatteParamMacro("default", false),
         new LatteParamMacro("var", false),
         new LatteParamMacro("dump", false),
+        new LatteParamMacro("syntax", true),
         new LatteMacro("debugbreak", false),
         new LatteMacro("l", false),
         new LatteMacro("r", false),

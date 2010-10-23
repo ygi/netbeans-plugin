@@ -53,6 +53,7 @@ import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.nette.NetteFramework;
 import org.netbeans.modules.php.nette.editor.completion.items.ControlCompletionItem;
 import org.netbeans.modules.php.nette.editor.LatteParseData;
+import org.netbeans.modules.php.nette.editor.completion.items.BaseCompletionItem;
 import org.netbeans.modules.php.nette.editor.completion.items.PresenterCompletionItem;
 import org.netbeans.modules.php.nette.editor.completion.items.VariableCompletionItem;
 import org.netbeans.modules.php.nette.lexer.LatteTokenId;
@@ -280,6 +281,27 @@ public final class EditorUtils {
         }
         return list;
     }
+
+	/**
+	 * Returns syntax macro param completion (double)
+	 * @return
+	 */
+	public static List<CompletionItem> getSyntaxCompletions(String written, int startOffset, int length) {
+		List<CompletionItem> list = new ArrayList<CompletionItem>();
+		String[] types = { 
+			"latte",
+			"double",
+			"asp",
+			"python",
+			"off"
+		};
+		for(String t : types) {
+			if(t.startsWith(written)) {
+				list.add(new BaseCompletionItem(t, startOffset, startOffset+length));
+			}
+		}
+		return list;
+	}
 
     /**
      * Get context depending variables for Latte template.
