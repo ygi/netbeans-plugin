@@ -214,6 +214,22 @@ class LatteLexer implements Lexer<LatteTokenId> {
 										return LatteTokenId.STRING;
 									}
 								}
+							//inside macro php comment /* */
+							case '/':
+								if(input.read() == '*') {
+									while(true) {
+										int c = input.read();
+										if((c == '*' && input.read() == '/') || c == EOF) {
+											return LatteTokenId.COMMENT;
+										}
+										if(c == '*') {
+											input.backup(1);
+										}
+									}
+								} else {
+									input.backup(1);
+									return LatteTokenId.SLASH;
+								}
 							// number literal
 							case '0': case '1': case '2': case '3': case '4':
 							case '5': case '6': case '7': case '8': case '9':
@@ -241,7 +257,6 @@ class LatteLexer implements Lexer<LatteTokenId> {
 
 							// all other characters
 							case '*': return LatteTokenId.STAR;
-							case '/': return LatteTokenId.SLASH;
 							case '|': return LatteTokenId.PIPE;
 							case ',': return LatteTokenId.COMA;
 							case '(': return LatteTokenId.LNB;
