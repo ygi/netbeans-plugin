@@ -24,7 +24,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-
 package org.netbeans.modules.php.nette.editor.completion.processors;
 
 import java.util.ArrayList;
@@ -45,71 +44,81 @@ public class ParamCompletionProcessor {
 
 	public List<CompletionItem> process(TokenSequence<LatteTopTokenId> sequence, TokenSequence<LatteTokenId> sequence2,
 			Document document, int caretOffset) {
-		
+
 		List<CompletionItem> list = new ArrayList<CompletionItem>();
-		
+
+		String macroName = (String) sequence.token().getProperty("macro");
+		boolean isAttr = (macroName != null);
+
 		sequence2.moveStart();
-		while (sequence2.moveNext()) {
-			Token<LatteTokenId> token2 = sequence2.token();
-			if (sequence2.offset() + sequence.offset() > caretOffset) {
+		while(isAttr || sequence2.moveNext()) {
+			Token<LatteTokenId> token2 = (isAttr ? null : sequence2.token());
+			if(!isAttr && sequence2.offset() + sequence.offset() > caretOffset) {
 				break;
 			}
-			if (token2.id() == LatteTokenId.MACRO) {
-				String ttext = token2.text().toString();
-				if (ttext.equals("plink") || ttext.equals("link")
-						|| ttext.equals("widget") || ttext.equals("control")
-						|| ttext.equals("extends") || ttext.equals("include")
-						|| ttext.equals("syntax"))
-				{
+			if((token2 != null && token2.id() == LatteTokenId.MACRO) || macroName != null) {
+				if(!isAttr) {
+					macroName = token2.text().toString();
+				}
+				if(macroName.equals("plink") || macroName.equals("link")
+						|| macroName.equals("widget") || macroName.equals("control")
+						|| macroName.equals("extends") || macroName.equals("include")
+						|| macroName.equals("syntax")) {
 					String written = "";					// text written to caret pos
 					String whole = "";						// whole text of the param (overwritten by completion)
 
 					int whiteOffset = -1, whiteLength = 0, whiteNum = 0;
 					boolean ok = false;
 
-					while (sequence2.moveNext()) {
+					while(sequence2.moveNext()) {
 						token2 = sequence2.token();
 						//if processing token after caret position just update whole
-						if (sequence2.offset() + sequence.offset() >= caretOffset) {
-							if(token2.id() != LatteTokenId.COLON && token2.id() != LatteTokenId.TEXT)
+						if(sequence2.offset() + sequence.offset() >= caretOffset) {
+							if(token2.id() != LatteTokenId.COLON && token2.id() != LatteTokenId.TEXT) {
 								break;
+							}
 							whole += token2.text();
 						}
 
-						if (whiteNum == 1 && sequence2.offset() + sequence.offset() < caretOffset) {
+						if(isAttr && whiteNum == 0) {
+							whiteNum++;
+							whiteOffset = sequence2.offset() + sequence.offset();
+						}
+						if(whiteNum == 1 && sequence2.offset() + sequence.offset() < caretOffset) {
 							written += token2.text();
 							whole = written;
 							ok = true;
-						} else if (whiteNum > 1) {
+						} else if(whiteNum > 1) {
 							ok = false;
 							break;
 						}
-						
+
 						// counts whitespaces, this completion is used in first param only
-						if (token2.id() == LatteTokenId.WHITESPACE) {
+						if(token2.id() == LatteTokenId.WHITESPACE && !isAttr) {
 							whiteOffset = sequence2.offset() + sequence.offset();
 							whiteLength = token2.length();
 							whiteNum++;
-							if(whiteNum == 1)
+							if(whiteNum == 1) {
 								ok = true;
+							}
 						}
 					}
-					if (ok && (ttext.equals("plink") || ttext.equals("link"))) {
+					if(ok && (macroName.equals("plink") || macroName.equals("link"))) {
 						list.addAll(EditorUtils.parseLink(document, written, whiteOffset + whiteLength, whole.length()));
 					}
-					if (ok && (ttext.equals("widget") || ttext.equals("control"))) {
+					if(ok && (macroName.equals("widget") || macroName.equals("control"))) {
 						list.addAll(EditorUtils.parseControl(document, written, whiteOffset + whiteLength, whole.length()));
 					}
-					if (ok && (ttext.equals("extends") || ttext.equals("include"))) {
+					if(ok && (macroName.equals("extends") || macroName.equals("include"))) {
 						list.addAll(EditorUtils.parseLayout(document, written, whiteOffset + whiteLength, whole.length()));
 					}
-					if (ok && ttext.equals("syntax")) {
-						list.addAll(EditorUtils.getSyntaxCompletions(written, whiteOffset + whiteLength, whole.length()));
+					if(ok && macroName.equals("syntax")) {
+						list.addAll(EditorUtils.getSyntaxCompletions(written.trim(), whiteOffset + whiteLength, whole.length()));
 					}
 				}
+				break;
 			}
 		}
 		return list;
 	}
-
 }

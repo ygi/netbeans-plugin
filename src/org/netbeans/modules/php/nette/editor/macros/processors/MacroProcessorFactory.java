@@ -65,6 +65,7 @@ abstract public class MacroProcessorFactory {
 		blockMacros.add("block");
 		blockMacros.add("snippet");
 		blockMacros.add("capture");
+		blockMacros.add("syntax");
 	};
 
 	private static final List<String> signMacros = new ArrayList<String>();
