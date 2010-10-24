@@ -36,6 +36,12 @@ public enum NeonTokenId implements TokenId {
 	T_INTERPUNCTION(null, "interpunction"),
 	T_NUMBER(null, "number"),
 	T_STRING(null, "string"),
+	T_QUOTATION_MARK(null, "string"),
+	T_APOSTROPHE(null, "string"),
+	T_LEFT_CURLY(null, "interpunction"),
+	T_RIGHT_CURLY(null, "interpunction"),
+	T_LEFT_SQUARED(null, "interpunction"),
+	T_RIGHT_SQUARED(null, "interpunction"),
 	T_LITERAL(null, "literal"),
 	T_OBJECT(null, "object"),
 	T_COMMENT(null, "comment"),
@@ -43,23 +49,9 @@ public enum NeonTokenId implements TokenId {
 	T_VARIABLE(null, "variable"),
 	T_BLOCK(null, "block"),
 	T_KEY(null, "key"),
-
-	T_VALUE(null, "value"),
-	T_ERROR(null, "error"),
-	T_NAME(null, "name"),
-	T_INNER_NAME(null, "innerName"),
-	T_BRACKET(null, "bracket"),
-	T_WHITESPACE(null, "whitespace")/*,
-	T_FALSE_LARGE("FALSE", "keyword"),
-	T_FALSE_SMALL("false", "keyword"),
-	T_TRUE_LARGE("TRUE", "keyword"),
-	T_TRUE_SMALL("true", "keyword"),
-	T_YES_LARGE("YES", "keyword"),
-	T_YES_SMALL("yes", "keyword"),
-	T_NO_LARGE("NO", "keyword"),
-	T_NO_SMALL("no", "keyword"),
-	T_NULL_LARGE("NULL", "keyword"),
-	T_NULL_SMALL("null", "keyword")*/;
+	T_WHITESPACE(null, "whitespace"),
+	T_NEW_LINE(null, "whitespace"),
+	T_ERROR(null, "error");
 
 	private String primaryCategory;
 
