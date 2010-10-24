@@ -47,13 +47,15 @@ class NeonLexer implements Lexer<NeonTokenId> {
 		IN_VALUE,
 		IN_CURLY_ARRAY,
 		IN_SQUARED_ARRAY,
+		IN_ARRAY_KEY,
+		IN_ARRAY_VALUE,
 		IN_VARIABLE,
 		IN_QUOTATION_STRING,
 		IN_APOSTROPHE_STRING
 	}
 
 	public NeonLexer(LexerRestartInfo<NeonTokenId> lri) {
-		scanner = new NeonColoringLexer(lri, (State) lri.state());
+		scanner = new NeonColoringLexer(lri, (NeonLexerState) lri.state());
 		this.tokenFactory = lri.tokenFactory();
 	}
 
@@ -116,21 +118,26 @@ class NeonLexer implements Lexer<NeonTokenId> {
 
 		private final char QUOTATION_MARK = '"';
 
-		private final char COMA = ',';
+		private final char COMMA = ',';
 
 		private final char LT = '<';
 
+		private final char GT = '>';
+
 		private final char DASH = '-';
+
+		private final char DOT = '.';
 		
 		private final String ASSIGN = "=>";
 
-		public NeonColoringLexer(LexerRestartInfo<NeonTokenId> lri, State state) {
+		public NeonColoringLexer(LexerRestartInfo<NeonTokenId> lri, NeonLexerState state) {
 			this.input = lri.input();
 			
 			if (state == null) {
 				this.state = State.IN_KEY;
 			} else {
-				this.state = state;
+				this.state = state.getState();
+				this.previousStates = state.getPreviousStates();
 			}
 		}
 
@@ -153,17 +160,17 @@ class NeonLexer implements Lexer<NeonTokenId> {
 						if (cc == LT) {
 							return NeonTokenId.T_INTERPUNCTION;
 						}
+						if (isPartOfNumber(cc)) {
+							fetchNumber();
+							return NeonTokenId.T_NUMBER;
+						}
 						if (cc != DASH && isPartOfLiteral(cc) && !isPartOfNumber(cc)) {
 							fetchLiteral();
-							if (hasValuePart()) {
+							if (existsValuePart()) {
 								return NeonTokenId.T_KEY;
 							} else {
 								return NeonTokenId.T_BLOCK;
 							}
-						}
-						if (isPartOfNumber(cc)) {
-							fetchNumber();
-							return NeonTokenId.T_NUMBER;
 						}
 						if (cc == HASH) {
 							fetchComment();
@@ -204,13 +211,6 @@ class NeonLexer implements Lexer<NeonTokenId> {
 							fetchComment();
 							return NeonTokenId.T_COMMENT;
 						}
-						if (isKeyword(cc)) {
-							return NeonTokenId.T_KEYWORD;
-						}
-						if (isPartOfLiteral(cc) && !isKeyword(cc)) {
-							fetchLiteral();
-							return NeonTokenId.T_LITERAL;
-						}
 						if (cc == QUOTATION_MARK) {
 							previousStates.push(state);
 							state = State.IN_QUOTATION_STRING;
@@ -241,6 +241,17 @@ class NeonLexer implements Lexer<NeonTokenId> {
 							state = State.IN_KEY;
 							return NeonTokenId.T_NEW_LINE;
 						}
+						if (isKeyword(cc)) {
+							return NeonTokenId.T_KEYWORD;
+						}
+						if (isPartOfNumber(cc)) {
+							fetchNumber();
+							return NeonTokenId.T_NUMBER;
+						}
+						if (isPartOfLiteral(cc) && !isKeyword(cc) && !isPartOfNumber(cc)) {
+							fetchLiteral();
+							return NeonTokenId.T_LITERAL;
+						}
 						return NeonTokenId.T_ERROR;
 					case IN_VARIABLE:
 						if (cc == PERCENTAGE) {
@@ -257,77 +268,159 @@ class NeonLexer implements Lexer<NeonTokenId> {
 					case IN_QUOTATION_STRING:
 						if (cc == QUOTATION_MARK) {
 							State newState = previousStates.pop();
-							previousStates.push(state);
+							//previousStates.push(state);
 							state = newState;
 							return NeonTokenId.T_QUOTATION_MARK;
+						}
+						if (cc == NEW_LINE) {
+							previousStates.push(state);
+							state = State.IN_KEY;
+							return NeonTokenId.T_NEW_LINE;
 						}
 						fetchString(QUOTATION_MARK);
 						return NeonTokenId.T_STRING;
 					case IN_APOSTROPHE_STRING:
 						if (cc == APOSTROPHE) {
 							State newState = previousStates.pop();
-							previousStates.push(state);
+							//previousStates.push(state);
 							state = newState;
 							return NeonTokenId.T_APOSTROPHE;
+						}
+						if (cc == NEW_LINE) {
+							previousStates.push(state);
+							state = State.IN_KEY;
+							return NeonTokenId.T_NEW_LINE;
 						}
 						fetchString(APOSTROPHE);
 						return NeonTokenId.T_STRING;
 					case IN_CURLY_ARRAY:
+					case IN_SQUARED_ARRAY:
+						if (cc == SPACE || cc == TAB) {
+							fetchWhitespace();
+							return NeonTokenId.T_WHITESPACE;
+						}
+						if (cc == NEW_LINE) {
+							previousStates.push(state);
+							state = State.IN_KEY;
+							return NeonTokenId.T_NEW_LINE;
+						}
+						
+						previousStates.push(state);
+						if (existsOnlyKeyPart()) {
+							state = State.IN_ARRAY_KEY;
+						} else {
+							state = State.IN_ARRAY_VALUE;
+						}
+						input.backup(1);
+						break;
+						//return NeonTokenId.T_ERROR;
+					case IN_ARRAY_VALUE:
+						if (cc == SPACE || cc == TAB) {
+							fetchWhitespace();
+							return NeonTokenId.T_WHITESPACE;
+						}
 						if (cc == RIGHT_CURLY) {
 							State newState = previousStates.pop();
-							previousStates.push(state);
 							state = newState;
 							return NeonTokenId.T_RIGHT_CURLY;
+						}
+						if (cc == RIGHT_SQUARED) {
+							State newState = previousStates.pop();
+							state = newState;
+							return NeonTokenId.T_RIGHT_SQUARED;
 						}
 						if (cc == PERCENTAGE) {
 							previousStates.push(state);
 							state = State.IN_VARIABLE;
 							return NeonTokenId.T_VARIABLE;
 						}
-						if (cc == LEFT_CURLY) {
-							return NeonTokenId.T_LEFT_CURLY;
+						if (cc == HASH) {
+							fetchComment();
+							return NeonTokenId.T_COMMENT;
 						}
-						if (cc == LEFT_SQUARED) {
-							return NeonTokenId.T_LEFT_SQUARED;
+						if (cc == QUOTATION_MARK) {
+							//previousStates.push(state);
+							state = State.IN_QUOTATION_STRING;
+							return NeonTokenId.T_QUOTATION_MARK;
 						}
-						if (cc == RIGHT_SQUARED) {
-							return NeonTokenId.T_RIGHT_SQUARED;
+						if (cc == APOSTROPHE) {
+							//previousStates.push(state);
+							state = State.IN_APOSTROPHE_STRING;
+							return NeonTokenId.T_APOSTROPHE;
 						}
-						if (cc == COMA) {
+						if (cc == GT) {
 							return NeonTokenId.T_INTERPUNCTION;
 						}
-						if (cc == SPACE || cc == TAB) {
-							fetchWhitespace();
-							return NeonTokenId.T_WHITESPACE;
+						if (cc == COMMA) {
+							State newState = previousStates.pop();
+							state = newState;
+							return NeonTokenId.T_INTERPUNCTION;
+						}
+						if (cc == NEW_LINE) {
+							previousStates.push(state);
+							state = State.IN_KEY;
+							return NeonTokenId.T_NEW_LINE;
+						}
+						if (isPartOfNumber(cc)) {
+							fetchNumber();
+							return NeonTokenId.T_NUMBER;
+						}
+						if (cc != DASH && isPartOfLiteral(cc) && !isPartOfNumber(cc)) {
+							fetchLiteral();
+							return NeonTokenId.T_LITERAL;
 						}
 						return NeonTokenId.T_ERROR;
-					case IN_SQUARED_ARRAY:
+					case IN_ARRAY_KEY:
+						if (cc == SPACE || cc == TAB) {
+							fetchWhitespace();
+							return NeonTokenId.T_WHITESPACE;
+						}
+						if (cc == RIGHT_CURLY) {
+							State newState = previousStates.pop();
+							state = newState;
+							return NeonTokenId.T_RIGHT_CURLY;
+						}
 						if (cc == RIGHT_SQUARED) {
 							State newState = previousStates.pop();
-							previousStates.push(state);
 							state = newState;
 							return NeonTokenId.T_RIGHT_SQUARED;
+						}
+						if (cc == HASH) {
+							fetchComment();
+							return NeonTokenId.T_COMMENT;
+						}
+						if (cc == QUOTATION_MARK) {
+							previousStates.push(state);
+							state = State.IN_QUOTATION_STRING;
+							return NeonTokenId.T_QUOTATION_MARK;
+						}
+						if (cc == APOSTROPHE) {
+							previousStates.push(state);
+							state = State.IN_APOSTROPHE_STRING;
+							return NeonTokenId.T_APOSTROPHE;
 						}
 						if (cc == PERCENTAGE) {
 							previousStates.push(state);
 							state = State.IN_VARIABLE;
 							return NeonTokenId.T_VARIABLE;
 						}
-						if (cc == LEFT_CURLY) {
-							return NeonTokenId.T_LEFT_CURLY;
+						if (cc == NEW_LINE) {
+							previousStates.push(state);
+							state = State.IN_KEY;
+							return NeonTokenId.T_NEW_LINE;
 						}
-						if (cc == LEFT_SQUARED) {
-							return NeonTokenId.T_LEFT_SQUARED;
-						}
-						if (cc == RIGHT_CURLY) {
-							return NeonTokenId.T_RIGHT_CURLY;
-						}
-						if (cc == COMA) {
+						if (cc == COLON || cc == EQUALS) {
+							//previousStates.push(state);
+							state = State.IN_ARRAY_VALUE;
 							return NeonTokenId.T_INTERPUNCTION;
 						}
-						if (cc == SPACE || cc == TAB) {
-							fetchWhitespace();
-							return NeonTokenId.T_WHITESPACE;
+						if (isPartOfNumber(cc)) {
+							fetchNumber();
+							return NeonTokenId.T_NUMBER;
+						}
+						if (cc != DASH && isPartOfLiteral(cc) && !isPartOfNumber(cc)) {
+							fetchLiteral();
+							return NeonTokenId.T_KEY;
 						}
 						return NeonTokenId.T_ERROR;
 				}
@@ -339,10 +432,15 @@ class NeonLexer implements Lexer<NeonTokenId> {
 		}
 
 		public Object getState() {
-			return new Object();
+			return new NeonLexerState(state, previousStates);
 		}
 
-		private boolean hasValuePart() {
+		/**
+		 * Checks if there exists value part of the block (key): key: value
+		 *
+		 * @return
+		 */
+		private boolean existsValuePart() {
 			char newCh;
 			int counter = 0;
 			boolean result = false;
@@ -351,10 +449,9 @@ class NeonLexer implements Lexer<NeonTokenId> {
 			do {
 				newCh = (char) input.read();
 				counter++;
-
 			} while (newCh != COLON && newCh != NEW_LINE);
-
-			// find whatever except whitespace or comment in value part
+			
+			// find whatever except whitespace, comment or comma in value part
 			do {
 				newCh = (char) input.read();
 				counter++;
@@ -371,34 +468,101 @@ class NeonLexer implements Lexer<NeonTokenId> {
 			return result;
 		}
 
-		private boolean isPartOfNumber(char ch) {
+		/**
+		 * Checks if there is only a key part in array part which is delimited by comma [key: value, whatever...]
+		 *
+		 * @return
+		 */
+		private boolean existsOnlyKeyPart() {
 			char newCh;
 			int counter = 0;
 			boolean result = false;
 
-			if (ch == '-' || Character.isDigit(ch)) {
-				do {
-					newCh = (char) input.read();
-					counter++;
-				} while (Character.isDigit(newCh));
-			}
+			do {
+				newCh = (char) input.read();
+				counter++;
+
+				if (newCh == COLON || newCh == EQUALS) {
+					result = true;
+					break;
+				}
+			} while (newCh != COMMA && newCh != NEW_LINE && newCh != RIGHT_CURLY && newCh != RIGHT_SQUARED && newCh != HASH);
 			input.backup(counter);
 
 			return result;
 		}
 
-		private void fetchNumber() {
+		/**
+		 * Checks if passed character could be part of a number.
+		 *
+		 * @param ch
+		 * @return
+		 */
+		private boolean isPartOfNumber(char ch) {
+			char newCh;
+			char lastCh;
+			int counter = 0;
+			int dots = 0;
+			boolean result = false;
+
+			lastCh = ch;
+
+			if (lastCh == DASH || Character.isDigit(lastCh)) {
+				newCh = (char) input.read();
+				counter++;
+				if (newCh == DOT) {
+					dots++;
+				}
+				while (Character.isDigit(newCh) || (newCh == '.' && lastCh != DASH)) {
+					lastCh = newCh;
+					newCh = (char) input.read();
+					counter++;
+
+					if (newCh == DOT) {
+						dots++;
+						if (dots > 1) {
+							break;
+						}
+					} else if (Character.isWhitespace(newCh) || newCh == COLON || newCh == EQUALS || newCh == COMMA || newCh == RIGHT_CURLY || newCh == RIGHT_SQUARED) {
+						result = true;
+						break;
+					}
+				}
+				
+				input.backup(counter);
+			}
 			
+			return result;
 		}
 
+		/**
+		 * Moves caret to the end of a number.
+		 */
+		private void fetchNumber() {
+			char newCh;
+			do {
+				newCh = (char) input.read();
+			} while (!Character.isWhitespace(newCh) && newCh != COLON && newCh != EQUALS && newCh != COMMA && newCh != RIGHT_CURLY && newCh != RIGHT_SQUARED);
+			input.backup(1);
+		}
+
+		/**
+		 * Checks if passed character could be part of a literal.
+		 *
+		 * @param ch
+		 * @return
+		 */
 		private boolean isPartOfLiteral(char ch) {
-			if (!String.valueOf(ch).matches("[\\!\"\\#\\$\\&'\\(\\)\\*\\+,:;<=>\\?@\\[\\]\\^\\{\\|\\}%]") && ch != SPACE && ch != TAB && ch != NEW_LINE) {
+			if (!String.valueOf(ch).matches("[!#&,:;<=>@%\"\\$\'\\(\\)\\*\\+\\?\\[\\]\\^\\{\\|\\}\\s]")) {
 				return true;
 			}
 
 			return false;
 		}
 
+		/**
+		 * Moves caret to the end of a literal.
+		 */
 		private void fetchLiteral() {
 			char newCh;
 			do {
@@ -407,6 +571,12 @@ class NeonLexer implements Lexer<NeonTokenId> {
 			input.backup(1);
 		}
 
+		/**
+		 * Checks if passed character could be part of a variable.
+		 *
+		 * @param ch
+		 * @return
+		 */
 		private boolean isPartOfVariable(char ch) {
 			if (isPartOfLiteral(ch) && ch != PERCENTAGE) {
 				return true;
@@ -415,14 +585,22 @@ class NeonLexer implements Lexer<NeonTokenId> {
 			return false;
 		}
 
+		/**
+		 * Moves caret to the end of a string (before endMark).
+		 *
+		 * @param endMark
+		 */
 		private void fetchString(char endMark) {
 			char newCh;
 			do {
 				newCh = (char) input.read();
-			} while (newCh != endMark);
+			} while (newCh != endMark && newCh != NEW_LINE);
 			input.backup(1);
 		}
 
+		/**
+		 * Moves caret to the end of a variable (before variable delimiter).
+		 */
 		private void fetchVariable() {
 			char newCh;
 			do {
@@ -431,6 +609,9 @@ class NeonLexer implements Lexer<NeonTokenId> {
 			input.backup(1);
 		}
 
+		/**
+		 * Moves caret to the end of whitespaces.
+		 */
 		private void fetchWhitespace() {
 			char newCh;
 			do {
@@ -439,6 +620,9 @@ class NeonLexer implements Lexer<NeonTokenId> {
 			input.backup(1);
 		}
 
+		/**
+		 * Moves caret to the end of a comment.
+		 */
 		private void fetchComment() {
 			char newCh;
 			do {
@@ -447,6 +631,12 @@ class NeonLexer implements Lexer<NeonTokenId> {
 			input.backup(1);
 		}
 
+		/**
+		 * Checks if passed character is first character of whole keyword.
+		 *
+		 * @param firstLetter
+		 * @return
+		 */
 		private boolean isKeyword(char firstLetter) {
 			if (firstLetter == 'f' || firstLetter == 'F'
 					|| firstLetter == 't' || firstLetter == 'T' || firstLetter == 'y'
@@ -455,13 +645,13 @@ class NeonLexer implements Lexer<NeonTokenId> {
 				int counter = 0;
 				String text = "" + firstLetter;
 
-				while (!Character.isWhitespace(newCh) && newCh != COMA) {
+				while (!Character.isWhitespace(newCh) && newCh != COMMA && newCh != QUOTATION_MARK && newCh != APOSTROPHE) {
 					text += newCh;
 
 					newCh = (char) input.read();
 					counter++;
 				}
-				// exclude last character (whitespace, or comma)
+				// exclude last character (whitespace, comma or string delimiter)
 				input.backup(1);
 
 				for (String keyword : keywords) {
@@ -476,6 +666,27 @@ class NeonLexer implements Lexer<NeonTokenId> {
 
 			return false;
 		}
+	}
+
+	private class NeonLexerState {
+
+		private State state;
+
+		private Stack<State> previousStates;
+
+		public NeonLexerState(State state, Stack<State> previousStates) {
+			this.state = state;
+			this.previousStates = previousStates;
+		}
+
+		public State getState() {
+			return state;
+		}
+
+		public Stack<State> getPreviousStates() {
+			return previousStates;
+		}
+
 	}
 
 	@Override
