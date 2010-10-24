@@ -24,6 +24,7 @@
 
 package org.netbeans.modules.php.nette.languages.neon;
 
+import java.util.Stack;
 import org.netbeans.api.lexer.Token;
 import org.netbeans.spi.lexer.Lexer;
 import org.netbeans.spi.lexer.LexerInput;
@@ -41,24 +42,14 @@ class NeonLexer implements Lexer<NeonTokenId> {
 	private final TokenFactory<NeonTokenId> tokenFactory;
 
 	enum State {
-		OUTER,
-		BRACKET,
-		COMMENT,
-		IN_OBJECT,
-		IN_APOSTROPHE_STRING,
-		IN_QUOTED_STRING,
-		IN_ASSIGNMENT,
-		IN_TEXT,
-		IN_BRACKETS,
-		IN_VARIABLE,
-		IN_NAME,
-		IN_INNER_NAME,
+		IN_BLOCK_TITLE,
+		IN_KEY,
 		IN_VALUE,
-		IN_KEYWORD,
-		NEW_LINE,
-		ERROR,
-		WHITESPACE,
-		KEYWORD
+		IN_CURLY_ARRAY,
+		IN_SQUARED_ARRAY,
+		IN_VARIABLE,
+		IN_QUOTATION_STRING,
+		IN_APOSTROPHE_STRING
 	}
 
 	public NeonLexer(LexerRestartInfo<NeonTokenId> lri) {
@@ -91,262 +82,400 @@ class NeonLexer implements Lexer<NeonTokenId> {
 
 	private class NeonColoringLexer {
 
-		private State nextState;
+		private State state;
 
-		private State currentState;
-
-		private State previousState;
+		private Stack<State> previousStates = new Stack<State>();
 
 		private LexerInput input;
 
 		private String[] keywords = {"true", "false", "yes", "no", "null"};
 
+		private final char EQUALS = '=';
+
+		private final char COLON = ':';
+
+		private final char HASH = '#';
+
+		private final char PERCENTAGE = '%';
+
+		private final char LEFT_CURLY = '{';
+
+		private final char RIGHT_CURLY = '}';
+
+		private final char LEFT_SQUARED = '[';
+
+		private final char RIGHT_SQUARED = ']';
+
+		private final char SPACE = ' ';
+
+		private final char NEW_LINE = '\n';
+
+		private final char TAB = '\t';
+
+		private final char APOSTROPHE = '\'';
+
+		private final char QUOTATION_MARK = '"';
+
+		private final char COMA = ',';
+
+		private final char LT = '<';
+
+		private final char DASH = '-';
+		
+		private final String ASSIGN = "=>";
+
 		public NeonColoringLexer(LexerRestartInfo<NeonTokenId> lri, State state) {
 			this.input = lri.input();
 			
 			if (state == null) {
-				this.previousState = State.IN_NAME;
-				this.currentState = State.IN_NAME;
-				this.nextState = State.IN_NAME;
+				this.state = State.IN_KEY;
 			} else {
-				this.previousState = state;
-				this.currentState = state;
-				this.nextState = state;
+				this.state = state;
 			}
 		}
 
 		public NeonTokenId nextToken() {
-			handleStates();
 			int c = input.read();
 
 			if (c == LexerInput.EOF) {
 				return null;
 			}
 
-			//while (c != LexerInput.EOF) {
+			while (c != LexerInput.EOF) {
 				char cc = (char) c;
 
-				switch (cc) {
-					case ':':
-						setNextState(State.IN_VALUE);
-						break;
-					case '=':
-						setNextState(State.IN_VALUE);
-						break;
-					case '(':
-						setCurrentState(State.BRACKET);
-						setNextState(State.IN_VALUE);
-						break;
-					case ')':
-						setCurrentState(State.BRACKET);
-						setNextState(previousState);
-						break;
-					case '[':
-						setCurrentState(State.BRACKET);
-						setNextState(State.IN_VALUE);
-						break;
-					case ']':
-						setCurrentState(State.BRACKET);
-						setNextState(previousState);
-						break;
-					case '{':
-						setCurrentState(State.BRACKET);
-						setNextState(State.IN_VALUE);
-						break;
-					case '}':
-						setCurrentState(State.BRACKET);
-						setNextState(previousState);
-						break;
-					case '@':
-						setCurrentState(State.IN_OBJECT);
-						break;
-					case ' ':
-						if (!inString() && /*!(*/currentState != State.IN_OBJECT/* || currentState == State.IN_VALUE || currentState == State.IN_BRACKETS)*/) {
-							setCurrentState(State.OUTER);
+				switch (state) {
+					case IN_KEY:
+						if (cc == SPACE || cc == TAB) {
+							fetchWhitespace();
+							return NeonTokenId.T_WHITESPACE;
 						}
-						if (currentState == State.IN_OBJECT/* || currentState == State.IN_VALUE*/) {
-							setCurrentState(State.ERROR);
-							setNextState(previousState);
+						if (cc == LT) {
+							return NeonTokenId.T_INTERPUNCTION;
 						}
-						break;
-					case '\n':
-						setNextState(State.IN_NAME);
-						break;
-					case '\'':
-						if (currentState == State.IN_APOSTROPHE_STRING) {
-							setNextState(previousState);
-						} else {
-							setCurrentState(State.IN_APOSTROPHE_STRING);
-						}
-						break;
-					case '"':
-						if (currentState == State.IN_QUOTED_STRING) {
-							setNextState(previousState);
-						} else {
-							setCurrentState(State.IN_QUOTED_STRING);
-						}
-						break;
-					case '%':
-						if (currentState == State.IN_VARIABLE) {
-							setNextState(previousState);
-						} else {
-							setCurrentState(State.IN_VARIABLE);
-						}
-						break;
-					case ',':
-						setCurrentState(State.OUTER);
-						break;
-					case '\t':
-						setCurrentState(State.OUTER);
-						setNextState(State.IN_INNER_NAME);
-						break;
-					case '#':
-						if (!inString()) {
-							char comCh = ' ';
-							do {
-								comCh = (char) input.read();
-							} while (!Character.valueOf(comCh).equals('\n'));
-							input.backup(1);
-
-							setCurrentState(State.COMMENT);
-						}
-						break;
-					case 'F':
-					case 'f':
-					case 't':
-					case 'T':
-					case 'n':
-					case 'N':
-					case 'y':
-					case 'Y':
-						if (!inString()) {
-							char newCh = (char) input.read();
-							String text = "" + cc;
-
-							while (!Character.isWhitespace(newCh) && !Character.valueOf(newCh).equals(',')) {
-								text += newCh;
-
-								newCh = (char) input.read();
-							}
-							input.backup(1);
-
-							for (String keyword : keywords) {
-								if (text.equals(keyword.toLowerCase()) || text.equals(keyword.toUpperCase())) {
-									setCurrentState(State.KEYWORD);
-									break;
-								}
+						if (cc != DASH && isPartOfLiteral(cc) && !isPartOfNumber(cc)) {
+							fetchLiteral();
+							if (hasValuePart()) {
+								return NeonTokenId.T_KEY;
+							} else {
+								return NeonTokenId.T_BLOCK;
 							}
 						}
-						break;
-				}
-
-				//if (!inString() && currentState != State.IN_NAME && currentState != State.IN_INNER_NAME && currentState != State.IN_BRACKETS && currentState != State.COMMENT && currentState != State.NEW_LINE) {
-				/*
-				if (currentState == State.IN_VALUE) {
-					input.backup(1);
-					char lastChar = (char) input.read();
-					input.read();
-
-					if (Character.valueOf(lastChar).equals(' ')) {
-						setCurrentState(State.ERROR);
-					}
-				}*/
-/*
-				char newCh = (char) input.read();
-				int counter = 1;
-				while (String.valueOf(newCh).matches("[a-zA-Z0-9_$\\:=/]")) {
-					if (newCh == ':' || newCh == '=') {
-						newCh = (char) input.read();
-						counter++;
-						if (newCh != ':') {
-							setNextState(State.IN_NAME);
-							input.backup(counter);
-
-							return NeonTokenId.T_ASSIGNMENT;
+						if (isPartOfNumber(cc)) {
+							fetchNumber();
+							return NeonTokenId.T_NUMBER;
 						}
-					}
-
-					newCh = (char) input.read();
-					counter++;
+						if (cc == HASH) {
+							fetchComment();
+							return NeonTokenId.T_COMMENT;
+						}
+						if (cc == QUOTATION_MARK) {
+							previousStates.push(state);
+							state = State.IN_QUOTATION_STRING;
+							return NeonTokenId.T_QUOTATION_MARK;
+						}
+						if (cc == APOSTROPHE) {
+							previousStates.push(state);
+							state = State.IN_APOSTROPHE_STRING;
+							return NeonTokenId.T_APOSTROPHE;
+						}
+						if (cc == PERCENTAGE) {
+							previousStates.push(state);
+							state = State.IN_VARIABLE;
+							return NeonTokenId.T_VARIABLE;
+						}
+						if (cc == NEW_LINE) {
+							previousStates.push(state);
+							state = State.IN_KEY;
+							return NeonTokenId.T_NEW_LINE;
+						}
+						if (cc == COLON || cc == DASH) {
+							previousStates.push(state);
+							state = State.IN_VALUE;
+							return NeonTokenId.T_INTERPUNCTION;
+						}
+						return NeonTokenId.T_ERROR;
+					case IN_VALUE:
+						if (cc == SPACE || cc == TAB) {
+							fetchWhitespace();
+							return NeonTokenId.T_WHITESPACE;
+						}
+						if (cc == HASH) {
+							fetchComment();
+							return NeonTokenId.T_COMMENT;
+						}
+						if (isKeyword(cc)) {
+							return NeonTokenId.T_KEYWORD;
+						}
+						if (isPartOfLiteral(cc) && !isKeyword(cc)) {
+							fetchLiteral();
+							return NeonTokenId.T_LITERAL;
+						}
+						if (cc == QUOTATION_MARK) {
+							previousStates.push(state);
+							state = State.IN_QUOTATION_STRING;
+							return NeonTokenId.T_QUOTATION_MARK;
+						}
+						if (cc == APOSTROPHE) {
+							previousStates.push(state);
+							state = State.IN_APOSTROPHE_STRING;
+							return NeonTokenId.T_APOSTROPHE;
+						}
+						if (cc == PERCENTAGE) {
+							previousStates.push(state);
+							state = State.IN_VARIABLE;
+							return NeonTokenId.T_VARIABLE;
+						}
+						if (cc == LEFT_CURLY) {
+							previousStates.push(state);
+							state = State.IN_CURLY_ARRAY;
+							return NeonTokenId.T_LEFT_CURLY;
+						}
+						if (cc == LEFT_SQUARED) {
+							previousStates.push(state);
+							state = State.IN_SQUARED_ARRAY;
+							return NeonTokenId.T_LEFT_SQUARED;
+						}
+						if (cc == NEW_LINE) {
+							previousStates.push(state);
+							state = State.IN_KEY;
+							return NeonTokenId.T_NEW_LINE;
+						}
+						return NeonTokenId.T_ERROR;
+					case IN_VARIABLE:
+						if (cc == PERCENTAGE) {
+							State newState = previousStates.pop();
+							//previousStates.push(state);
+							state = newState;
+							return NeonTokenId.T_VARIABLE;
+						}
+						if (isPartOfVariable(cc)) {
+							fetchVariable();
+							return NeonTokenId.T_VARIABLE;
+						}
+						return NeonTokenId.T_ERROR;
+					case IN_QUOTATION_STRING:
+						if (cc == QUOTATION_MARK) {
+							State newState = previousStates.pop();
+							previousStates.push(state);
+							state = newState;
+							return NeonTokenId.T_QUOTATION_MARK;
+						}
+						fetchString(QUOTATION_MARK);
+						return NeonTokenId.T_STRING;
+					case IN_APOSTROPHE_STRING:
+						if (cc == APOSTROPHE) {
+							State newState = previousStates.pop();
+							previousStates.push(state);
+							state = newState;
+							return NeonTokenId.T_APOSTROPHE;
+						}
+						fetchString(APOSTROPHE);
+						return NeonTokenId.T_STRING;
+					case IN_CURLY_ARRAY:
+						if (cc == RIGHT_CURLY) {
+							State newState = previousStates.pop();
+							previousStates.push(state);
+							state = newState;
+							return NeonTokenId.T_RIGHT_CURLY;
+						}
+						if (cc == PERCENTAGE) {
+							previousStates.push(state);
+							state = State.IN_VARIABLE;
+							return NeonTokenId.T_VARIABLE;
+						}
+						if (cc == LEFT_CURLY) {
+							return NeonTokenId.T_LEFT_CURLY;
+						}
+						if (cc == LEFT_SQUARED) {
+							return NeonTokenId.T_LEFT_SQUARED;
+						}
+						if (cc == RIGHT_SQUARED) {
+							return NeonTokenId.T_RIGHT_SQUARED;
+						}
+						if (cc == COMA) {
+							return NeonTokenId.T_INTERPUNCTION;
+						}
+						if (cc == SPACE || cc == TAB) {
+							fetchWhitespace();
+							return NeonTokenId.T_WHITESPACE;
+						}
+						return NeonTokenId.T_ERROR;
+					case IN_SQUARED_ARRAY:
+						if (cc == RIGHT_SQUARED) {
+							State newState = previousStates.pop();
+							previousStates.push(state);
+							state = newState;
+							return NeonTokenId.T_RIGHT_SQUARED;
+						}
+						if (cc == PERCENTAGE) {
+							previousStates.push(state);
+							state = State.IN_VARIABLE;
+							return NeonTokenId.T_VARIABLE;
+						}
+						if (cc == LEFT_CURLY) {
+							return NeonTokenId.T_LEFT_CURLY;
+						}
+						if (cc == LEFT_SQUARED) {
+							return NeonTokenId.T_LEFT_SQUARED;
+						}
+						if (cc == RIGHT_CURLY) {
+							return NeonTokenId.T_RIGHT_CURLY;
+						}
+						if (cc == COMA) {
+							return NeonTokenId.T_INTERPUNCTION;
+						}
+						if (cc == SPACE || cc == TAB) {
+							fetchWhitespace();
+							return NeonTokenId.T_WHITESPACE;
+						}
+						return NeonTokenId.T_ERROR;
 				}
-				input.backup(counter);
-*/
 
-				return handleToken();
-
-				//c = input.read();
-			//}
+				c = input.read();
+			}
 			
-			//return NeonTokenId.T_ERROR;
+			return NeonTokenId.T_ERROR;
 		}
 
 		public Object getState() {
 			return new Object();
 		}
 
-		private boolean inString() {
-			return currentState == State.IN_APOSTROPHE_STRING || currentState == State.IN_QUOTED_STRING;
+		private boolean hasValuePart() {
+			char newCh;
+			int counter = 0;
+			boolean result = false;
+
+			// fetch 'key' part
+			do {
+				newCh = (char) input.read();
+				counter++;
+
+			} while (newCh != COLON && newCh != NEW_LINE);
+
+			// find whatever except whitespace or comment in value part
+			do {
+				newCh = (char) input.read();
+				counter++;
+
+				if (newCh == HASH) {
+					break;
+				} else if (!Character.isWhitespace(newCh)) {
+					result = true;
+					break;
+				}
+			} while (Character.isWhitespace(newCh) && newCh != NEW_LINE);
+			input.backup(counter);
+			
+			return result;
 		}
 
-		private NeonTokenId handleToken() {
-			switch (currentState) {
-				case NEW_LINE:
-				case IN_NAME:
-					return NeonTokenId.T_NAME;
-				case IN_INNER_NAME:
-					return NeonTokenId.T_INNER_NAME;
-				case IN_VALUE:
-				case IN_BRACKETS:
-					return NeonTokenId.T_VALUE;
-				case BRACKET:
-					return NeonTokenId.T_BRACKET;
-				case COMMENT:
-					return NeonTokenId.T_COMMENT;
-				case IN_APOSTROPHE_STRING:
-				case IN_QUOTED_STRING:
-					return NeonTokenId.T_STRING;
-				case IN_OBJECT:
-					return NeonTokenId.T_OBJECT;
-				case IN_VARIABLE:
-					return NeonTokenId.T_VARIABLE;
-				case KEYWORD:
-				case IN_KEYWORD:
-					return NeonTokenId.T_KEYWORD;
-				case OUTER:
-					return NeonTokenId.T_WHITESPACE;
-				case ERROR:
-					return NeonTokenId.T_ERROR;
-				default:
-					return NeonTokenId.T_ERROR;
+		private boolean isPartOfNumber(char ch) {
+			char newCh;
+			int counter = 0;
+			boolean result = false;
+
+			if (ch == '-' || Character.isDigit(ch)) {
+				do {
+					newCh = (char) input.read();
+					counter++;
+				} while (Character.isDigit(newCh));
 			}
+			input.backup(counter);
+
+			return result;
 		}
 
-		private void handleStates() {
-			if (currentState != nextState) {
-				previousState = currentState;
-				currentState = nextState;
+		private void fetchNumber() {
+			
+		}
+
+		private boolean isPartOfLiteral(char ch) {
+			if (!String.valueOf(ch).matches("[\\!\"\\#\\$\\&'\\(\\)\\*\\+,:;<=>\\?@\\[\\]\\^\\{\\|\\}%]") && ch != SPACE && ch != TAB && ch != NEW_LINE) {
+				return true;
 			}
 
-			if ((currentState == State.OUTER || currentState == State.BRACKET || currentState == State.KEYWORD)
-					&& previousState != State.IN_KEYWORD && previousState != State.IN_OBJECT) {
-				currentState = previousState;
+			return false;
+		}
+
+		private void fetchLiteral() {
+			char newCh;
+			do {
+				newCh = (char) input.read();
+			} while (isPartOfLiteral(newCh));
+			input.backup(1);
+		}
+
+		private boolean isPartOfVariable(char ch) {
+			if (isPartOfLiteral(ch) && ch != PERCENTAGE) {
+				return true;
 			}
+
+			return false;
 		}
 
-		private void setPreviousState(State previousState) {
-			this.previousState = previousState;
+		private void fetchString(char endMark) {
+			char newCh;
+			do {
+				newCh = (char) input.read();
+			} while (newCh != endMark);
+			input.backup(1);
 		}
 
-		private void setCurrentState(State currentState) {
-			setPreviousState(this.currentState);
-			this.currentState = currentState;
-			setNextState(currentState);
+		private void fetchVariable() {
+			char newCh;
+			do {
+				newCh = (char) input.read();
+			} while (isPartOfLiteral(newCh));
+			input.backup(1);
 		}
 
-		private void setNextState(State nextState) {
-			this.nextState = nextState;
+		private void fetchWhitespace() {
+			char newCh;
+			do {
+				newCh = (char) input.read();
+			} while (newCh == SPACE || newCh == TAB);
+			input.backup(1);
 		}
 
+		private void fetchComment() {
+			char newCh;
+			do {
+				newCh = (char) input.read();
+			} while (newCh != NEW_LINE);
+			input.backup(1);
+		}
+
+		private boolean isKeyword(char firstLetter) {
+			if (firstLetter == 'f' || firstLetter == 'F'
+					|| firstLetter == 't' || firstLetter == 'T' || firstLetter == 'y'
+					|| firstLetter == 'Y' || firstLetter == 'n' || firstLetter == 'N') {
+				char newCh = (char) input.read();
+				int counter = 0;
+				String text = "" + firstLetter;
+
+				while (!Character.isWhitespace(newCh) && newCh != COMA) {
+					text += newCh;
+
+					newCh = (char) input.read();
+					counter++;
+				}
+				// exclude last character (whitespace, or comma)
+				input.backup(1);
+
+				for (String keyword : keywords) {
+					if (text.equals(keyword.toLowerCase()) || text.equals(keyword.toUpperCase())) {
+						return true;
+					}
+				}
+
+				// it's not a keyword, so rollback to the beginning of whole string
+				input.backup(counter);
+			}
+
+			return false;
+		}
 	}
 
 	@Override
