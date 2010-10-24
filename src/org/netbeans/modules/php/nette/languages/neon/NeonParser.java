@@ -36,7 +36,6 @@ import org.netbeans.modules.parsing.api.Task;
 import org.netbeans.modules.parsing.spi.ParseException;
 import org.netbeans.modules.parsing.spi.Parser;
 import org.netbeans.modules.parsing.spi.SourceModificationEvent;
-import org.netbeans.modules.php.nette.languages.neon.NeonTokenId;
 
 /**
  *
@@ -59,7 +58,7 @@ public class NeonParser extends Parser {
 			Token t = ts.token();
 			TokenId id = t.id();
 			if (id == NeonTokenId.T_ERROR) {
-				lastResult.addError(new DefaultError(null, "Syntax error, unexpected whitespace.", null, snpsht.getSource().getFileObject(), t.offset(hi), t.length(), Severity.ERROR));
+				lastResult.addError(new DefaultError(null, "Syntax error.", null, snpsht.getSource().getFileObject(), t.offset(hi), t.length(), Severity.ERROR));
 			}
 		}
 	}
