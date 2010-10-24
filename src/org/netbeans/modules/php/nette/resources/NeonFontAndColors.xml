@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE fontscolors PUBLIC "-//NetBeans//DTD Editor Fonts and Colors settings 1.1//EN" "http://www.netbeans.org/dtds/EditorFontsColors-1_1.dtd">
 <fontscolors>
-	<fontcolor name="block" default="separator" foreColor="509A05">
+	<!--<fontcolor name="block" default="separator" foreColor="509A05">
+		<font style="bold"/>
+    </fontcolor>-->
+	<fontcolor name="block" default="separator" foreColor="09097C">
 		<font style="bold"/>
     </fontcolor>
 	<fontcolor name="comment" default="comment" />
 	<fontcolor name="object" default="identifier" foreColor="magenta" />
 	<fontcolor name="variable" default="identifier" foreColor="EE7700" />
     <fontcolor name="keyword" default="keyword"/>
-    <fontcolor name="string" default="string" foreColor="00AA00" />
+    <!--<fontcolor name="string" default="string" foreColor="00AA00" />-->
+	<fontcolor name="string" default="string" foreColor="EE7700" />
 	<fontcolor name="literal" default="identifier" />
 	<fontcolor name="key" default="identifier" foreColor="09097C" />
     <fontcolor name="whitespace" default="whitespace" />
