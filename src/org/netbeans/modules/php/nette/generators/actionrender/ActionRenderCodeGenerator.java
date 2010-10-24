@@ -55,6 +55,7 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 
 	public static class Factory implements CodeGenerator.Factory {
 
+		@Override
 		public List<? extends CodeGenerator> create(Lookup context) {
 			return Collections.singletonList(new ActionRenderCodeGenerator(context));
 		}
@@ -63,6 +64,7 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	/**
 	 * The name which will be inserted inside Insert Code dialog
 	 */
+	@Override
 	public String getDisplayName() {
 		return "Add action and/or render method...";
 	}
@@ -71,6 +73,7 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	 * This will be invoked when user chooses this Generator from Insert Code
 	 * dialog
 	 */
+	@Override
 	public void invoke() {
 		if (processDialog()) {
 			ActionRenderMethodsGenerator armg = new ActionRenderMethodsGenerator();
@@ -120,8 +123,9 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	 */
 	private String getPresenterDir() {
         String presenterPath = getPresenterFile().getPath();
+		String separator = File.separator.equals("\\") ? "\\\\" : File.separator;
 		
-		return presenterPath.replaceAll("/" + getPresenterFile().getName(), "");
+		return presenterPath.replaceAll(separator + getPresenterFile().getName(), "");
 	}
 
 }
