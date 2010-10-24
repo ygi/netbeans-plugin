@@ -67,12 +67,12 @@
                     <attr name="instanceCreate" methodvalue="org.netbeans.modules.php.nette.languages.neon.NeonTokenId.getLanguage"/>
                     <attr name="instanceOf" stringvalue="org.netbeans.api.lexer.Language"/>
                 </file>
-				<attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.lexer.Bundle"/>
+				<attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.languages.neon.Bundle"/>
 				<folder name="FontsColors">
 					<folder name="NetBeans">
                         <folder name="Defaults">
                             <file name="org-netbeans-modules-php-nette-resources-NeonFontAndColors.xml" url="NeonFontAndColors.xml">
-                                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.lexer.Bundle"/>
+                                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.languages.neon.Bundle"/>
                             </file>
                         </folder>
                     </folder>
@@ -163,6 +163,7 @@
                 </folder>
             </folder>
             <folder name="x-neon">
+				<attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/neon_icon.png"/>
                 <folder name="Actions">
                     <file name="org-openide-actions-CopyAction.shadow">
                         <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-CopyAction.instance"/>
@@ -286,8 +287,10 @@
             </file>
 			<file name="NeonTemplate.neon" url="NeonTemplate.neon">
                 <attr name="displayName" bundlevalue="org.netbeans.modules.php.nette.resources.Bundle#Templates/Nette-Framework/NeonTemplate.neon"/>
+				<attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/neon_icon.png"/>
                 <attr name="template" boolvalue="true"/>
 				<attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.resources.Bundle"/>
+				<attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/neon_icon.png"/>
 				<attr name="position" intvalue="400"/>
 				<attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/NeonDescription.html"/>
             </file>
