@@ -13,6 +13,6 @@
 	<fontcolor name="key" default="identifier" foreColor="09097C" />
     <fontcolor name="whitespace" default="whitespace" />
     <fontcolor name="interpunction" default="separator" foreColor="red" />
-	<fontcolor name="number" default="number" foreColor="orange" />
+	<fontcolor name="number" default="number" foreColor="B20000" />
 	<fontcolor name="error" default="error" />
 </fontscolors>
