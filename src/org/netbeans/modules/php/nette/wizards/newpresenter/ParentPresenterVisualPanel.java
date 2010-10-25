@@ -31,13 +31,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 
 public final class ParentPresenterVisualPanel extends JPanel implements DocumentListener {
 
     private ParentPresenterWizardPanel panel;
 
-    private ImageIcon errorIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/error_icon.png"));
+	private ImageIcon errorIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/php/nette/resources/error_icon.png", true);
 
     /** Creates new form NewPresenterVisualPanel2 */
     public ParentPresenterVisualPanel(ParentPresenterWizardPanel panel) {

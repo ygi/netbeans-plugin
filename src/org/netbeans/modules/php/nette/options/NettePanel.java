@@ -32,13 +32,14 @@ import javax.swing.JFileChooser;
 import org.netbeans.modules.php.nette.validators.NetteEmptyPathValidator;
 import org.netbeans.modules.php.nette.validators.NetteLoaderPathValidator;
 import org.netbeans.modules.php.nette.validators.Validable;
+import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 
 final class NettePanel extends javax.swing.JPanel {
 
 	private final NetteOptionsPanelController controller;
 
-	private ImageIcon errorIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/error_icon.png"));
+	private ImageIcon errorIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/php/nette/resources/error_icon.png", true);
 
 	NettePanel(NetteOptionsPanelController controller) {
 		this.controller = controller;

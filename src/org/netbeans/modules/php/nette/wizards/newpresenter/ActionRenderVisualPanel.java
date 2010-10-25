@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import org.netbeans.modules.php.nette.generators.actionrender.ActionRenderMethodChecker;
 import org.openide.util.Exceptions;
+import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 
 /**
@@ -48,7 +49,7 @@ public final class ActionRenderVisualPanel extends JPanel {
 
     private DefaultTableModel tableModel;
 
-    private ImageIcon warningIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/warning_icon.png"));
+	private ImageIcon warningIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/php/nette/resources/warning_icon.png", true);
 
 	private ActionRenderMethodChecker methodChecker;
 
