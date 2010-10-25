@@ -224,6 +224,7 @@
                 </folder>
                 <folder name="Factories">
                     <file name="NeonDataLoader.instance">
+						<attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/neon_icon.png"/>
                         <attr name="dataObjectClass" stringvalue="org.netbeans.modules.php.nette.languages.neon.NeonDataObject"/>
                         <attr name="instanceCreate" methodvalue="org.openide.loaders.DataLoaderPool.factory"/>
                         <attr name="mimeType" stringvalue="text/x-neon"/>
