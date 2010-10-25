@@ -106,7 +106,7 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
             return set;
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
-            throw new ExtendingException("Something's wrong");
+            throw new ExtendingException(ex.getMessage());
         }
     }
 

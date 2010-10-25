@@ -33,6 +33,7 @@ package org.netbeans.modules.php.nette.validators;
  */
 public class NetteEmptyPathValidator implements Validable {
 
+	@Override
 	public boolean validate(Object object) {
 		String path = (String) object;
 

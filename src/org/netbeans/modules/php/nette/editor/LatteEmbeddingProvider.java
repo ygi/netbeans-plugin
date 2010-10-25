@@ -39,7 +39,6 @@ import org.netbeans.modules.parsing.spi.SchedulerTask;
 import org.netbeans.modules.parsing.spi.TaskFactory;
 import org.netbeans.modules.php.nette.editor.hints.HintsCollector;
 import org.netbeans.modules.php.nette.lexer.LatteTokenId;
-import org.netbeans.spi.editor.hints.HintsController;
 
 /**
  * Provides embedded languages for HTML or LATTE tokens (language is denoted by mime-type)

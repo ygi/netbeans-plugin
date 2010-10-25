@@ -59,6 +59,7 @@ public class LatteBracesMatching implements BracesMatcher {
         this.context = context;
     }
 
+	@Override
     public int[] findOrigin() throws InterruptedException, BadLocationException {
 		// hac
         int searchOffset = context.isSearchingBackward() ? context.getSearchOffset() : context.getSearchOffset() + 1;
@@ -114,6 +115,7 @@ public class LatteBracesMatching implements BracesMatcher {
         return null;
     }
 
+	@Override
     public int[] findMatches() throws InterruptedException, BadLocationException {
         try {
 			// hack

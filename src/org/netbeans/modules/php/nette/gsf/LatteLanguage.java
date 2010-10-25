@@ -35,6 +35,7 @@ import org.netbeans.modules.csl.spi.LanguageRegistration;
 import org.netbeans.modules.parsing.spi.Parser;
 import org.netbeans.modules.php.nette.editor.LatteBracketCompleter;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
+import org.openide.util.NbBundle;
 
 /**
  * Registers new language to mime-type text/x-latte-template for .phtml files
@@ -51,7 +52,7 @@ public class LatteLanguage extends DefaultLanguageConfig {
 
     @Override
     public String getDisplayName() {
-        return "Latte Template"; //NOI18N
+        return NbBundle.getMessage(LatteLanguage.class, "TXT_latte_template_language"); //NOI18N
     }
 
     @Override

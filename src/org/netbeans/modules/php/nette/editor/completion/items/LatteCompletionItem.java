@@ -60,6 +60,7 @@ public class LatteCompletionItem implements CompletionItem {
         this.caretOffset = caretOffset;
     }
 
+	@Override
     public void defaultAction(JTextComponent jtc) {
         try {
             StyledDocument doc = (StyledDocument) jtc.getDocument();
@@ -71,40 +72,49 @@ public class LatteCompletionItem implements CompletionItem {
         }
     }
 
+	@Override
     public void processKeyEvent(KeyEvent ke) {
 
     }
 
+	@Override
     public int getPreferredWidth(Graphics grphcs, Font font) {
         return CompletionUtilities.getPreferredWidth(macro.getText(), null, grphcs, font);
     }
 
+	@Override
     public void render(Graphics grphcs, Font font, Color color, Color color1, int width, int height, boolean selected) {
         CompletionUtilities.renderHtml(null, macro.getText(), null, grphcs, font,
             (selected ? Color.white : fieldColor), width, height, selected);
     }
 
+	@Override
     public CompletionTask createDocumentationTask() {
         return null;
     }
 
+	@Override
     public CompletionTask createToolTipTask() {
         return null;
     }
 
+	@Override
     public boolean instantSubstitution(JTextComponent jtc) {
         defaultAction(jtc);
         return true;
     }
 
+	@Override
     public int getSortPriority() {
         return 0;
     }
 
+	@Override
     public CharSequence getSortText() {
         return macro.getText();
     }
 
+	@Override
     public CharSequence getInsertPrefix() {
         return macro.getText();
     }

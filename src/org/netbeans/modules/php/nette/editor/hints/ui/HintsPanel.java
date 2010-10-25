@@ -55,6 +55,7 @@ final class HintsPanel extends javax.swing.JPanel {
 			chbox.setName(entry.getKey());
 			chbox.setSelected(b);
 			chbox.addActionListener(new java.awt.event.ActionListener() {
+				@Override
 				public void actionPerformed(java.awt.event.ActionEvent evt) {
 					checkboxClicked(evt);
 				}

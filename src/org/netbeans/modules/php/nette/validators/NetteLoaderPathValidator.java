@@ -35,6 +35,7 @@ import java.io.File;
  */
 public class NetteLoaderPathValidator implements Validable {
 
+	@Override
 	public boolean validate(Object object) {
 		String path = (String) object;
 

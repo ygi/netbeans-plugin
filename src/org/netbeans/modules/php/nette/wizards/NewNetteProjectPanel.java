@@ -40,6 +40,7 @@ import org.netbeans.modules.php.nette.validators.NetteEmptyPathValidator;
 import org.netbeans.modules.php.nette.validators.NetteLoaderPathValidator;
 import org.netbeans.modules.php.nette.validators.Validable;
 import org.openide.util.ChangeSupport;
+import org.openide.util.NbBundle;
 
 /**
  *
@@ -131,13 +132,13 @@ public class NewNetteProjectPanel extends javax.swing.JPanel {
 			Validable emptyPathValidator = new NetteEmptyPathValidator();
 
 			if (emptyPathValidator.validate(NetteOptions.getInstance().getNettePath())) {
-				return "Nette directory is not set. Use Options to set a valid Nette directory.";
+				return NbBundle.getMessage(NewNetteProjectPanel.class, "ERR_no_nette_directory");
 			}
 
 			Validable loaderPathValidator = new NetteLoaderPathValidator();
 
 			if (!loaderPathValidator.validate(NetteOptions.getInstance().getNettePath())) {
-				return "Nette files were not found in the specified folder. Use Options to set a valid Nette folder.";
+				return NbBundle.getMessage(NewNetteProjectPanel.class, "ERR_no_nette_files");
 			}
 		}
 

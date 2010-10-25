@@ -24,20 +24,15 @@
 
 package org.netbeans.modules.php.nette.editor.hints;
 
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.text.Document;
 import javax.swing.text.Position;
-import org.netbeans.spi.editor.hints.ChangeInfo;
 import org.netbeans.spi.editor.hints.ErrorDescription;
 import org.netbeans.spi.editor.hints.ErrorDescriptionFactory;
-import org.netbeans.spi.editor.hints.Fix;
 import org.netbeans.spi.editor.hints.HintsController;
-import org.netbeans.spi.editor.hints.LazyFixList;
 import org.netbeans.spi.editor.hints.Severity;
-import org.openide.filesystems.FileObject;
 import org.openide.util.NbBundle;
 
 /**
@@ -96,6 +91,7 @@ public class HintsCollector {
 
 	private Position createPosition(final int pos) {
 		return new Position() {
+			@Override
 			public int getOffset() {
 				return pos;
 			}

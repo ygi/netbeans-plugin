@@ -34,6 +34,7 @@ import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.util.Lookup;
+import org.openide.util.NbBundle;
 
 /**
  * 
@@ -44,6 +45,8 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	JTextComponent textComp;
 	
 	private ActionRenderVisualPanel panel;
+
+	private String name = "TXT_ActionRender_code_generator_name";
 	
 	/**
 	 *
@@ -66,7 +69,7 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	 */
 	@Override
 	public String getDisplayName() {
-		return "Add action and/or render method...";
+		return NbBundle.getMessage(ActionRenderCodeGenerator.class, name);
 	}
 
 	/**
@@ -96,7 +99,7 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 		panel.setMethodChecker(methodChecker);
 		panel.setPresentersDirectory(getPresenterDir());
 
-		DialogDescriptor dd = new DialogDescriptor(panel, "Add action and/or render method...", true, DialogDescriptor.OK_CANCEL_OPTION, DialogDescriptor.OK_OPTION, null);
+		DialogDescriptor dd = new DialogDescriptor(panel, NbBundle.getMessage(ActionRenderCodeGenerator.class, name), true, DialogDescriptor.OK_CANCEL_OPTION, DialogDescriptor.OK_OPTION, null);
 
 		Object result = DialogDisplayer.getDefault().notify(dd);
 

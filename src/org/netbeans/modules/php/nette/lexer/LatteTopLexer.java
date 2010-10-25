@@ -67,6 +67,7 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
      * Tokenizes passed input. Returns Token created with LatteTopTokenId
      * @return Token<LatteTopTokenId>
      */
+	@Override
     public Token<LatteTopTokenId> nextToken() {
         LatteTopTokenId tokenId = scanner.nextToken();
         Token<LatteTopTokenId> token = null;
@@ -82,10 +83,12 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
         return token;
     }
 
+	@Override
     public Object state() {
         return scanner.getState();
     }
 
+	@Override
     public void release() {
 
     }
@@ -369,6 +372,7 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
             property = prop;
         }
 
+		@Override
         public Object getValue(Token token, Object key) {
             if("macro".equals(key))
                 return property;

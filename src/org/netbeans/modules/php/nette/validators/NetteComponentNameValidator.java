@@ -33,6 +33,7 @@ package org.netbeans.modules.php.nette.validators;
  */
 public class NetteComponentNameValidator implements Validable {
 
+	@Override
 	public boolean validate(Object object) {
 		String name = (String) object;
 

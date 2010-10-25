@@ -27,8 +27,6 @@
 
 package org.netbeans.modules.php.nette.editor.resolvers;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.netbeans.api.lexer.Token;
@@ -51,6 +49,7 @@ public class LatteResolver extends TemplateResolver {
 		super(embedder);
 	}
 
+	@Override
 	public void solve(Token t, TokenSequence<LatteTopTokenId> sequence) {
 		String props = (String) t.getProperty("macro");								// get macro if it exists
 
@@ -84,7 +83,6 @@ public class LatteResolver extends TemplateResolver {
 				setMacroName(null);
 				continue;
 			}
-			macro = macro;
 
 			int start = sequence2.offset() + sequence.offset();
 			if (!macro.equals("")) {

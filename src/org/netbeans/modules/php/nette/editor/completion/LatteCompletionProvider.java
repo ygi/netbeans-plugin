@@ -67,6 +67,7 @@ public class LatteCompletionProvider implements CompletionProvider {
 	 */
 	private String autoShowText;
 
+	@Override
 	public CompletionTask createTask(int type, JTextComponent jtc) {
 
 		if(type != CompletionProvider.COMPLETION_QUERY_TYPE) {
@@ -75,6 +76,7 @@ public class LatteCompletionProvider implements CompletionProvider {
 
 		return new AsyncCompletionTask(new AsyncCompletionQuery() {
 
+			@Override
 			protected void query(CompletionResultSet completionResultSet, Document document, int caretOffset) {
 				TokenSequence<LatteTopTokenId> sequence = LexUtils.getTopSequence(document);
 
@@ -111,6 +113,7 @@ public class LatteCompletionProvider implements CompletionProvider {
 	 * @param written text
 	 * @return
 	 */
+	@Override
 	public int getAutoQueryTypes(JTextComponent jtc, String string) {
 		if(string.equals(":") && autoShowText != null) {
 			autoShowText += string;

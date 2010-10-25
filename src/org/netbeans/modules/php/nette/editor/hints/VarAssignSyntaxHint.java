@@ -61,14 +61,17 @@ class VarAssignSyntaxHint extends AbstractHint {
 
 		private static final String name = "varMacroAssignSyntax.fix";
 
+		@Override
 		public CharSequence getSortText() {
 			return "a";
 		}
 
+		@Override
 		public String getText() {
 			return AbstractHint.getDescription(name);
 		}
 
+		@Override
 		public ChangeInfo implement() throws Exception {
 			String text = doc.getText(start, length);
 			//fixme
@@ -76,6 +79,7 @@ class VarAssignSyntaxHint extends AbstractHint {
 			
 			final BaseDocument bdoc = (BaseDocument) doc;
 			bdoc.runAtomic(new Runnable() {
+				@Override
 				public void run() {
 					try {
 						bdoc.remove(start, length);

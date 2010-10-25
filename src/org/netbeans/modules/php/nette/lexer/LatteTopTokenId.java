@@ -65,6 +65,7 @@ public enum LatteTopTokenId implements TokenId {
         return fixedText;
     }
 
+	@Override
     public String primaryCategory() {
         return primaryCategory;
     }
