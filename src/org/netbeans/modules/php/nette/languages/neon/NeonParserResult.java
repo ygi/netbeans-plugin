@@ -45,7 +45,7 @@ public class NeonParserResult extends ParserResult {
 	}
 
 	@Override
-	public List<? extends Error> getDiagnostics() {
+	public synchronized List<? extends Error> getDiagnostics() {
 		return Collections.unmodifiableList(errors);
 	}
 
