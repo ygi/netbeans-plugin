@@ -38,6 +38,7 @@ import org.netbeans.modules.parsing.spi.ParseException;
 import org.netbeans.modules.parsing.spi.Parser;
 import org.netbeans.modules.parsing.spi.SourceModificationEvent;
 import org.openide.filesystems.FileObject;
+import org.openide.util.NbBundle;
 
 /**
  *
@@ -55,6 +56,7 @@ public class NeonParser extends Parser {
 		//StringBuilder sb = new StringBuilder();
 		TokenHierarchy hi = TokenHierarchy.create(source, NeonTokenId.getLanguage());
 		TokenSequence ts = hi.tokenSequence();
+		String errMsg = NbBundle.getMessage(NeonParser.class, "ERR_unexpected_character");
 
 		while (ts.moveNext()) {
 			Token t = ts.token();
@@ -62,8 +64,8 @@ public class NeonParser extends Parser {
 			if (id == NeonTokenId.T_ERROR) {
 				lastResult.addError(new NeonBadgingError(
 						null,
-						"Syntax error, unexpected character.",
-						"Syntax error, unexpected character.",
+						errMsg,
+						errMsg,
 						snpsht.getSource().getFileObject(),
 						ts.offset(),
 						ts.offset() + t.length(),
