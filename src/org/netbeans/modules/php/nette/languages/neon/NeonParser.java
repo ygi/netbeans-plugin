@@ -29,6 +29,7 @@ import org.netbeans.api.lexer.Token;
 import org.netbeans.api.lexer.TokenHierarchy;
 import org.netbeans.api.lexer.TokenId;
 import org.netbeans.api.lexer.TokenSequence;
+import org.netbeans.modules.csl.api.Error.Badging;
 import org.netbeans.modules.csl.api.Severity;
 import org.netbeans.modules.csl.spi.DefaultError;
 import org.netbeans.modules.parsing.api.Snapshot;
@@ -36,6 +37,7 @@ import org.netbeans.modules.parsing.api.Task;
 import org.netbeans.modules.parsing.spi.ParseException;
 import org.netbeans.modules.parsing.spi.Parser;
 import org.netbeans.modules.parsing.spi.SourceModificationEvent;
+import org.openide.filesystems.FileObject;
 
 /**
  *
@@ -50,7 +52,7 @@ public class NeonParser extends Parser {
 		String source = asString(snpsht.getText());
 		lastResult = new NeonParserResult(snpsht);
 
-		StringBuilder sb = new StringBuilder();
+		//StringBuilder sb = new StringBuilder();
 		TokenHierarchy hi = TokenHierarchy.create(source, NeonTokenId.getLanguage());
 		TokenSequence ts = hi.tokenSequence();
 
@@ -58,7 +60,15 @@ public class NeonParser extends Parser {
 			Token t = ts.token();
 			TokenId id = t.id();
 			if (id == NeonTokenId.T_ERROR) {
-				lastResult.addError(new DefaultError(null, "Syntax error.", null, snpsht.getSource().getFileObject(), t.offset(hi), t.length(), Severity.ERROR));
+				lastResult.addError(new NeonBadgingError(
+						null,
+						"Syntax error, unexpected character.",
+						"Syntax error, unexpected character.",
+						snpsht.getSource().getFileObject(),
+						ts.offset(),
+						ts.offset() + t.length(),
+						//true /* not line error */,
+						Severity.ERROR));
 			}
 		}
 	}
@@ -89,6 +99,23 @@ public class NeonParser extends Parser {
 		} else {
 			return sequence.toString();
 		}
+	}
+
+	private class NeonBadgingError extends DefaultError implements Badging {
+
+		public NeonBadgingError(String string, String string1, String string2, FileObject fo, int i, int i1, boolean bln, Severity svrt) {
+			super(string, string1, string2, fo, i, i1, bln, svrt);
+		}
+
+		public NeonBadgingError(String string, String string1, String string2, FileObject fo, int i, int i1, Severity svrt) {
+			super(string, string1, string2, fo, i, i1, svrt);
+		}
+
+		@Override
+		public boolean showExplorerBadge() {
+			return true;
+		}
+
 	}
 
 }
