@@ -73,7 +73,6 @@ public class LatteResolver extends TemplateResolver {
 				endMacro = true;
 			}
 
-			// todo: parse latte doc only on few first comments (to improve performance)
 			if(t2.id() == LatteTokenId.COMMENT) {
 				String comment = t2.text().toString();
 				parseLatteDoc(comment);
