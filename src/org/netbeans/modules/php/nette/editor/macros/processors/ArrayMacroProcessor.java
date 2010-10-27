@@ -53,7 +53,7 @@ public class ArrayMacroProcessor extends MacroProcessor {
 		String var = "";									// stores var name and var value
 
 		if(macro.equals("assign")) {
-			createDeprecatedHint(embedder, sequence.offset() + 1, "assign".length()); // '{' INTETIONALLY WEIRD COMMENT
+			createDeprecatedHint(embedder, sequence.offset() + 1, "assign".length()); // +1 <=> '{'
 		}
 
 		do {
