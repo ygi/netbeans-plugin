@@ -34,7 +34,8 @@ public enum HintFactory {
 
 	WIDGET_MACRO_DEPRECATED("widgetMacroDeprecated"),
 	ASSIGN_MACRO_DEPRECATED("assignMacroDeprecated"),
-	VAR_ASSIGN_SYNTAX("varMacroAssignSyntax");
+	VAR_ASSIGN_SYNTAX("varMacroAssignSyntax"),
+	PHP_ARRAY_SYNTAX("phpArraySyntax");
 
 	private final String name;
 
@@ -60,6 +61,9 @@ public enum HintFactory {
 				break;
 			case WIDGET_MACRO_DEPRECATED:
 				error = new WidgetMacroDeprecatedHint(doc, start, length);
+				break;
+			case PHP_ARRAY_SYNTAX:
+				error = new PhpArraySyntaxHint(doc, start, length);
 				break;
 		}
 		HintsCollector.getFor(doc).addErrorDescription(error.getErrorDescription());
