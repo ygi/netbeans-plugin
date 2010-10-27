@@ -38,6 +38,7 @@ import org.netbeans.modules.parsing.api.Snapshot;
 import org.netbeans.modules.php.api.util.FileUtils;
 import org.netbeans.modules.php.nette.editor.resolvers.TemplateResolver;
 import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
+import org.netbeans.modules.php.nette.utils.SyntaxUtils;
 
 /**
  *
@@ -72,6 +73,7 @@ public class TemplateEmbedder extends Embedder {
 			Token t = sequence.token();
 			if(t.id() == LatteTopTokenId.LATTE) {
 				latteResolver.solve(t, sequence);										// deals with all latte macros
+				SyntaxUtils.findArrayForHint(getSnapshot().getSource().getDocument(false), sequence);
 			} else {
 				htmlPhpResolver.solve(t, sequence);
 			}

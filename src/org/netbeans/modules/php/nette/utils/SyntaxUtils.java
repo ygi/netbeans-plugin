@@ -25,12 +25,54 @@
 package org.netbeans.modules.php.nette.utils;
 
 import java.util.concurrent.atomic.AtomicReference;
+import javax.swing.text.Document;
+import org.netbeans.api.lexer.Token;
+import org.netbeans.api.lexer.TokenHierarchy;
+import org.netbeans.api.lexer.TokenSequence;
+import org.netbeans.modules.php.nette.editor.hints.HintFactory;
+import org.netbeans.modules.php.nette.lexer.LatteTokenId;
+import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
 
 /**
  * 
  * @author Radek Ježdík
  */
-public class MacroSyntaxUtils {
+public class SyntaxUtils {
+
+	/**
+	 * Searches for PHP array() syntax and creates hint if found
+	 * @param doc
+	 * @param sequence
+	 */
+	public static void findArrayForHint(Document doc, TokenSequence<LatteTopTokenId> sequence) {
+		Token<LatteTopTokenId> token = sequence.token();
+
+		// inside macro completion
+		TokenHierarchy<CharSequence> th2 = TokenHierarchy.create(token.text(), LatteTokenId.language());
+		TokenSequence<LatteTokenId> sequence2 = th2.tokenSequence(LatteTokenId.language());
+
+		sequence2.moveStart();
+		int nested = 0;
+		boolean array = false;
+		int start = 0;
+		while(sequence2.moveNext()) {
+			Token<LatteTokenId> t = sequence2.token();
+			if(!array && t.id() == LatteTokenId.KEYWORD && t.text().toString().toLowerCase().equals("array")) {
+				array = true;
+				start = sequence2.offset() + sequence.offset();
+			}
+			if(t.id() == LatteTokenId.LNB && array) {
+				nested++;
+			}
+			if(t.id() == LatteTokenId.RNB && array) {
+				nested--;
+				if(nested == 0) {
+					array = false;
+					HintFactory.add(doc, HintFactory.PHP_ARRAY_SYNTAX, start, sequence2.offset() + t.length() - start);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Translates short array syntax ([s,s]) and short ternary operator ($x ? $y) to full php
