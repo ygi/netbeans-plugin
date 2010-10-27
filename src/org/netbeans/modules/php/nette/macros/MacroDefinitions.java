@@ -78,6 +78,11 @@ public class MacroDefinitions {
         new LatteMacro("sep", true),
     };
 
+	public static LatteMacro[] nAttrs = {
+        new LatteParamMacro("href", true),
+        new LatteParamMacro("class", true),
+    };
+
 	/**
 	 * Defines friend macros of some block macros
 	 */

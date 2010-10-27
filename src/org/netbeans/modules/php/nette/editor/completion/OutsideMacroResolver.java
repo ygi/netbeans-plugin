@@ -123,6 +123,14 @@ public class OutsideMacroResolver {
 				list.add(new MacroCompletionItem(tag, startOffset, caretOffset, true));
 			}
 		}
+
+		for(LatteMacro macro : MacroDefinitions.nAttrs) {
+			String tag = "n:" + macro.getMacroName();
+			if(tag.startsWith(filter)) {
+				list.add(new MacroCompletionItem(tag, startOffset, caretOffset, true));
+			}
+		}
+		
 		return list;
 	}
 
