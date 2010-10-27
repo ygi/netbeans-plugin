@@ -88,10 +88,12 @@ public class ArrayMacroProcessor extends MacroProcessor {
 					state = 2;
 					var = "";												// where value will be stored
 				}
-				if (t2.id() == LatteTokenId.LNB) {							// left bracket found (count it)
+				// left bracket or brace found (count it)
+				if (t2.id() == LatteTokenId.LNB || t2.id() == LatteTokenId.LB) {
 					numOfBrackets++;
 				}
-				if (t2.id() == LatteTokenId.RNB) {							// right bracket found (remove it)
+				// right bracket or brace found (remove it)
+				if (t2.id() == LatteTokenId.RNB || t2.id() == LatteTokenId.RB) {
 					numOfBrackets--;
 				}
 				if (t2.id() == LatteTokenId.RD								// right delim } found
