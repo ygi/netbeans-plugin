@@ -16,7 +16,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="tabPanel" alignment="0" pref="743" max="32767" attributes="0"/>
+          <Component id="tabPanel" alignment="0" max="32767" attributes="0"/>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="registerInConstructorCheckBox" min="-2" max="-2" attributes="0"/>
@@ -24,7 +24,7 @@
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="errorLabel" pref="719" max="32767" attributes="0"/>
+              <Component id="errorLabel" pref="721" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -77,16 +77,16 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel3" min="-2" pref="81" max="-2" attributes="1"/>
-                                  <Component id="jLabel4" alignment="0" pref="81" max="32767" attributes="1"/>
+                                  <Component id="jLabel4" alignment="0" pref="83" max="32767" attributes="1"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
-                                      <Component id="formClass" pref="508" max="32767" attributes="0"/>
+                                      <Component id="formClass" pref="510" max="32767" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="useAppFormCheckBox" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="formName" pref="614" max="32767" attributes="0"/>
+                                  <Component id="formName" pref="618" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -103,7 +103,7 @@
                           <Component id="formClass" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="useAppFormCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="10" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="formName" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
@@ -206,8 +206,8 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="componentName" pref="575" max="32767" attributes="1"/>
-                          <Component id="componentClass" alignment="1" pref="575" max="32767" attributes="1"/>
+                          <Component id="componentName" pref="581" max="32767" attributes="1"/>
+                          <Component id="componentClass" alignment="1" pref="581" max="32767" attributes="1"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -226,7 +226,7 @@
                           <Component id="jLabel1" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                           <Component id="componentName" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="43" max="32767" attributes="0"/>
+                      <EmptySpace pref="49" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

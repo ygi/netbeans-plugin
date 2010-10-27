@@ -90,6 +90,7 @@ public enum LatteTokenId implements TokenId {
         return fixedText;
     }
 
+	@Override
     public String primaryCategory() {
         return primaryCategory;
     }

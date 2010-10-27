@@ -40,6 +40,8 @@ import org.netbeans.modules.php.nette.validators.NetteClassNameValidator;
 import org.netbeans.modules.php.nette.validators.NetteComponentNameValidator;
 import org.netbeans.modules.php.nette.validators.Validable;
 import org.openide.DialogDescriptor;
+import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 
 /**
  *
@@ -49,7 +51,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 
 	private DialogDescriptor dd;
 
-	private ImageIcon errorIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/error_icon.png"));
+	private ImageIcon errorIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/php/nette/resources/error_icon.png", true);
 
     /** Creates new form CreateComponentGeneratorPanel */
     public CreateComponentGeneratorPanel() {
@@ -341,12 +343,12 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 		if (isFormTabSelected()) {
 			if (!classNameValidator.validate(getFormClass())) {
 				errorLabel.setIcon(errorIcon);
-				setWarningText("Form class");
+				setWarningText(NbBundle.getMessage(CreateComponentGeneratorPanel.class, "ERR_head_form_class"));
 				
 				dd.setValid(false);
 			} else if (!componentNameValidator.validate(getFormName())) {
 				errorLabel.setIcon(errorIcon);
-				setWarningText("Form name");
+				setWarningText(NbBundle.getMessage(CreateComponentGeneratorPanel.class, "ERR_head_form_name"));
 
 				dd.setValid(false);
 			} else {
@@ -358,12 +360,12 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 		} else {
 			if (!classNameValidator.validate(getComponentClass())) {
 				errorLabel.setIcon(errorIcon);
-				setWarningText("Component class");
+				setWarningText(NbBundle.getMessage(CreateComponentGeneratorPanel.class, "ERR_head_component_class"));
 
 				dd.setValid(false);
 			} else if (!componentNameValidator.validate(getComponentName())) {
 				errorLabel.setIcon(errorIcon);
-				setWarningText("Component name");
+				setWarningText(NbBundle.getMessage(CreateComponentGeneratorPanel.class, "ERR_head_component_name"));
 
 				dd.setValid(false);
 			} else {
@@ -376,7 +378,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 	}
 
 	private void setWarningText(String text) {
-		errorLabel.setText(text + " must be non-empty alphanumeric string.");
+		errorLabel.setText(text + " " + NbBundle.getMessage(CreateComponentGeneratorPanel.class, "ERR_tail"));
 	}
 
 }

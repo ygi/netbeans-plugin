@@ -42,6 +42,7 @@ public class HtmlPhpResolver extends TemplateResolver {
 		super(embedder);
 	}
 
+	@Override
 	public void solve(Token t, TokenSequence<LatteTopTokenId> sequence) {
 		if (t.id() == LatteTopTokenId.HTML_TAG || t.id() == LatteTopTokenId.LATTE_TAG) {
 			String tag = t.text().toString();

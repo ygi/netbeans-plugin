@@ -73,6 +73,7 @@ class LatteLexer implements Lexer<LatteTokenId> {
      * Calls tokenizer and creates Token by token factory
      * @return Token<LatteTokenId>
      */
+	@Override
     public Token<LatteTokenId> nextToken() {
         LatteTokenId tokenId = scanner.nextToken();
 
@@ -317,6 +318,7 @@ class LatteLexer implements Lexer<LatteTokenId> {
      * Returns state in which the lexer ended in current tokenizing
      * @return State
      */
+	@Override
     public Object state() {
         return state;
     }
@@ -360,6 +362,7 @@ class LatteLexer implements Lexer<LatteTokenId> {
             : tokenFactory.createToken(id);
     }
 
+	@Override
     public void release() {
 		// intentionally
     }

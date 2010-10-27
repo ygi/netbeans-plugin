@@ -25,6 +25,7 @@
 package org.netbeans.modules.php.nette.generators.actionrender;
 
 import org.netbeans.modules.php.nette.wizards.newpresenter.ActionRenderTableModel;
+import org.openide.util.NbBundle;
 
 /**
  *
@@ -37,7 +38,10 @@ public class ActionRenderCodeGeneratorTableModel extends ActionRenderTableModel 
 	public ActionRenderCodeGeneratorTableModel(ActionRenderMethodChecker methodChecker) {
         super(
             null,
-            new String [] {"Action name:", "action<action>()", "render<action>()", "gen. template"}
+            new String [] {NbBundle.getMessage(ActionRenderCodeGeneratorTableModel.class, "TXT_action_name"),
+					"action<action>()",
+					"render<action>()",
+					NbBundle.getMessage(ActionRenderCodeGeneratorTableModel.class, "TXT_generate_template")}
         );
 
 		this.methodChecker = methodChecker;

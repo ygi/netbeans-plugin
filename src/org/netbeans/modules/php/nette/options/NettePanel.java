@@ -32,12 +32,14 @@ import javax.swing.JFileChooser;
 import org.netbeans.modules.php.nette.validators.NetteEmptyPathValidator;
 import org.netbeans.modules.php.nette.validators.NetteLoaderPathValidator;
 import org.netbeans.modules.php.nette.validators.Validable;
+import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 
 final class NettePanel extends javax.swing.JPanel {
 
 	private final NetteOptionsPanelController controller;
 
-	private ImageIcon errorIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/error_icon.png"));
+	private ImageIcon errorIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/php/nette/resources/error_icon.png", true);
 
 	NettePanel(NetteOptionsPanelController controller) {
 		this.controller = controller;
@@ -172,7 +174,7 @@ final class NettePanel extends javax.swing.JPanel {
 		}
 
 		errorLabel.setIcon(errorIcon);
-		errorLabel.setText("Selected folder is not a valid Nette folder (loader.php was not found). Use a valid folder or let it empty.");
+		errorLabel.setText(NbBundle.getMessage(NettePanel.class, "ERR_invalid_nette_folder"));
 
 		return false;
 	}

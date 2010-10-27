@@ -38,6 +38,7 @@ import org.netbeans.modules.php.spi.phpmodule.PhpFrameworkProvider;
 import org.netbeans.modules.php.spi.phpmodule.PhpModuleActionsExtender;
 import org.netbeans.modules.php.spi.phpmodule.PhpModuleExtender;
 import org.netbeans.modules.php.spi.phpmodule.PhpModuleIgnoredFilesExtender;
+import org.openide.util.NbBundle;
 
 /**
  *
@@ -48,7 +49,8 @@ public class NettePhpFrameworkProvider extends PhpFrameworkProvider {
     private static final NettePhpFrameworkProvider INSTANCE = new NettePhpFrameworkProvider();
 
     public NettePhpFrameworkProvider() {
-        super("Nette Framework", "Nette Framework is a powerful PHP framework.");
+		super(NbBundle.getMessage(NettePhpFrameworkProvider.class, "OpenIDE-Module-Name"), 
+				NbBundle.getMessage(NettePhpFrameworkProvider.class, "OpenIDE-Module-Short-Description"));
     }
     
     public static NettePhpFrameworkProvider getInstance() {

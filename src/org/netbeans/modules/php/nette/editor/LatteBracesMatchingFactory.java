@@ -43,10 +43,12 @@ import org.netbeans.spi.editor.bracesmatching.MatcherContext;
  */
 public class LatteBracesMatchingFactory implements BracesMatcherFactory {
 
+	@Override
     public BracesMatcher createMatcher(final MatcherContext context) {
         final LatteBracesMatching[] ret = {null};
         context.getDocument().render(new Runnable() {
 
+			@Override
             public void run() {
                 TokenHierarchy<Document> hierarchy = TokenHierarchy.get(context.getDocument());
 

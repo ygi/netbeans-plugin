@@ -61,17 +61,21 @@ class WidgetMacroDeprecatedHint extends AbstractHint {
 
 		private static final String name = "widgetMacroDeprecated.fix";
 
+		@Override
 		public CharSequence getSortText() {
 			return "a";
 		}
 
+		@Override
 		public String getText() {
 			return AbstractHint.getDescription(name);
 		}
 
+		@Override
 		public ChangeInfo implement() throws Exception {
 			final BaseDocument bdoc = (BaseDocument) doc;
 			bdoc.runAtomic(new Runnable() {
+				@Override
 				public void run() {
 					try {
 						bdoc.remove(start, "widget".length());

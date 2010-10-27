@@ -46,10 +46,12 @@ import org.openide.util.Exceptions;
  */
 public class LatteFormatter implements Formatter {
 
+	@Override
     public void reformat(Context context, ParserResult pr) {
 
     }
 
+	@Override
     public void reindent(Context context) {
         try {
             int lineStart = context.lineStartOffset(context.caretOffset());
@@ -76,14 +78,17 @@ public class LatteFormatter implements Formatter {
         }
     }
 
+	@Override
     public boolean needsParserResult() {
         return false;
     }
 
+	@Override
     public int indentSize() {
         return 4;
     }
 
+	@Override
     public int hangingIndentSize() {
         return 4;
     }

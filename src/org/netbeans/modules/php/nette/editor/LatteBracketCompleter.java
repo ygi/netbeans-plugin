@@ -46,6 +46,7 @@ import org.netbeans.modules.php.nette.lexer.LatteTopTokenId;
  */
 public class LatteBracketCompleter implements KeystrokeHandler {
 
+	@Override
 	public boolean beforeCharInserted(Document doc, int i, JTextComponent jtc, char ch)
 			throws BadLocationException {
 		if(!isCompletable(ch))
@@ -66,6 +67,7 @@ public class LatteBracketCompleter implements KeystrokeHandler {
 		return true;
 	}
 
+	@Override
 	public boolean charBackspaced(Document doc, int i, JTextComponent jtc, char ch)
 			throws BadLocationException {
 		if(!isCompletable(ch))
@@ -90,24 +92,29 @@ public class LatteBracketCompleter implements KeystrokeHandler {
 		return false;
 	}
 
+	@Override
 	public boolean afterCharInserted(Document doc, int i, JTextComponent jtc, char ch)
 			throws BadLocationException {
 		return false;
 	}
 
+	@Override
 	public int beforeBreak(Document doc, int i, JTextComponent jtc)
 			throws BadLocationException {
 		return -1;
 	}
 
+	@Override
 	public OffsetRange findMatching(Document doc, int i) {
 		return OffsetRange.NONE;
 	}
 
+	@Override
 	public List<OffsetRange> findLogicalRanges(ParserResult pr, int i) {
 		return new ArrayList<OffsetRange>();
 	}
 
+	@Override
 	public int getNextWordOffset(Document doc, int i, boolean bln) {
 		return -1;
 	}

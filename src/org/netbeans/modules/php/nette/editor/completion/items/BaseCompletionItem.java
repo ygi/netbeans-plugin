@@ -63,6 +63,7 @@ public class BaseCompletionItem implements CompletionItem {
 	 * 
 	 * @param jtc
 	 */
+	@Override
     public void defaultAction(JTextComponent jtc) {
         try {
             StyledDocument doc = (StyledDocument) jtc.getDocument();
@@ -74,6 +75,7 @@ public class BaseCompletionItem implements CompletionItem {
         }
     }
 
+	@Override
     public void processKeyEvent(KeyEvent ke) {
         // nothing? why? who?
     }
@@ -84,6 +86,7 @@ public class BaseCompletionItem implements CompletionItem {
 	 * @param font
 	 * @return 
 	 */
+	@Override
     public int getPreferredWidth(Graphics grphcs, Font font) {
         String s = text.replace("<", "&lt;").replace("\"", "&quot;");
         return CompletionUtilities.getPreferredWidth(s, null, grphcs, font);
@@ -99,16 +102,19 @@ public class BaseCompletionItem implements CompletionItem {
 	 * @param height
 	 * @param selected
 	 */
+	@Override
     public void render(Graphics grphcs, Font font, Color color, Color color1, int width, int height, boolean selected) {
 		String s = text.replace("<", "&lt;").replace("\"", "&quot;");
         CompletionUtilities.renderHtml(null, s, null, grphcs, font,
             (selected ? Color.white : fieldColor), width, height, selected);
     }
 
+	@Override
     public CompletionTask createDocumentationTask() {
         return null;
     }
 
+	@Override
     public CompletionTask createToolTipTask() {
         return null;
     }
@@ -118,20 +124,24 @@ public class BaseCompletionItem implements CompletionItem {
 	 * @param jtc
 	 * @return
 	 */
+	@Override
     public boolean instantSubstitution(JTextComponent jtc) {
         defaultAction(jtc);
         return true;
     }
 
 	// lower number = higher priority in completion box
+	@Override
     public int getSortPriority() {
         return 0;
     }
 
+	@Override
     public CharSequence getSortText() {
         return text;
     }
 
+	@Override
     public CharSequence getInsertPrefix() {
         return text;
     }

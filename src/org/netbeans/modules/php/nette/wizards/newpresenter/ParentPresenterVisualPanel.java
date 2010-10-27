@@ -31,12 +31,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 
 public final class ParentPresenterVisualPanel extends JPanel implements DocumentListener {
 
     private ParentPresenterWizardPanel panel;
 
-    private ImageIcon errorIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/error_icon.png"));
+	private ImageIcon errorIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/php/nette/resources/error_icon.png", true);
 
     /** Creates new form NewPresenterVisualPanel2 */
     public ParentPresenterVisualPanel(ParentPresenterWizardPanel panel) {
@@ -48,7 +50,7 @@ public final class ParentPresenterVisualPanel extends JPanel implements Document
 
     @Override
     public String getName() {
-        return "Parent Presenter";
+        return NbBundle.getMessage(ParentPresenterVisualPanel.class, "TXT_parentpresenter_visual_panel_name");
     }
 
     /** This method is called from within the constructor to
@@ -100,7 +102,7 @@ public final class ParentPresenterVisualPanel extends JPanel implements Document
 
     private void parentPresenterTextFieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_parentPresenterTextFieldCaretUpdate
         if (!validateParentPresenter()) {
-            showError("Parent Presenter class name is not aplhanumeric string.");
+            showError(NbBundle.getMessage(ParentPresenterVisualPanel.class, "ERR_invalid_presenter_class_name"));
         } else {
             hideError();
         }
@@ -131,14 +133,17 @@ public final class ParentPresenterVisualPanel extends JPanel implements Document
     private javax.swing.JTextField parentPresenterTextField;
     // End of variables declaration//GEN-END:variables
 
+	@Override
     public void insertUpdate(DocumentEvent e) {
         panel.fireChangeEvent();
     }
 
+	@Override
     public void removeUpdate(DocumentEvent e) {
         panel.fireChangeEvent();
     }
 
+	@Override
     public void changedUpdate(DocumentEvent e) {
         panel.fireChangeEvent();
     }

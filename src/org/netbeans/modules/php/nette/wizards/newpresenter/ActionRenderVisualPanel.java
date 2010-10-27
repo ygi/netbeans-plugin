@@ -37,6 +37,8 @@ import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import org.netbeans.modules.php.nette.generators.actionrender.ActionRenderMethodChecker;
 import org.openide.util.Exceptions;
+import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 
 /**
  * Panel for adding action and/or render methods and for generating their templates.
@@ -47,7 +49,7 @@ public final class ActionRenderVisualPanel extends JPanel {
 
     private DefaultTableModel tableModel;
 
-    private ImageIcon warningIcon = new ImageIcon(getClass().getResource("/org/netbeans/modules/php/nette/resources/warning_icon.png"));
+	private ImageIcon warningIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/php/nette/resources/warning_icon.png", true);
 
 	private ActionRenderMethodChecker methodChecker;
 
@@ -62,7 +64,7 @@ public final class ActionRenderVisualPanel extends JPanel {
 
     @Override
     public String getName() {
-        return "Action and Render";
+        return NbBundle.getMessage(ActionRenderVisualPanel.class, "TXT_actionrender_visual_panel_name");
     }
 
 	/**
@@ -317,12 +319,18 @@ public final class ActionRenderVisualPanel extends JPanel {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int row = actionTable.getSelectedRow();
         if (row != -1) {
-            int result = JOptionPane.showConfirmDialog(this, "Do you really want to delete this action row?", "Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(this, 
+					NbBundle.getMessage(ActionRenderVisualPanel.class, "TXT_delete_row_confirm_text"),
+					NbBundle.getMessage(ActionRenderVisualPanel.class, "TXT_delete_row_confirm_title"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (result == JOptionPane.YES_OPTION) {
                 tableModel.removeRow(row);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "You must select an action row before you can delete it.", "No row selected", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+					NbBundle.getMessage(ActionRenderVisualPanel.class, "TXT_no_action_selected_text"),
+					NbBundle.getMessage(ActionRenderVisualPanel.class, "TXT_no_action_selected_title"),
+					JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -373,7 +381,7 @@ public final class ActionRenderVisualPanel extends JPanel {
             return true;
         }
 
-        showWarning("Action name is not aplhanumeric string.");
+        showWarning(NbBundle.getMessage(ActionRenderVisualPanel.class, "WRN_invalid_action_format"));
 
         return false;
     }
@@ -389,7 +397,7 @@ public final class ActionRenderVisualPanel extends JPanel {
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             oldAction = (String) tableModel.getValueAt(i, 0);
             if (oldAction.equals(newAction)) {
-                showWarning("Action with this name already exists.");
+                showWarning(NbBundle.getMessage(ActionRenderVisualPanel.class, "WRN_action_exists"));
                 
                 return true;
             }
@@ -397,7 +405,7 @@ public final class ActionRenderVisualPanel extends JPanel {
 
 		if (methodChecker != null) {
 			if (methodChecker.existsActionMethod(newAction) && methodChecker.existsRenderMethod(newAction)) {
-				showWarning("Action and render method for this action already exist.");
+				showWarning(NbBundle.getMessage(ActionRenderVisualPanel.class, "WRN_action_render_method_exists"));
 
                 return true;
 			}

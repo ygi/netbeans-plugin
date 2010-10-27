@@ -28,6 +28,7 @@
 package org.netbeans.modules.php.nette.wizards.newpresenter;
 
 import javax.swing.table.DefaultTableModel;
+import org.openide.util.NbBundle;
 
 /**
  *
@@ -48,7 +49,10 @@ public class ActionRenderTableModel extends DefaultTableModel {
             new Object [][] {
                 {"default", true, true, true}
             },
-            new String [] {"Action name:", "action<action>()", "render<action>()", "gen. template"}
+            new String [] {NbBundle.getMessage(ActionRenderTableModel.class, "TXT_action_name"),
+					"action<action>()",
+					"render<action>()",
+					NbBundle.getMessage(ActionRenderTableModel.class, "TXT_generate_template")}
         );
     }
 

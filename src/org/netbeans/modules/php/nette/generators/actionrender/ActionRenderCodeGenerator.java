@@ -34,6 +34,7 @@ import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.util.Lookup;
+import org.openide.util.NbBundle;
 
 /**
  * 
@@ -44,6 +45,8 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	JTextComponent textComp;
 	
 	private ActionRenderVisualPanel panel;
+
+	private String name = "TXT_ActionRender_code_generator_name";
 	
 	/**
 	 *
@@ -55,6 +58,7 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 
 	public static class Factory implements CodeGenerator.Factory {
 
+		@Override
 		public List<? extends CodeGenerator> create(Lookup context) {
 			return Collections.singletonList(new ActionRenderCodeGenerator(context));
 		}
@@ -63,14 +67,16 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	/**
 	 * The name which will be inserted inside Insert Code dialog
 	 */
+	@Override
 	public String getDisplayName() {
-		return "Add action and/or render method...";
+		return NbBundle.getMessage(ActionRenderCodeGenerator.class, name);
 	}
 
 	/**
 	 * This will be invoked when user chooses this Generator from Insert Code
 	 * dialog
 	 */
+	@Override
 	public void invoke() {
 		if (processDialog()) {
 			ActionRenderMethodsGenerator armg = new ActionRenderMethodsGenerator();
@@ -93,7 +99,7 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 		panel.setMethodChecker(methodChecker);
 		panel.setPresentersDirectory(getPresenterDir());
 
-		DialogDescriptor dd = new DialogDescriptor(panel, "Add action and/or render method...", true, DialogDescriptor.OK_CANCEL_OPTION, DialogDescriptor.OK_OPTION, null);
+		DialogDescriptor dd = new DialogDescriptor(panel, NbBundle.getMessage(ActionRenderCodeGenerator.class, name), true, DialogDescriptor.OK_CANCEL_OPTION, DialogDescriptor.OK_OPTION, null);
 
 		Object result = DialogDisplayer.getDefault().notify(dd);
 
@@ -120,8 +126,9 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	 */
 	private String getPresenterDir() {
         String presenterPath = getPresenterFile().getPath();
+		String separator = File.separator.equals("\\") ? "\\\\" : File.separator;
 		
-		return presenterPath.replaceAll("/" + getPresenterFile().getName(), "");
+		return presenterPath.replaceAll(separator + getPresenterFile().getName(), "");
 	}
 
 }
