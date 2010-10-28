@@ -28,16 +28,24 @@
 package org.netbeans.modules.php.nette;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import org.netbeans.modules.php.api.phpmodule.BadgeIcon;
 import org.netbeans.modules.php.api.phpmodule.PhpModule;
 import org.netbeans.modules.php.api.phpmodule.PhpModuleProperties;
+import org.netbeans.modules.php.nette.utils.EditorUtils;
+import org.netbeans.modules.php.nette.utils.FileUtils;
 import org.netbeans.modules.php.spi.commands.FrameworkCommandSupport;
 import org.netbeans.modules.php.spi.editor.EditorExtender;
 import org.netbeans.modules.php.spi.phpmodule.PhpFrameworkProvider;
 import org.netbeans.modules.php.spi.phpmodule.PhpModuleActionsExtender;
 import org.netbeans.modules.php.spi.phpmodule.PhpModuleExtender;
 import org.netbeans.modules.php.spi.phpmodule.PhpModuleIgnoredFilesExtender;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
+import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 
 /**
@@ -45,12 +53,20 @@ import org.openide.util.NbBundle;
  * @author Radek Ježdík
  */
 public class NettePhpFrameworkProvider extends PhpFrameworkProvider {
-    
+	
     private static final NettePhpFrameworkProvider INSTANCE = new NettePhpFrameworkProvider();
+	
+	private static final String ICON_PATH = "org/netbeans/modules/php/nette/resources/badge_icon.png";
+    
+	BadgeIcon badge;
 
     public NettePhpFrameworkProvider() {
 		super(NbBundle.getMessage(NettePhpFrameworkProvider.class, "OpenIDE-Module-Name"), 
 				NbBundle.getMessage(NettePhpFrameworkProvider.class, "OpenIDE-Module-Short-Description"));
+		
+		badge = new BadgeIcon(
+			ImageUtilities.loadImage(ICON_PATH),
+			NettePhpFrameworkProvider.class.getResource("/" + ICON_PATH)); // NOI18N
     }
     
     public static NettePhpFrameworkProvider getInstance() {
@@ -59,12 +75,43 @@ public class NettePhpFrameworkProvider extends PhpFrameworkProvider {
 
     @Override
     public boolean isInPhpModule(PhpModule pm) {
-        return true;
+        FilenameFilter ff = new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String name) {
+				return dir.isDirectory() && name.equals("Nette");
+			}
+			
+		};
+		
+		List<FileObject> files = FileUtils.getFilesRecursive(pm.getSourceDirectory(), ff);
+		
+		for(FileObject fo : files) {
+			if(new File(fo.getPath() + "/loader.php").exists())
+				return true;
+		}
+		return false;
     }
 
     @Override
     public File[] getConfigurationFiles(PhpModule pm) {
-        return new File[0];
+        FilenameFilter ff = new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.equals("bootstrap.php") || name.endsWith(".ini")
+						|| name.endsWith(".neon") || name.equals("index.php");
+			}
+			
+		};
+		
+		List<FileObject> files = FileUtils.getFilesRecursive(pm.getSourceDirectory(), ff);
+		
+		File[] confs = new File[files.size()];
+		for(int i = 0; i < files.size(); i++) {
+			confs[i] = FileUtil.toFile(files.get(i));
+		}
+		return confs;
     }
 
     @Override
@@ -81,6 +128,11 @@ public class NettePhpFrameworkProvider extends PhpFrameworkProvider {
     public PhpModuleActionsExtender getActionsExtender(PhpModule pm) {
         return null;
     }
+
+	@Override
+	public BadgeIcon getBadgeIcon() {
+		return badge;
+	}
 
     /**
      * Determines what files or directories should be hidden in Projects window (but they exist)
