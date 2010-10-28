@@ -51,12 +51,12 @@ public class LatteResolver extends TemplateResolver {
 
 	@Override
 	public void solve(Token t, TokenSequence<LatteTopTokenId> sequence) {
-		String props = (String) t.getProperty("macro");								// get macro if it exists
+		String props = (String) t.getProperty("macro");			// get n:attr macro name if it exists
 
 		if (props != null) {
-			setMacroName(props);														// store macro name in macroName
+			setMacroName(props);								// store macro name in macroName
 		} else if (t.text().charAt(0) == '{') {
-			setMacroName(null);														// else it is a macro starting with {
+			setMacroName(null);									// else it is a macro starting with {
 		}
 
 		TokenHierarchy<CharSequence> th2 = TokenHierarchy.create(t.text(), LatteTokenId.language());

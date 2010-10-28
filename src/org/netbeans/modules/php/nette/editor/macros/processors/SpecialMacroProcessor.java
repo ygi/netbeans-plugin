@@ -99,17 +99,15 @@ public class SpecialMacroProcessor extends  MacroProcessor {
 			embedder.embed("\"");
 		}
 
-		// TODO FAST FIX: Syntax error: {plink Public: class => xxx} #issue2
-		if (macro.equals("plink") || macro.equals("link")) {
-			embedder.embed("; array( \"");
-			embedder.embed(start, length);
-			embedder.embed("\")?>");
-		} else {
-			// for other params create array
-			embedder.embed("; array( ");
-			embedder.embed(start, length);
-			embedder.embed(")?>");
-		}
+		// for other params create array
+		embedder.embed("; array( ");
+
+		// encapsulates simple text key with quotes, because of php keywords (class, ...)
+		String params = embedder.getSnapshot().getText().subSequence(start, start+length).toString();
+		params = params.replaceAll("([ ,(\\[])([a-zA-Z]+) *=>", "$1 \"$2\" =>");
+		embedder.embed(params);
+		
+		embedder.embed(")?>");
 	}
 
 	private void createDepracatedHint(Embedder embedder, int start, int length) {
