@@ -29,7 +29,6 @@ package org.netbeans.modules.php.nette.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -508,7 +507,7 @@ public final class EditorUtils {
             if(fp.isFolder() && fp.getName().equals("app"))
                 break;
         }
-        List<FileObject> fos = getFilesRecursive(fp, new FilenameFilter() {
+        List<FileObject> fos = FileUtils.getFilesRecursive(fp, new FilenameFilter() {
 			@Override
             public boolean accept(File dir, String name) {
                 return name.startsWith("@") && name.endsWith(".phtml");
@@ -558,44 +557,6 @@ public final class EditorUtils {
             // when relativizing two same files -> returning null
         }
         return relPath.equals("") ? null : relPath;
-    }
-
-    /**
-     * Searches for all files recursively (children folders including)
-     * @param fp folder which to start search from
-     * @param filter filter denoting what files should be returned
-     * @return list of files found
-     */
-    private static List<FileObject> getFilesRecursive(FileObject fp, FilenameFilter filter) {
-        List<FileObject> list = new ArrayList<FileObject>();
-        
-        for(FileObject child : fp.getChildren()) {
-            if(child.getName().equals("temp") || child.getName().equals("sessions") ||
-                    child.getName().equals("logs"))
-                continue;
-            File f = FileUtil.toFile(child);
-            if(f.isDirectory()) {
-                File[] folders = f.listFiles(new FileFilter() {
-					@Override
-                    public boolean accept(File file) {
-                        return file.isDirectory();
-                    }
-                });
-                if(folders != null && folders.length > 0) {
-                    for(File folder : folders) {
-                        list.addAll(getFilesRecursive(FileUtil.toFileObject(folder), filter));
-                    }
-                }
-                File[] files = f.listFiles(filter);
-                for(File file : files) {
-                    list.add(FileUtil.toFileObject(file));
-                }
-            } else {
-                if(filter.accept(f.getParentFile(), f.getName()))
-                    list.add(FileUtil.toFileObject(f));
-            }
-        }
-        return list;
     }
 
     public static TokenHierarchy<CharSequence> createTmplTokenHierarchy(CharSequence inputText, Snapshot tmplSnapshot) {
