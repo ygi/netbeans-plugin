@@ -43,13 +43,13 @@ public enum NeonTokenId implements TokenId {
 	T_LEFT_SQUARED("[", "interpunction"),
 	T_RIGHT_SQUARED("]", "interpunction"),
 	T_LITERAL(null, "literal"),
-	T_OBJECT(null, "object"),
 	T_COMMENT(null, "comment"),
 	T_KEYWORD(null, "keyword"),
 	T_VARIABLE(null, "variable"),
 	T_BLOCK(null, "block"),
 	T_KEY(null, "key"),
 	T_WHITESPACE(null, "whitespace"),
+	T_INDENTATION(null, "whitespace"),
 	T_NEW_LINE(null, "whitespace"),
 	T_ERROR(null, "error");
 
