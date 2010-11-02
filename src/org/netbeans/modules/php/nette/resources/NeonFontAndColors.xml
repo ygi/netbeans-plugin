@@ -8,7 +8,6 @@
 		<font style="bold"/>
     </fontcolor>
 	<fontcolor name="comment" default="comment" />
-	<fontcolor name="object" default="identifier" foreColor="magenta" />
 	<fontcolor name="variable" default="identifier" foreColor="EE7700" />
     <fontcolor name="keyword" default="keyword"/>
     <!--<fontcolor name="string" default="string" foreColor="00AA00" />-->
