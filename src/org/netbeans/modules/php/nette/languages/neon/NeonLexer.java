@@ -25,6 +25,8 @@
 package org.netbeans.modules.php.nette.languages.neon;
 
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.netbeans.api.lexer.Token;
 import org.netbeans.spi.lexer.Lexer;
 import org.netbeans.spi.lexer.LexerInput;
@@ -45,13 +47,12 @@ class NeonLexer implements Lexer<NeonTokenId> {
 		IN_BLOCK_TITLE,
 		IN_KEY,
 		IN_VALUE,
-		IN_CURLY_ARRAY,
-		IN_SQUARED_ARRAY,
-		IN_ARRAY_KEY,
-		IN_ARRAY_VALUE,
 		IN_VARIABLE,
 		IN_QUOTATION_STRING,
-		IN_APOSTROPHE_STRING
+		IN_APOSTROPHE_STRING,
+		IN_ARRAY,
+		IN_ARRAY_KEY,
+		IN_ARRAY_VALUE
 	}
 
 	public NeonLexer(LexerRestartInfo<NeonTokenId> lri) {
@@ -67,14 +68,7 @@ class NeonLexer implements Lexer<NeonTokenId> {
 			return null;
 		}
 
-		Token<NeonTokenId> token = null;
-		/*
-		if (tokenId != null) {
-			token = tokenFactory.createToken(tokenId);
-		}
-		*/
-		
-        token = (tokenId.getText() != null)
+		Token<NeonTokenId> token = (tokenId.getText() != null)
 				? tokenFactory.getFlyweightToken(tokenId, tokenId.getText())
 				: tokenFactory.createToken(tokenId);
 
@@ -88,47 +82,34 @@ class NeonLexer implements Lexer<NeonTokenId> {
 
 		private Stack<State> previousStates = new Stack<State>();
 
+		private boolean inIndentation = true;
+
+		private Pattern literalPattern = Pattern.compile("[!#&,:;<=>@%\"\\$\'\\(\\)\\*\\+\\?\\[\\]\\^\\{\\|\\}\\s]");
+
+		private Matcher literalMatcher;
+
 		private LexerInput input;
 
 		private String[] keywords = {"true", "false", "yes", "no", "null"};
 
 		private final char EQUALS = '=';
-
 		private final char COLON = ':';
-
 		private final char HASH = '#';
-
 		private final char PERCENTAGE = '%';
-
 		private final char LEFT_CURLY = '{';
-
 		private final char RIGHT_CURLY = '}';
-
 		private final char LEFT_SQUARED = '[';
-
 		private final char RIGHT_SQUARED = ']';
-
 		private final char SPACE = ' ';
-
 		private final char NEW_LINE = '\n';
-
 		private final char TAB = '\t';
-
 		private final char APOSTROPHE = '\'';
-
 		private final char QUOTATION_MARK = '"';
-
 		private final char COMMA = ',';
-
 		private final char LT = '<';
-
 		private final char GT = '>';
-
 		private final char DASH = '-';
-
 		private final char DOT = '.';
-		
-		private final String ASSIGN = "=>";
 
 		public NeonColoringLexer(LexerRestartInfo<NeonTokenId> lri, NeonLexerState state) {
 			this.input = lri.input();
@@ -142,6 +123,7 @@ class NeonLexer implements Lexer<NeonTokenId> {
 		}
 
 		public NeonTokenId nextToken() {
+			boolean stateChanged = false;
 			int c = input.read();
 
 			if (c == LexerInput.EOF) {
@@ -149,13 +131,20 @@ class NeonLexer implements Lexer<NeonTokenId> {
 			}
 
 			while (c != LexerInput.EOF) {
+				stateChanged = false;
 				char cc = (char) c;
 
 				switch (state) {
 					case IN_KEY:
 						if (cc == SPACE || cc == TAB) {
-							fetchWhitespace();
-							return NeonTokenId.T_WHITESPACE;
+							if (inIndentation) {
+								return NeonTokenId.T_INDENTATION;
+							} else {
+								fetchWhitespace();
+								return NeonTokenId.T_WHITESPACE;
+							}
+						} else {
+							inIndentation = false;
 						}
 						if (cc == LT) {
 							return NeonTokenId.T_INTERPUNCTION;
@@ -172,74 +161,26 @@ class NeonLexer implements Lexer<NeonTokenId> {
 								return NeonTokenId.T_BLOCK;
 							}
 						}
-						if (cc == HASH) {
-							fetchComment();
-							return NeonTokenId.T_COMMENT;
-						}
-						if (cc == QUOTATION_MARK) {
-							previousStates.push(state);
-							state = State.IN_QUOTATION_STRING;
-							return NeonTokenId.T_QUOTATION_MARK;
-						}
-						if (cc == APOSTROPHE) {
-							previousStates.push(state);
-							state = State.IN_APOSTROPHE_STRING;
-							return NeonTokenId.T_APOSTROPHE;
-						}
-						if (cc == PERCENTAGE) {
-							previousStates.push(state);
-							state = State.IN_VARIABLE;
-							return NeonTokenId.T_VARIABLE;
-						}
-						if (cc == NEW_LINE) {
-							previousStates.push(state);
-							state = State.IN_KEY;
-							return NeonTokenId.T_NEW_LINE;
-						}
 						if (cc == COLON || cc == DASH) {
 							previousStates.push(state);
 							state = State.IN_VALUE;
 							return NeonTokenId.T_INTERPUNCTION;
 						}
-						return NeonTokenId.T_ERROR;
+						break;
 					case IN_VALUE:
 						if (cc == SPACE || cc == TAB) {
 							fetchWhitespace();
 							return NeonTokenId.T_WHITESPACE;
 						}
-						if (cc == HASH) {
-							fetchComment();
-							return NeonTokenId.T_COMMENT;
-						}
-						if (cc == QUOTATION_MARK) {
-							previousStates.push(state);
-							state = State.IN_QUOTATION_STRING;
-							return NeonTokenId.T_QUOTATION_MARK;
-						}
-						if (cc == APOSTROPHE) {
-							previousStates.push(state);
-							state = State.IN_APOSTROPHE_STRING;
-							return NeonTokenId.T_APOSTROPHE;
-						}
-						if (cc == PERCENTAGE) {
-							previousStates.push(state);
-							state = State.IN_VARIABLE;
-							return NeonTokenId.T_VARIABLE;
-						}
 						if (cc == LEFT_CURLY) {
 							previousStates.push(state);
-							state = State.IN_CURLY_ARRAY;
+							state = State.IN_ARRAY;
 							return NeonTokenId.T_LEFT_CURLY;
 						}
 						if (cc == LEFT_SQUARED) {
 							previousStates.push(state);
-							state = State.IN_SQUARED_ARRAY;
+							state = State.IN_ARRAY;
 							return NeonTokenId.T_LEFT_SQUARED;
-						}
-						if (cc == NEW_LINE) {
-							previousStates.push(state);
-							state = State.IN_KEY;
-							return NeonTokenId.T_NEW_LINE;
 						}
 						if (isKeyword(cc)) {
 							return NeonTokenId.T_KEYWORD;
@@ -252,114 +193,71 @@ class NeonLexer implements Lexer<NeonTokenId> {
 							fetchLiteral();
 							return NeonTokenId.T_LITERAL;
 						}
-						return NeonTokenId.T_ERROR;
+						break;
 					case IN_VARIABLE:
 						if (cc == PERCENTAGE) {
-							State newState = previousStates.pop();
-							//previousStates.push(state);
-							state = newState;
+							state = previousStates.pop();
 							return NeonTokenId.T_VARIABLE;
 						}
 						if (isPartOfVariable(cc)) {
 							fetchVariable();
 							return NeonTokenId.T_VARIABLE;
 						}
-						return NeonTokenId.T_ERROR;
+						break;
 					case IN_QUOTATION_STRING:
 						if (cc == QUOTATION_MARK) {
-							State newState = previousStates.pop();
-							//previousStates.push(state);
-							state = newState;
+							state = previousStates.pop();
 							return NeonTokenId.T_QUOTATION_MARK;
 						}
-						if (cc == NEW_LINE) {
-							previousStates.push(state);
-							state = State.IN_KEY;
-							return NeonTokenId.T_NEW_LINE;
+						if (cc != NEW_LINE) {
+							fetchString(QUOTATION_MARK);
+							return NeonTokenId.T_STRING;
 						}
-						fetchString(QUOTATION_MARK);
-						return NeonTokenId.T_STRING;
+						break;
 					case IN_APOSTROPHE_STRING:
 						if (cc == APOSTROPHE) {
-							State newState = previousStates.pop();
-							//previousStates.push(state);
-							state = newState;
+							state = previousStates.pop();
 							return NeonTokenId.T_APOSTROPHE;
 						}
-						if (cc == NEW_LINE) {
-							previousStates.push(state);
-							state = State.IN_KEY;
-							return NeonTokenId.T_NEW_LINE;
+						if (cc != NEW_LINE) {
+							fetchString(APOSTROPHE);
+							return NeonTokenId.T_STRING;
 						}
-						fetchString(APOSTROPHE);
-						return NeonTokenId.T_STRING;
-					case IN_CURLY_ARRAY:
-					case IN_SQUARED_ARRAY:
+						break;
+					case IN_ARRAY:
 						if (cc == SPACE || cc == TAB) {
 							fetchWhitespace();
 							return NeonTokenId.T_WHITESPACE;
 						}
-						if (cc == NEW_LINE) {
-							previousStates.push(state);
-							state = State.IN_KEY;
-							return NeonTokenId.T_NEW_LINE;
-						}
-						
+
 						previousStates.push(state);
-						if (existsOnlyKeyPart()) {
+						if (existsKeyAndValuePart()) {
 							state = State.IN_ARRAY_KEY;
 						} else {
 							state = State.IN_ARRAY_VALUE;
 						}
+						stateChanged = true;
 						input.backup(1);
 						break;
-						//return NeonTokenId.T_ERROR;
 					case IN_ARRAY_VALUE:
 						if (cc == SPACE || cc == TAB) {
 							fetchWhitespace();
 							return NeonTokenId.T_WHITESPACE;
 						}
 						if (cc == RIGHT_CURLY) {
-							State newState = previousStates.pop();
-							state = newState;
+							state = previousStates.pop();
 							return NeonTokenId.T_RIGHT_CURLY;
 						}
 						if (cc == RIGHT_SQUARED) {
-							State newState = previousStates.pop();
-							state = newState;
+							state = previousStates.pop();
 							return NeonTokenId.T_RIGHT_SQUARED;
-						}
-						if (cc == PERCENTAGE) {
-							previousStates.push(state);
-							state = State.IN_VARIABLE;
-							return NeonTokenId.T_VARIABLE;
-						}
-						if (cc == HASH) {
-							fetchComment();
-							return NeonTokenId.T_COMMENT;
-						}
-						if (cc == QUOTATION_MARK) {
-							//previousStates.push(state);
-							state = State.IN_QUOTATION_STRING;
-							return NeonTokenId.T_QUOTATION_MARK;
-						}
-						if (cc == APOSTROPHE) {
-							//previousStates.push(state);
-							state = State.IN_APOSTROPHE_STRING;
-							return NeonTokenId.T_APOSTROPHE;
 						}
 						if (cc == GT) {
 							return NeonTokenId.T_INTERPUNCTION;
 						}
 						if (cc == COMMA) {
-							State newState = previousStates.pop();
-							state = newState;
+							state = previousStates.pop();
 							return NeonTokenId.T_INTERPUNCTION;
-						}
-						if (cc == NEW_LINE) {
-							previousStates.push(state);
-							state = State.IN_KEY;
-							return NeonTokenId.T_NEW_LINE;
 						}
 						if (isPartOfNumber(cc)) {
 							fetchNumber();
@@ -369,48 +267,19 @@ class NeonLexer implements Lexer<NeonTokenId> {
 							fetchLiteral();
 							return NeonTokenId.T_LITERAL;
 						}
-						return NeonTokenId.T_ERROR;
+						break;
 					case IN_ARRAY_KEY:
 						if (cc == SPACE || cc == TAB) {
 							fetchWhitespace();
 							return NeonTokenId.T_WHITESPACE;
 						}
 						if (cc == RIGHT_CURLY) {
-							State newState = previousStates.pop();
-							state = newState;
 							return NeonTokenId.T_RIGHT_CURLY;
 						}
 						if (cc == RIGHT_SQUARED) {
-							State newState = previousStates.pop();
-							state = newState;
 							return NeonTokenId.T_RIGHT_SQUARED;
 						}
-						if (cc == HASH) {
-							fetchComment();
-							return NeonTokenId.T_COMMENT;
-						}
-						if (cc == QUOTATION_MARK) {
-							previousStates.push(state);
-							state = State.IN_QUOTATION_STRING;
-							return NeonTokenId.T_QUOTATION_MARK;
-						}
-						if (cc == APOSTROPHE) {
-							previousStates.push(state);
-							state = State.IN_APOSTROPHE_STRING;
-							return NeonTokenId.T_APOSTROPHE;
-						}
-						if (cc == PERCENTAGE) {
-							previousStates.push(state);
-							state = State.IN_VARIABLE;
-							return NeonTokenId.T_VARIABLE;
-						}
-						if (cc == NEW_LINE) {
-							previousStates.push(state);
-							state = State.IN_KEY;
-							return NeonTokenId.T_NEW_LINE;
-						}
 						if (cc == COLON || cc == EQUALS) {
-							//previousStates.push(state);
 							state = State.IN_ARRAY_VALUE;
 							return NeonTokenId.T_INTERPUNCTION;
 						}
@@ -422,9 +291,42 @@ class NeonLexer implements Lexer<NeonTokenId> {
 							fetchLiteral();
 							return NeonTokenId.T_KEY;
 						}
-						return NeonTokenId.T_ERROR;
+						break;
 				}
 
+				if (!stateChanged) {
+					if (cc == NEW_LINE) {
+						previousStates.push(state);
+						state = State.IN_KEY;
+						inIndentation = true;
+						return NeonTokenId.T_NEW_LINE;
+					}
+					if (cc == HASH) {
+						fetchComment();
+						return NeonTokenId.T_COMMENT;
+					}
+					if (cc == PERCENTAGE) {
+						previousStates.push(state);
+						state = State.IN_VARIABLE;
+						return NeonTokenId.T_VARIABLE;
+					}
+					if (cc == QUOTATION_MARK) {
+						if (state != State.IN_ARRAY_VALUE) {
+							previousStates.push(state);
+						}
+						state = State.IN_QUOTATION_STRING;
+						return NeonTokenId.T_QUOTATION_MARK;
+					}
+					if (cc == APOSTROPHE) {
+						if (state != State.IN_ARRAY_VALUE) {
+							previousStates.push(state);
+						}
+						state = State.IN_APOSTROPHE_STRING;
+						return NeonTokenId.T_APOSTROPHE;
+					}
+					return NeonTokenId.T_ERROR;
+				}
+				
 				c = input.read();
 			}
 			
@@ -469,11 +371,11 @@ class NeonLexer implements Lexer<NeonTokenId> {
 		}
 
 		/**
-		 * Checks if there is only a key part in array part which is delimited by comma [key: value, whatever...]
+		 * Checks if there is a key and a value part in array part which is delimited by comma [key: value, whatever...]
 		 *
 		 * @return
 		 */
-		private boolean existsOnlyKeyPart() {
+		private boolean existsKeyAndValuePart() {
 			char newCh;
 			int counter = 0;
 			boolean result = false;
@@ -553,11 +455,27 @@ class NeonLexer implements Lexer<NeonTokenId> {
 		 * @return
 		 */
 		private boolean isPartOfLiteral(char ch) {
-			if (!String.valueOf(ch).matches("[!#&,:;<=>@%\"\\$\'\\(\\)\\*\\+\\?\\[\\]\\^\\{\\|\\}\\s]")) {
+			if (!getMatcher("" + ch).matches()) {
 				return true;
 			}
 
 			return false;
+		}
+
+		/**
+		 * Returns matcher for checking literal parts.
+		 *
+		 * @param chs
+		 * @return
+		 */
+		private Matcher getMatcher(CharSequence chs) {
+			if (literalMatcher == null) {
+				literalMatcher = literalPattern.matcher(chs);
+			} else {
+				literalMatcher = literalMatcher.reset(chs);
+			}
+
+			return literalMatcher;
 		}
 
 		/**
@@ -659,7 +577,6 @@ class NeonLexer implements Lexer<NeonTokenId> {
 						return true;
 					}
 				}
-
 				// it's not a keyword, so rollback to the beginning of whole string
 				input.backup(counter);
 			}
