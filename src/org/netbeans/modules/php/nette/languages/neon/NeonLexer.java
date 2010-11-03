@@ -567,30 +567,26 @@ class NeonLexer implements Lexer<NeonTokenId> {
 		 * @return
 		 */
 		private boolean isKeyword(char firstLetter) {
-			if (firstLetter == 'f' || firstLetter == 'F'
-					|| firstLetter == 't' || firstLetter == 'T' || firstLetter == 'y'
-					|| firstLetter == 'Y' || firstLetter == 'n' || firstLetter == 'N') {
-				char newCh = (char) input.read();
-				int counter = 0;
-				String text = "" + firstLetter;
+			char newCh = (char) input.read();
+			int counter = 0;
+			String text = "" + firstLetter;
 
-				while (!Character.isWhitespace(newCh) && newCh != COMMA && newCh != QUOTATION_MARK && newCh != APOSTROPHE) {
-					text += newCh;
+			while (Character.isLetter(newCh)) {
+				text += newCh;
 
-					newCh = (char) input.read();
-					counter++;
-				}
-				// exclude last character (whitespace, comma or string delimiter)
-				input.backup(1);
-
-				for (String keyword : keywords) {
-					if (text.equals(keyword.toLowerCase()) || text.equals(keyword.toUpperCase())) {
-						return true;
-					}
-				}
-				// it's not a keyword, so rollback to the beginning of whole string
-				input.backup(counter);
+				newCh = (char) input.read();
+				counter++;
 			}
+			// exclude last character (whitespace, comma or string delimiter)
+			input.backup(1);
+
+			for (String keyword : keywords) {
+				if (text.equals(keyword.toLowerCase()) || text.equals(keyword.toUpperCase())) {
+					return true;
+				}
+			}
+			// it's not a keyword, so rollback to the beginning of whole string
+			input.backup(counter);
 
 			return false;
 		}
