@@ -44,7 +44,6 @@ class NeonLexer implements Lexer<NeonTokenId> {
 	private final TokenFactory<NeonTokenId> tokenFactory;
 
 	enum State {
-		IN_BLOCK_TITLE,
 		IN_KEY,
 		IN_VALUE,
 		IN_VARIABLE,
@@ -107,9 +106,9 @@ class NeonLexer implements Lexer<NeonTokenId> {
 		private final char QUOTATION_MARK = '"';
 		private final char COMMA = ',';
 		private final char LT = '<';
-		private final char GT = '>';
 		private final char DASH = '-';
 		private final char DOT = '.';
+		private final String ASSIGN = "=>";
 
 		public NeonColoringLexer(LexerRestartInfo<NeonTokenId> lri, NeonLexerState state) {
 			this.input = lri.input();
@@ -147,7 +146,7 @@ class NeonLexer implements Lexer<NeonTokenId> {
 							inIndentation = false;
 						}
 						if (cc == LT) {
-							return NeonTokenId.T_INTERPUNCTION;
+							return NeonTokenId.T_LT;
 						}
 						if (isPartOfNumber(cc)) {
 							fetchNumber();
@@ -161,17 +160,18 @@ class NeonLexer implements Lexer<NeonTokenId> {
 								return NeonTokenId.T_BLOCK;
 							}
 						}
-						if (cc == COLON || cc == DASH) {
+						if (cc == COLON) {
 							previousStates.push(state);
 							state = State.IN_VALUE;
-							return NeonTokenId.T_INTERPUNCTION;
+							return NeonTokenId.T_COLON;
+						}
+						if (cc == DASH) {
+							previousStates.push(state);
+							state = State.IN_VALUE;
+							return NeonTokenId.T_DASH;
 						}
 						break;
 					case IN_VALUE:
-						if (cc == SPACE || cc == TAB) {
-							fetchWhitespace();
-							return NeonTokenId.T_WHITESPACE;
-						}
 						if (cc == LEFT_CURLY) {
 							previousStates.push(state);
 							state = State.IN_ARRAY;
@@ -225,11 +225,6 @@ class NeonLexer implements Lexer<NeonTokenId> {
 						}
 						break;
 					case IN_ARRAY:
-						if (cc == SPACE || cc == TAB) {
-							fetchWhitespace();
-							return NeonTokenId.T_WHITESPACE;
-						}
-
 						previousStates.push(state);
 						if (existsKeyAndValuePart()) {
 							state = State.IN_ARRAY_KEY;
@@ -240,10 +235,6 @@ class NeonLexer implements Lexer<NeonTokenId> {
 						input.backup(1);
 						break;
 					case IN_ARRAY_VALUE:
-						if (cc == SPACE || cc == TAB) {
-							fetchWhitespace();
-							return NeonTokenId.T_WHITESPACE;
-						}
 						if (cc == RIGHT_CURLY) {
 							state = previousStates.pop();
 							return NeonTokenId.T_RIGHT_CURLY;
@@ -252,12 +243,9 @@ class NeonLexer implements Lexer<NeonTokenId> {
 							state = previousStates.pop();
 							return NeonTokenId.T_RIGHT_SQUARED;
 						}
-						if (cc == GT) {
-							return NeonTokenId.T_INTERPUNCTION;
-						}
 						if (cc == COMMA) {
 							state = previousStates.pop();
-							return NeonTokenId.T_INTERPUNCTION;
+							return NeonTokenId.T_COMMA;
 						}
 						if (isPartOfNumber(cc)) {
 							fetchNumber();
@@ -269,19 +257,24 @@ class NeonLexer implements Lexer<NeonTokenId> {
 						}
 						break;
 					case IN_ARRAY_KEY:
-						if (cc == SPACE || cc == TAB) {
-							fetchWhitespace();
-							return NeonTokenId.T_WHITESPACE;
-						}
 						if (cc == RIGHT_CURLY) {
 							return NeonTokenId.T_RIGHT_CURLY;
 						}
 						if (cc == RIGHT_SQUARED) {
 							return NeonTokenId.T_RIGHT_SQUARED;
 						}
-						if (cc == COLON || cc == EQUALS) {
+						if (cc == COLON) {
 							state = State.IN_ARRAY_VALUE;
-							return NeonTokenId.T_INTERPUNCTION;
+							return NeonTokenId.T_COLON;
+						}
+						if (cc == EQUALS) {
+							state = State.IN_ARRAY_VALUE;
+							if (isPartOfAssign(cc)) {
+								input.read();
+								return NeonTokenId.T_ASSIGN;
+							} else {
+								return NeonTokenId.T_EQUALS;
+							}
 						}
 						if (isPartOfNumber(cc)) {
 							fetchNumber();
@@ -323,6 +316,10 @@ class NeonLexer implements Lexer<NeonTokenId> {
 						}
 						state = State.IN_APOSTROPHE_STRING;
 						return NeonTokenId.T_APOSTROPHE;
+					}
+					if (cc == SPACE || cc == TAB) {
+						fetchWhitespace();
+						return NeonTokenId.T_WHITESPACE;
 					}
 					return NeonTokenId.T_ERROR;
 				}
@@ -460,6 +457,20 @@ class NeonLexer implements Lexer<NeonTokenId> {
 			}
 
 			return false;
+		}
+
+		/**
+		 * Checks if passed character is start character of an assign operator.
+		 *
+		 * @param cc
+		 * @return
+		 */
+		private boolean isPartOfAssign(char cc) {
+			String s = "" + cc;
+			s += (char) input.read();
+			input.backup(1);
+
+			return s.equals(ASSIGN);
 		}
 
 		/**
