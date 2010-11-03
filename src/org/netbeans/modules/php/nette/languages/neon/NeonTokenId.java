@@ -33,15 +33,20 @@ import org.netbeans.api.lexer.TokenId;
  */
 public enum NeonTokenId implements TokenId {
 
-	T_INTERPUNCTION(null, "interpunction"),
-	T_NUMBER(null, "number"),
-	T_STRING(null, "string"),
 	T_QUOTATION_MARK("\"", "string"),
 	T_APOSTROPHE("'", "string"),
 	T_LEFT_CURLY("{", "interpunction"),
 	T_RIGHT_CURLY("}", "interpunction"),
 	T_LEFT_SQUARED("[", "interpunction"),
 	T_RIGHT_SQUARED("]", "interpunction"),
+	T_LT("<", "interpunction"),
+	T_EQUALS("=", "interpunction"),
+	T_ASSIGN("=>", "interpunction"),
+	T_COLON(":", "interpunction"),
+	T_DASH("-", "interpunction"),
+	T_COMMA(",", "interpunction"),
+	T_NUMBER(null, "number"),
+	T_STRING(null, "string"),
 	T_LITERAL(null, "literal"),
 	T_COMMENT(null, "comment"),
 	T_KEYWORD(null, "keyword"),
