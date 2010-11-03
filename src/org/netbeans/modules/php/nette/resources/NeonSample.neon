@@ -4,31 +4,23 @@ common:
   php:
     date.timezone: Europe/Prague
     iconv.internal_encoding: UTF-8
-    mbstring.internal_encoding: UTF-8
-	iconv.internal_encoding: @cosi cosi
+
   setArray:
     - [a, b, c]
-    - {hr: 65, avg: 0.278}
+    - {hr: 65, 'avg': 0.278}
     - {hr = 65, avg = 0.278}
     - {hr => 65, avg => 0.278}
-    - {'hr': 65, 'avg': 0.278}
 
   variable:
     name: František Dobrota :-)  # toto je kometář
     string: " delimited string \x0A "
     tempDir: %appDir%/temp
-    logDir: %appDir%/log
-
-  service:
-    Nette\Security\IAuthenticator: UsersModel
 
     Nette\Loaders\RobotLoader:
       option:
         directory: [%appDir%, %libsDir%]
-      run: TRUE
+
     Nette\Loaders\RobotLoader:
       option:
         directory:
           - %appDir%
-          - %libsDir%
-      run: TRUE

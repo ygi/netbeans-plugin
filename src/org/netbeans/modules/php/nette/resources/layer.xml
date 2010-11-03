@@ -260,17 +260,17 @@
                 <attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/presenter_icon.png"/>
                 <attr name="instantiatingIterator" newvalue="org.netbeans.modules.php.nette.wizards.newpresenter.WizardIterator"/>
                 <attr name="template" boolvalue="true"/>
-                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.myorg.additionalfiletemplates.Bundle"/>
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.resources.Bundle"/>
                 <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/presenter_icon.png"/>
                 <attr name="position" intvalue="100"/>
                 <attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/PresenterDescription.html"/>
                 <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
             </file>
             <file name="ControlTemplate.php" url="ControlTemplate.php">
-            <attr name="displayName" bundlevalue="org.netbeans.modules.php.nette.resources.Bundle#Templates/Nette-Framework/ControlTemplate.php"/>
-            <attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/control_icon.png"/>
+				<attr name="displayName" bundlevalue="org.netbeans.modules.php.nette.resources.Bundle#Templates/Nette-Framework/ControlTemplate.php"/>
+				<attr name="iconBase" stringvalue="org/netbeans/modules/php/nette/resources/control_icon.png"/>
                 <attr name="template" boolvalue="true"/>
-                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.myorg.additionalfiletemplates.Bundle"/>
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.php.nette.resources.Bundle"/>
                 <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/control_icon.png"/>
                 <attr name="position" intvalue="200"/>
                 <attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/ControlDescription.html"/>
@@ -294,6 +294,7 @@
 				<attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/neon_icon.png"/>
 				<attr name="position" intvalue="400"/>
 				<attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/php/nette/resources/NeonDescription.html"/>
+				<attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
             </file>
         </folder>
     </folder>

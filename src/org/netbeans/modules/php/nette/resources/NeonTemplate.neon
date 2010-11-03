@@ -1,7 +1,0 @@
-resources:
-	%dir%/templates/media: media
-
-templates:
-	namespace: %dir%/templates/namespace.phtml
-	class: %dir%/templates/class.phtml
-	source: %dir%/templates/source.phtml
