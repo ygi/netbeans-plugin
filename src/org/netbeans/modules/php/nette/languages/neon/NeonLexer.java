@@ -249,11 +249,14 @@ class NeonLexer implements Lexer<NeonTokenId> {
 							state = previousStates.pop();
 							return NeonTokenId.T_COMMA;
 						}
+						if (isKeyword(cc)) {
+							return NeonTokenId.T_KEYWORD;
+						}
 						if (isPartOfNumber(cc)) {
 							fetchNumber();
 							return NeonTokenId.T_NUMBER;
 						}
-						if (cc != DASH && isPartOfLiteral(cc) && !isPartOfNumber(cc)) {
+						if (cc != DASH && isPartOfLiteral(cc) && !isPartOfNumber(cc) && !isKeyword(cc)) {
 							fetchLiteral();
 							return NeonTokenId.T_LITERAL;
 						}
