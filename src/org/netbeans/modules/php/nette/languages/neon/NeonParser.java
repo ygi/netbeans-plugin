@@ -54,10 +54,15 @@ public class NeonParser extends Parser {
 
 	private static final String ERR_MISSING_STRING_DELIMITER = "ERR_missing_string_delimiter";
 
+	private static final String ERR_UNEXPECTED_ARRAY_END = "ERR_unexpected_array_end";
+
+	private static final String ERR_BAD_ARRAY_END_DELIMITER = "ERR_bad_array_end_delimiter";
+
 	private enum State {
 		OUTER,
 		AFTER_STRING_LD,
-		ON_STRING_RD
+		ON_STRING_RD,
+		IN_ARRAY,
 	}
 
 	@Override
@@ -68,6 +73,8 @@ public class NeonParser extends Parser {
 		TokenHierarchy hi = TokenHierarchy.create(source, NeonTokenId.getLanguage());
 		TokenSequence ts = hi.tokenSequence();
 		Token openingToken = null;
+		NeonTokenId okClosingTokenId = null;
+		NeonTokenId badClosingTokenId = null;
 
 		while (ts.moveNext()) {
 			Token t = ts.token();
@@ -87,10 +94,22 @@ public class NeonParser extends Parser {
 								Severity.ERROR));
 						break;
 					}
-
 					if (id == NeonTokenId.T_APOSTROPHE || id == NeonTokenId.T_QUOTATION_MARK) {
 						state = State.AFTER_STRING_LD;
 						openingToken = t;
+						break;
+					}
+					if (id == NeonTokenId.T_LEFT_CURLY) {
+						okClosingTokenId = NeonTokenId.T_RIGHT_CURLY;
+						badClosingTokenId = NeonTokenId.T_RIGHT_SQUARED;
+						state = State.IN_ARRAY;
+						break;
+					}
+					if (id == NeonTokenId.T_LEFT_SQUARED) {
+						okClosingTokenId = NeonTokenId.T_RIGHT_SQUARED;
+						badClosingTokenId = NeonTokenId.T_RIGHT_CURLY;
+						state = State.IN_ARRAY;
+						break;
 					}
 					break;
 				
@@ -125,6 +144,34 @@ public class NeonParser extends Parser {
 								Severity.ERROR));
 					}
 					state = State.OUTER;
+					break;
+				case IN_ARRAY:
+					if (id == NeonTokenId.T_NEW_LINE) {
+						lastResult.addError(new NeonBadgingError(
+								null,
+								NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_ARRAY_END) + " " + okClosingTokenId.getText(),
+								NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_ARRAY_END) + " " + okClosingTokenId.getText(),
+								snpsht.getSource().getFileObject(),
+								ts.offset(),
+								ts.offset() + t.length(),
+								Severity.ERROR));
+						state = State.OUTER;
+					}
+					if (id == okClosingTokenId) {
+						state = State.OUTER;
+						break;
+					}
+					if (id == badClosingTokenId) {
+						lastResult.addError(new NeonBadgingError(
+								null,
+								NbBundle.getMessage(NeonParser.class, ERR_BAD_ARRAY_END_DELIMITER) + " " + okClosingTokenId.getText(),
+								NbBundle.getMessage(NeonParser.class, ERR_BAD_ARRAY_END_DELIMITER) + " " + okClosingTokenId.getText(),
+								snpsht.getSource().getFileObject(),
+								ts.offset(),
+								ts.offset() + t.length(),
+								Severity.ERROR));
+						state = State.OUTER;
+					}
 					break;
 			}
 		}
