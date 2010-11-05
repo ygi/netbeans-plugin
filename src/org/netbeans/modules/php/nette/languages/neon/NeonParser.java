@@ -82,18 +82,6 @@ public class NeonParser extends Parser {
 
 			switch (state) {
 				case OUTER:
-					if (id == NeonTokenId.T_ERROR) {
-						lastResult.addError(new NeonBadgingError(
-								null,
-								NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_CHARACTER) + " " + t.text(),
-								NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_CHARACTER) + " " + t.text(),
-								snpsht.getSource().getFileObject(),
-								ts.offset(),
-								ts.offset(),
-								true,
-								Severity.ERROR));
-						break;
-					}
 					if (id == NeonTokenId.T_APOSTROPHE || id == NeonTokenId.T_QUOTATION_MARK) {
 						state = State.AFTER_STRING_LD;
 						openingToken = t;
@@ -173,6 +161,18 @@ public class NeonParser extends Parser {
 						state = State.OUTER;
 					}
 					break;
+			}
+
+			if (id == NeonTokenId.T_ERROR) {
+				lastResult.addError(new NeonBadgingError(
+						null,
+						NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_CHARACTER) + " " + t.text(),
+						NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_CHARACTER) + " " + t.text(),
+						snpsht.getSource().getFileObject(),
+						ts.offset(),
+						ts.offset(),
+						true,
+						Severity.ERROR));
 			}
 		}
 	}
