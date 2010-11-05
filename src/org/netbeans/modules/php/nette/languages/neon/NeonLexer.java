@@ -236,10 +236,12 @@ class NeonLexer implements Lexer<NeonTokenId> {
 						break;
 					case IN_ARRAY_VALUE:
 						if (cc == RIGHT_CURLY) {
+							previousStates.pop(); // intentionally - rollback to pre-array state
 							state = previousStates.pop();
 							return NeonTokenId.T_RIGHT_CURLY;
 						}
 						if (cc == RIGHT_SQUARED) {
+							previousStates.pop(); // intentionally - rollback to pre-array state
 							state = previousStates.pop();
 							return NeonTokenId.T_RIGHT_SQUARED;
 						}
