@@ -112,8 +112,8 @@ public class NeonParser extends Parser {
 					}
 					lastResult.addError(new NeonBadgingError(
 							null,
-							NbBundle.getMessage(NeonParser.class, ERR_MISSING_STRING_DELIMITER) + " " + openingToken.text(),
-							NbBundle.getMessage(NeonParser.class, ERR_MISSING_STRING_DELIMITER) + " " + openingToken.text(),
+							NbBundle.getMessage(NeonParser.class, ERR_MISSING_STRING_DELIMITER, openingToken.text()),
+							NbBundle.getMessage(NeonParser.class, ERR_MISSING_STRING_DELIMITER, openingToken.text()),
 							snpsht.getSource().getFileObject(),
 							ts.offset(),
 							ts.offset() + t.length(),
@@ -124,8 +124,8 @@ public class NeonParser extends Parser {
 					if (id != openingToken.id()) {
 						lastResult.addError(new NeonBadgingError(
 								null,
-								NbBundle.getMessage(NeonParser.class, ERR_MISSING_STRING_DELIMITER) + " " + openingToken.text(),
-								NbBundle.getMessage(NeonParser.class, ERR_MISSING_STRING_DELIMITER) + " " + openingToken.text(),
+								NbBundle.getMessage(NeonParser.class, ERR_MISSING_STRING_DELIMITER, openingToken.text()),
+								NbBundle.getMessage(NeonParser.class, ERR_MISSING_STRING_DELIMITER, openingToken.text()),
 								snpsht.getSource().getFileObject(),
 								ts.offset(),
 								ts.offset() + t.length(),
@@ -137,8 +137,8 @@ public class NeonParser extends Parser {
 					if (id == NeonTokenId.T_NEW_LINE) {
 						lastResult.addError(new NeonBadgingError(
 								null,
-								NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_ARRAY_END) + " " + okClosingTokenId.getText(),
-								NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_ARRAY_END) + " " + okClosingTokenId.getText(),
+								NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_ARRAY_END, okClosingTokenId.getText()),
+								NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_ARRAY_END, okClosingTokenId.getText()),
 								snpsht.getSource().getFileObject(),
 								ts.offset(),
 								ts.offset() + t.length(),
@@ -152,8 +152,8 @@ public class NeonParser extends Parser {
 					if (id == badClosingTokenId) {
 						lastResult.addError(new NeonBadgingError(
 								null,
-								NbBundle.getMessage(NeonParser.class, ERR_BAD_ARRAY_END_DELIMITER) + " " + okClosingTokenId.getText(),
-								NbBundle.getMessage(NeonParser.class, ERR_BAD_ARRAY_END_DELIMITER) + " " + okClosingTokenId.getText(),
+								NbBundle.getMessage(NeonParser.class, ERR_BAD_ARRAY_END_DELIMITER, okClosingTokenId.getText()),
+								NbBundle.getMessage(NeonParser.class, ERR_BAD_ARRAY_END_DELIMITER, okClosingTokenId.getText()),
 								snpsht.getSource().getFileObject(),
 								ts.offset(),
 								ts.offset() + t.length(),
@@ -166,8 +166,8 @@ public class NeonParser extends Parser {
 			if (id == NeonTokenId.T_ERROR) {
 				lastResult.addError(new NeonBadgingError(
 						null,
-						NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_CHARACTER) + " " + t.text(),
-						NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_CHARACTER) + " " + t.text(),
+						NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_CHARACTER, t.text()),
+						NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_CHARACTER, t.text()),
 						snpsht.getSource().getFileObject(),
 						ts.offset(),
 						ts.offset(),
