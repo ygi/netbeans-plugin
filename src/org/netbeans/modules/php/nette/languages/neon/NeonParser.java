@@ -48,29 +48,84 @@ public class NeonParser extends Parser {
 
 	private NeonParserResult lastResult;
 
+	private State state = State.OUTER;
+
+	private static final String ERR_UNEXPECTED_CHARACTER = "ERR_unexpected_character";
+
+	private static final String ERR_MISSING_STRING_DELIMITER = "ERR_missing_string_delimiter";
+
+	private enum State {
+		OUTER,
+		AFTER_STRING_LD,
+		ON_STRING_RD
+	}
+
 	@Override
 	public void parse(Snapshot snpsht, Task task, SourceModificationEvent sme) throws ParseException {
 		String source = asString(snpsht.getText());
 		lastResult = new NeonParserResult(snpsht);
 
-		//StringBuilder sb = new StringBuilder();
 		TokenHierarchy hi = TokenHierarchy.create(source, NeonTokenId.getLanguage());
 		TokenSequence ts = hi.tokenSequence();
-		String errMsg = NbBundle.getMessage(NeonParser.class, "ERR_unexpected_character");
+		Token openingToken = null;
 
 		while (ts.moveNext()) {
 			Token t = ts.token();
 			TokenId id = t.id();
-			if (id == NeonTokenId.T_ERROR) {
-				lastResult.addError(new NeonBadgingError(
-						null,
-						errMsg + " " + t.text(),
-						errMsg + " " + t.text(),
-						snpsht.getSource().getFileObject(),
-						ts.offset(),
-						ts.offset() + t.length(),
-						true /* not line error */,
-						Severity.ERROR));
+
+			switch (state) {
+				case OUTER:
+					if (id == NeonTokenId.T_ERROR) {
+						lastResult.addError(new NeonBadgingError(
+								null,
+								NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_CHARACTER) + " " + t.text(),
+								NbBundle.getMessage(NeonParser.class, ERR_UNEXPECTED_CHARACTER) + " " + t.text(),
+								snpsht.getSource().getFileObject(),
+								ts.offset(),
+								ts.offset(),
+								true,
+								Severity.ERROR));
+						break;
+					}
+
+					if (id == NeonTokenId.T_APOSTROPHE || id == NeonTokenId.T_QUOTATION_MARK) {
+						state = State.AFTER_STRING_LD;
+						openingToken = t;
+					}
+					break;
+				
+				case AFTER_STRING_LD:
+					if (id == NeonTokenId.T_STRING) {
+						state = State.ON_STRING_RD;
+						break;
+					}
+					if (id == openingToken.id()) {
+						state = State.OUTER;
+						break;
+					}
+					lastResult.addError(new NeonBadgingError(
+							null,
+							NbBundle.getMessage(NeonParser.class, ERR_MISSING_STRING_DELIMITER) + " " + openingToken.text(),
+							NbBundle.getMessage(NeonParser.class, ERR_MISSING_STRING_DELIMITER) + " " + openingToken.text(),
+							snpsht.getSource().getFileObject(),
+							ts.offset(),
+							ts.offset() + t.length(),
+							Severity.ERROR));
+					state = State.OUTER;
+					break;
+				case ON_STRING_RD:
+					if (id != openingToken.id()) {
+						lastResult.addError(new NeonBadgingError(
+								null,
+								NbBundle.getMessage(NeonParser.class, ERR_MISSING_STRING_DELIMITER) + " " + openingToken.text(),
+								NbBundle.getMessage(NeonParser.class, ERR_MISSING_STRING_DELIMITER) + " " + openingToken.text(),
+								snpsht.getSource().getFileObject(),
+								ts.offset(),
+								ts.offset() + t.length(),
+								Severity.ERROR));
+					}
+					state = State.OUTER;
+					break;
 			}
 		}
 	}
