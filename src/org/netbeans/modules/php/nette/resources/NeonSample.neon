@@ -12,7 +12,7 @@ common:
     - {hr => 65, avg => 0.278}
 
   variable:
-    name: František Dobrota :-)  # toto je kometář
+    name: John Doe :-)  # this is a comment
     string: " delimited string \x0A "
     tempDir: %appDir%/temp
 
