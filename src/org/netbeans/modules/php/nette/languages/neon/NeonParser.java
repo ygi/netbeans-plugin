@@ -64,12 +64,12 @@ public class NeonParser extends Parser {
 			if (id == NeonTokenId.T_ERROR) {
 				lastResult.addError(new NeonBadgingError(
 						null,
-						errMsg,
-						errMsg,
+						errMsg + " " + t.text(),
+						errMsg + " " + t.text(),
 						snpsht.getSource().getFileObject(),
 						ts.offset(),
 						ts.offset() + t.length(),
-						//true /* not line error */,
+						true /* not line error */,
 						Severity.ERROR));
 			}
 		}
