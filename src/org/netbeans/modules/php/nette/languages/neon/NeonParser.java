@@ -58,11 +58,16 @@ public class NeonParser extends Parser {
 
 	private static final String ERR_BAD_ARRAY_END_DELIMITER = "ERR_bad_array_end_delimiter";
 
+	private static final String ERR_BAD_VARIABLE_FORMAT = "ERR_bad_variable_format";
+
+	private static final int VARIABLE_STEPS = 3;
+
 	private enum State {
 		OUTER,
 		AFTER_STRING_LD,
 		ON_STRING_RD,
 		IN_ARRAY,
+		IN_VARIABLE
 	}
 
 	@Override
@@ -75,6 +80,7 @@ public class NeonParser extends Parser {
 		Token openingToken = null;
 		NeonTokenId okClosingTokenId = null;
 		NeonTokenId badClosingTokenId = null;
+		int variableCounter = 0;
 
 		while (ts.moveNext()) {
 			Token t = ts.token();
@@ -97,6 +103,11 @@ public class NeonParser extends Parser {
 						okClosingTokenId = NeonTokenId.T_RIGHT_SQUARED;
 						badClosingTokenId = NeonTokenId.T_RIGHT_CURLY;
 						state = State.IN_ARRAY;
+						break;
+					}
+					if (id == NeonTokenId.T_VARIABLE) {
+						variableCounter++;
+						state = State.IN_VARIABLE;
 						break;
 					}
 					break;
@@ -145,6 +156,11 @@ public class NeonParser extends Parser {
 								Severity.ERROR));
 						state = State.OUTER;
 					}
+					if (id == NeonTokenId.T_VARIABLE) {
+						variableCounter++;
+						state = State.IN_VARIABLE;
+						break;
+					}
 					if (id == okClosingTokenId) {
 						state = State.OUTER;
 						break;
@@ -158,6 +174,27 @@ public class NeonParser extends Parser {
 								ts.offset(),
 								ts.offset() + t.length(),
 								Severity.ERROR));
+						state = State.OUTER;
+					}
+					break;
+				case IN_VARIABLE:
+					if (id == NeonTokenId.T_VARIABLE) {
+						variableCounter++;
+						if (variableCounter == VARIABLE_STEPS) { // varDelimiter - varName - varDelimiter = 3 steps of T_VARIABLE
+							variableCounter = 0;
+							state = State.OUTER;
+							break;
+						}
+					} else {
+						lastResult.addError(new NeonBadgingError(
+								null,
+								NbBundle.getMessage(NeonParser.class, ERR_BAD_VARIABLE_FORMAT),
+								NbBundle.getMessage(NeonParser.class, ERR_BAD_VARIABLE_FORMAT),
+								snpsht.getSource().getFileObject(),
+								ts.offset(),
+								ts.offset() + t.length(),
+								Severity.ERROR));
+						variableCounter = 0;
 						state = State.OUTER;
 					}
 					break;
