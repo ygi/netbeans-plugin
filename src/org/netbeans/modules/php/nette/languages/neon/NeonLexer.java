@@ -225,6 +225,7 @@ class NeonLexer implements Lexer<NeonTokenId> {
 						}
 						break;
 					case IN_ARRAY:
+						input.backup(1);
 						previousStates.push(state);
 						if (existsKeyAndValuePart()) {
 							state = State.IN_ARRAY_KEY;
@@ -232,7 +233,6 @@ class NeonLexer implements Lexer<NeonTokenId> {
 							state = State.IN_ARRAY_VALUE;
 						}
 						stateChanged = true;
-						input.backup(1);
 						break;
 					case IN_ARRAY_VALUE:
 						if (cc == RIGHT_CURLY) {
