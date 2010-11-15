@@ -294,7 +294,6 @@ class NeonLexer implements Lexer<NeonTokenId> {
 
 				if (!stateChanged) {
 					if (cc == NEW_LINE) {
-						previousStates.push(state);
 						state = State.IN_KEY;
 						inIndentation = true;
 						return NeonTokenId.T_NEW_LINE;
