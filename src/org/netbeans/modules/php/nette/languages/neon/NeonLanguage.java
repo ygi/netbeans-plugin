@@ -27,6 +27,7 @@ package org.netbeans.modules.php.nette.languages.neon;
 import org.netbeans.api.lexer.Language;
 import org.netbeans.modules.csl.spi.DefaultLanguageConfig;
 import org.netbeans.modules.csl.spi.LanguageRegistration;
+import org.netbeans.modules.parsing.spi.Parser;
 import org.netbeans.modules.php.nette.languages.neon.NeonTokenId;
 
 /**
@@ -55,5 +56,10 @@ public class NeonLanguage extends DefaultLanguageConfig {
     public String getPreferredExtension() {
         return "neon";
     }
+
+	@Override
+	public Parser getParser() {
+		return new NeonParser();
+	}
 
 }
