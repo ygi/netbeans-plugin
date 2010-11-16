@@ -27,7 +27,6 @@ package org.netbeans.modules.php.nette.languages.neon;
 import org.netbeans.api.lexer.Language;
 import org.netbeans.modules.csl.spi.DefaultLanguageConfig;
 import org.netbeans.modules.csl.spi.LanguageRegistration;
-import org.netbeans.modules.php.nette.languages.neon.NeonTokenId;
 
 /**
  *

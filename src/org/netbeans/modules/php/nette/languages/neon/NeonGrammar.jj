@@ -1,0 +1,210 @@
+options {
+	ERROR_REPORTING = true;
+	STATIC = false;
+	LOOKAHEAD = 3;
+}
+
+PARSER_BEGIN(CCNeonParser)
+
+package org.netbeans.modules.php.nette.languages.neon;
+
+import java.util.*;
+
+public class CCNeonParser {
+	public List<ParseException> syntaxErrors = new ArrayList<ParseException> ();
+
+	void recover(ParseException ex, int recoveryPoint) {
+		syntaxErrors.add(ex);
+		Token t;
+
+		do {
+			t = getNextToken ();
+		} while (t.kind != EOF && t.kind != recoveryPoint);
+	}
+}
+
+PARSER_END(CCNeonParser)
+
+TOKEN:
+{
+	< EOL: ("\r\n" | "\n" | "\r") >
+|	< KEYWORD: ("true" | "TRUE" | "false" | "FALSE" | "yes" | "YES" | "no" | "NO" | "null" | "NULL") >
+|	< EXTENDS: "<" >
+|	< COLON: ":" >
+|	< COMMA: "," >
+|	< DASH: "-" >
+|	< EQUALS: "=" >
+|	< ASSIGN: "=>" >
+|	< LEFT_CURLY: "{" >
+|	< RIGHT_CURLY: "}" >
+|	< LEFT_SQUARED: "[" >
+|	< RIGHT_SQUARED: "]" >
+
+|	< COMMENT: ("#" (~["\n", "\r"])+) >
+|	< STRING: ("\"" ((~["\n", "\r", "\""])*) "\"") | ("'" ((~["\n", "\r", "\'"])*) "'") >
+
+|	< NUMBER: ("-")? ("0" | ["1"-"9"](["0"-"9"])*) ("." (["0"-"9"])+ ( ["e","E"] (["+","-"])? (["0"-"9"])+ )?)? >
+|	< VARIABLE: "%" <LITERAL> "%" >
+|	< LITERAL: (~["#", "%", "\"", "'", ",", ":", "=", "@", "[", "]", "{", "}", "(", ")", "<", ">", " ", "\t", "\n", "\r"])+ >
+|	< EMPTY_LINE: ((([" ", "\t"])* | (<COMMENT>)?)? <EOL>) >
+|	< SPACE: ([" ", "\t"])+ >
+|	< UNEXPECTED_CHAR : ~[] >
+}
+
+void Start() :
+{}
+{
+	try {
+		(<EMPTY_LINE>)*
+		(
+			BlockArray()
+			|
+			BlockHash()
+		)*
+		(<EMPTY_LINE>)*
+		<EOF>
+	} catch (ParseException ex) {
+		recover(ex, EOL);
+	}
+}
+
+void BlockArray() :
+{}
+{
+	try {
+		(<EMPTY_LINE>)*
+		BlockArrayEntry()
+		(
+			<EOL>
+			(<EMPTY_LINE>)*
+			BlockArrayEntry()
+		)*
+	} catch (ParseException ex) {
+		recover(ex, EOL);
+	}
+}
+
+void BlockArrayEntry() :
+{}
+{
+	try {
+		(
+			(<SPACE>)?
+			<DASH>
+			(<SPACE>)?
+			<EOL>
+			(<EMPTY_LINE>)*
+			(
+				BlockHash()
+				|
+				BlockArray()
+			)
+		)
+		|
+		(
+			(<SPACE>)?
+			<DASH>
+			(<SPACE>)?
+			Value()
+			(<SPACE>)?
+		)
+	} catch (ParseException ex) {
+		recover(ex, EOL);
+	}
+}
+
+void BlockHash() :
+{}
+{
+	try {
+		(<EMPTY_LINE>)*
+		BlockHashEntry()
+		(
+			<EOL>
+			(<EMPTY_LINE>)*
+			BlockHashEntry()
+		)*
+	} catch (ParseException ex) {
+		recover(ex, EOL);
+	}
+}
+
+void BlockHashEntry() :
+{}
+{
+	try {
+		(
+			(
+				Key()
+				<COLON>
+				(<SPACE>)?
+			)
+			|
+			(
+				Key()
+				(<SPACE>)?
+				<COLON>
+				(<SPACE>)?
+				Value()
+				(<SPACE>)?
+			)
+		)
+		<EOL>
+		(<EMPTY_LINE>)*
+		(
+			BlockHash()
+			|
+			BlockArray()
+		)
+	} catch (ParseException ex) {
+		recover(ex, EOL);
+	}
+}
+
+void Value() :
+{}
+{
+	try {
+		(
+			<KEYWORD>
+		|
+			<NUMBER>
+		|
+			<VARIABLE>
+		|
+			<STRING>
+		|
+			<LITERAL>
+		)
+	} catch (ParseException ex) {
+		recover(ex, EOL);
+	}
+}
+
+void Key() :
+{}
+{
+	try {
+		(
+			<NUMBER>
+		|
+			<STRING>
+		|
+			<LITERAL>
+		)
+		(
+			(<SPACE>)?
+			<EXTENDS>
+			(<SPACE>)?
+			(
+				<NUMBER>
+			|
+				<STRING>
+			|
+				<LITERAL>
+			)
+		)?
+	} catch (ParseException ex) {
+		recover(ex, EOL);
+	}
+}

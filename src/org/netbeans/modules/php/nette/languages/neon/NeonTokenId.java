@@ -31,42 +31,20 @@ import org.netbeans.api.lexer.TokenId;
  *
  * @author Ondřej Brejla <ondrej@brejla.cz>
  */
-public enum NeonTokenId implements TokenId {
-
-	T_QUOTATION_MARK("\"", "string"),
-	T_APOSTROPHE("'", "string"),
-	T_LEFT_CURLY("{", "interpunction"),
-	T_RIGHT_CURLY("}", "interpunction"),
-	T_LEFT_SQUARED("[", "interpunction"),
-	T_RIGHT_SQUARED("]", "interpunction"),
-	T_LT("<", "interpunction"),
-	T_EQUALS("=", "interpunction"),
-	T_ASSIGN("=>", "interpunction"),
-	T_COLON(":", "interpunction"),
-	T_DASH("-", "interpunction"),
-	T_COMMA(",", "interpunction"),
-	T_NUMBER(null, "number"),
-	T_STRING(null, "string"),
-	T_LITERAL(null, "literal"),
-	T_COMMENT(null, "comment"),
-	T_KEYWORD(null, "keyword"),
-	T_VARIABLE(null, "variable"),
-	T_BLOCK(null, "block"),
-	T_KEY(null, "key"),
-	T_WHITESPACE(null, "whitespace"),
-	T_INDENTATION(null, "whitespace"),
-	T_NEW_LINE(null, "whitespace"),
-	T_ERROR(null, "error");
+public class NeonTokenId implements TokenId {
 
 	private String primaryCategory;
 
-	private String text;
+	private String name;
+
+	private int id;
 
 	private static final Language<NeonTokenId> language = new NeonLanguageHierarchy().language();
 
-	private NeonTokenId(String text, String primaryCategory) {
-		this.text = text;
+	public NeonTokenId(String name, String primaryCategory, int id) {
+		this.name = name;
 		this.primaryCategory = primaryCategory;
+		this.id = id;
 	}
 
 	@Override
@@ -74,8 +52,14 @@ public enum NeonTokenId implements TokenId {
 		return primaryCategory;
 	}
 
-	public String getText() {
-		return text;
+	@Override
+	public int ordinal() {
+		return id;
+	}
+
+	@Override
+	public String name() {
+		return name;
 	}
 
     public static Language<NeonTokenId> getLanguage() {
