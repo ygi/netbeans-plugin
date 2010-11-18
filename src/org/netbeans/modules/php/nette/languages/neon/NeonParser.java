@@ -120,16 +120,16 @@ public class NeonParser extends Parser {
 
             for (ParseException syntaxError : syntaxErrors) {
                 Token token = syntaxError.currentToken;
-                int start = NbDocument.findLineOffset((StyledDocument) document, token.beginLine - 1) + token.beginColumn - 1;
-                int end = NbDocument.findLineOffset((StyledDocument) document, token.endLine - 1) + token.endColumn;
+                int start = NbDocument.findLineOffset((StyledDocument) document, token.beginLine) + token.beginColumn - 1;
+                int end = NbDocument.findLineOffset((StyledDocument) document, token.endLine) + token.endColumn;
 
 				errors.add(new NeonBadgingError(
 					null,
 					syntaxError.getMessage(),
 					syntaxError.getMessage(),
 					getSnapshot().getSource().getFileObject(),
-					start,
-					end,
+					start - 1,
+					end - 1,
 					true,
 					Severity.ERROR
 				));
