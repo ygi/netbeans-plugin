@@ -97,7 +97,7 @@ public class NettePhpFrameworkProvider extends PhpFrameworkProvider {
                 //set.add(new File(pm.getSourceDirectory().getPath()+"/app/temp"));
                 //set.add(new File(pm.getSourceDirectory().getPath()+"/app/sessions"));
                 //set.add(new File(pm.getSourceDirectory().getPath()+"/app/logs"));
-                set.add(new File(pm.getSourceDirectory().getPath()+"/app/.htaccess"));
+                //set.add(new File(pm.getSourceDirectory().getPath()+"/app/.htaccess"));
                 return set;
             }
         };
