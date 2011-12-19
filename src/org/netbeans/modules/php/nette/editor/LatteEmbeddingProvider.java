@@ -85,7 +85,7 @@ public class LatteEmbeddingProvider extends EmbeddingProvider {
 		public Collection<SchedulerTask> create(final Snapshot snapshot) {
 			return Collections.<SchedulerTask>singletonList(new LatteEmbeddingProvider());
 		}
-		
+
 	}
 
 }

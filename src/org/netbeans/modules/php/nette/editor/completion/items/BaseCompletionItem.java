@@ -48,7 +48,7 @@ import org.netbeans.spi.editor.completion.support.CompletionUtilities;
 public class BaseCompletionItem implements CompletionItem {
 
     protected Color fieldColor = Color.decode("0x000000");
-    
+
     protected String text;				// text to be inserted instead of that between these two:
     protected int dotOffset;			// start offset where completion will happen
     protected int caretOffset;			// caret (cursor) offset (where CTR+SPACE was pressed)
@@ -60,7 +60,7 @@ public class BaseCompletionItem implements CompletionItem {
     }
 
 	/**
-	 * 
+	 *
 	 * @param jtc
 	 */
 	@Override
@@ -84,7 +84,7 @@ public class BaseCompletionItem implements CompletionItem {
 	 * Gets prefered width for completion box base on the text
 	 * @param grphcs
 	 * @param font
-	 * @return 
+	 * @return
 	 */
 	@Override
     public int getPreferredWidth(Graphics grphcs, Font font) {

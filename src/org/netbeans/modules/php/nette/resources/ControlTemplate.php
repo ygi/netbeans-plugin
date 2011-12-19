@@ -13,7 +13,7 @@ class ${name} extends BaseControl {
 	 * @see Nette\Application\Control#render()
 	 */
 	public function render() {
-		
+
 	}
 
 }

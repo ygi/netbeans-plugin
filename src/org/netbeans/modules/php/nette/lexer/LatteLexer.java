@@ -42,7 +42,7 @@ import org.netbeans.spi.lexer.TokenFactory;
 class LatteLexer implements Lexer<LatteTokenId> {
 
     private static final int EOF = LexerInput.EOF;
-	
+
     private final LatteColoringLexer scanner;
 
     private LexerInput input;
@@ -100,7 +100,7 @@ class LatteLexer implements Lexer<LatteTokenId> {
         keywords.add("isset");
         keywords.add("instanceof");
     };
-    
+
     /** State of the lexer - where in tokenizing the macro the lexer ended */
     enum State {
         OUTER,				// out of macro
@@ -123,7 +123,7 @@ class LatteLexer implements Lexer<LatteTokenId> {
             this.input = info.input();
             this.state = state;
         }
-		
+
 		/**
 		 * Tokenizes the input. In this lexer the input must be a latte macro (latte mime-type).
 		 * For each character (or sequence) returns its LattteTokenId representative

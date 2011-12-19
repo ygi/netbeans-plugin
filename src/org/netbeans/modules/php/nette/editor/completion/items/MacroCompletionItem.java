@@ -47,7 +47,7 @@ public class MacroCompletionItem extends BaseCompletionItem {
     public MacroCompletionItem(String text, int dotOffset, int caretOffset) {
         this(text, dotOffset, caretOffset, false, 0);
     }
-    
+
     public MacroCompletionItem(String text, int dotOffset, int caretOffset, boolean isAttr) {
         this(text, dotOffset, caretOffset, isAttr, 0);
     }

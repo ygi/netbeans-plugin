@@ -111,7 +111,7 @@ public class LatteBracesMatching implements BracesMatcher {
                 };
             }
         }
-        
+
         return null;
     }
 
@@ -124,7 +124,7 @@ public class LatteBracesMatching implements BracesMatcher {
             if(MatcherContext.isTaskCanceled()) {
                 return new int[] { searchOffset, searchOffset };	// abort -> no hi-light
             }
-            
+
             TokenHierarchy<String> th = TokenHierarchy.create(context.getDocument().getText(0, context.getDocument().getLength()), LatteTopTokenId.language());
             TokenSequence<LatteTopTokenId> ts = th.tokenSequence(LatteTopTokenId.language());
 
@@ -199,7 +199,7 @@ public class LatteBracesMatching implements BracesMatcher {
                     TokenHierarchy<CharSequence> th2 = TokenHierarchy.create(t.text(), LatteTokenId.language());
                     TokenSequence<LatteTokenId> ts2 = th2.tokenSequence(LatteTokenId.language());
                     ts2.moveStart();
-					
+
                     boolean isEndMacro2 = false;					// is parsed macro end macro?
                     int i = 0;										// used for checking end macro slash position
                     while(ts2.moveNext() && i < 3) {

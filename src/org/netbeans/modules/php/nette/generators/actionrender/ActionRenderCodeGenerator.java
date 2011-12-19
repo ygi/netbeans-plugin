@@ -1,18 +1,18 @@
 /*
  *  The MIT License
- * 
+ *
  *  Copyright (c) 2010 Radek Ježdík <redhead@email.cz>, Ondřej Brejla <ondrej@brejla.cz>
- * 
+ *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
  *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *  copies of the Software, and to permit persons to whom the Software is
  *  furnished to do so, subject to the following conditions:
- * 
+ *
  *  The above copyright notice and this permission notice shall be included in
  *  all copies or substantial portions of the Software.
- * 
+ *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -37,17 +37,17 @@ import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
 
 /**
- * 
+ *
  * @author Ondřej Brejla <ondrej@brejla.cz>
  */
 public class ActionRenderCodeGenerator implements CodeGenerator {
 
 	JTextComponent textComp;
-	
+
 	private ActionRenderVisualPanel panel;
 
 	private String name = "TXT_ActionRender_code_generator_name";
-	
+
 	/**
 	 *
 	 * @param context containing JTextComponent and possibly other items registered by {@link CodeGeneratorContextProvider}
@@ -127,7 +127,7 @@ public class ActionRenderCodeGenerator implements CodeGenerator {
 	private String getPresenterDir() {
         String presenterPath = getPresenterFile().getPath();
 		String separator = File.separator.equals("\\") ? "\\\\" : File.separator;
-		
+
 		return presenterPath.replaceAll(separator + getPresenterFile().getName(), "");
 	}
 

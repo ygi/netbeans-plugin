@@ -47,7 +47,7 @@ public class InsideMacroResolver {
 	public static void resolve(CompletionResultSet completionResultSet, TokenSequence<LatteTopTokenId> sequence,
 			Document document, int caretOffset) {
 		Token<LatteTopTokenId> token = sequence.token();
-		
+
 		// inside macro completion
 		TokenHierarchy<CharSequence> th2 = TokenHierarchy.create(token.text(), LatteTokenId.language());
 		TokenSequence<LatteTokenId> sequence2 = th2.tokenSequence(LatteTokenId.language());

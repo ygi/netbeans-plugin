@@ -73,7 +73,7 @@ public class NetteEditorExtender extends EditorExtender {
         if (presenter == null) {
             return phpVariables;
 		}
-        
+
         try {
             ParserManager.parse(Collections.singleton(Source.create(presenter)), new UserTask() {
 
@@ -87,7 +87,7 @@ public class NetteEditorExtender extends EditorExtender {
 
             });
         } catch (ParseException ex) {
-            
+
         }
 
         return phpVariables;
@@ -100,7 +100,7 @@ public class NetteEditorExtender extends EditorExtender {
         private final PhpVariable view = new PhpVariable("$this", "Template"); // NOI18N
 
         private final List<PhpVariable> vars = new ArrayList<PhpVariable>();
-        
+
         public NettePresenterVisitor(FileObject view, PHPParseResult result) {
             this.actionParseResult = result;
         }
@@ -136,5 +136,5 @@ public class NetteEditorExtender extends EditorExtender {
         }
 
     }
-    
+
 }

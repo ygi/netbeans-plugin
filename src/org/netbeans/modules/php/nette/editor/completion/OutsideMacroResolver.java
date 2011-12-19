@@ -58,13 +58,13 @@ public class OutsideMacroResolver {
 		if(filter.equals("")) {
 			return;
 		}
-		
+
 		// end macro and friend macro completion
 		completionResultSet.addAllItems(getFriendMacroCompletion(endMacros, startOffset, caretOffset, filter));
 
 		// macro completion
 		completionResultSet.addAllItems(getMacroCompletion(startOffset, caretOffset, filter));
-		
+
 		// n:attribute completion
 		completionResultSet.addAllItems(getNAttributeCompletion(startOffset, caretOffset, filter));
 
@@ -104,7 +104,7 @@ public class OutsideMacroResolver {
 		if(!filter.startsWith("n:")) {
 			return list;
 		}
-		
+
 		for(LatteMacro macro : MacroDefinitions.macros) {
 			if(!(macro instanceof LatteParamMacro) || !macro.isPair()) {
 				continue;
@@ -130,7 +130,7 @@ public class OutsideMacroResolver {
 				list.add(new MacroCompletionItem(tag, startOffset, caretOffset, true));
 			}
 		}
-		
+
 		return list;
 	}
 
@@ -164,7 +164,7 @@ public class OutsideMacroResolver {
 
 	private static String getFilter(Document document, int caretOffset) {
 		String filter = "";
-		
+
 		// determining what was written:
 		try {
 			final StyledDocument bDoc = (StyledDocument) document;
@@ -195,7 +195,7 @@ public class OutsideMacroResolver {
 			filter = bDoc.getText(macroStart, caretOffset - macroStart).trim();
 		} catch(BadLocationException e) {
 		}
-		
+
 		return filter;
 	}
 

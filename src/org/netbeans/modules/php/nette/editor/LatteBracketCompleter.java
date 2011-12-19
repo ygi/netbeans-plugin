@@ -140,7 +140,7 @@ public class LatteBracketCompleter implements KeystrokeHandler {
 			case '[': return ']';
 			case '"': return '"';
 			case '\'': return '\'';
-			
+
 			default:
 				return ch;
 		}
@@ -166,7 +166,7 @@ public class LatteBracketCompleter implements KeystrokeHandler {
 			if(!ts2.moveNext() && !ts2.movePrevious()) {
 				return null;
 			}
-			
+
 			return ts2;
 		}
 

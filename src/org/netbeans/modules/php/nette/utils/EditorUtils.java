@@ -135,7 +135,7 @@ public final class EditorUtils {
         FileObject fo = Source.create(doc).getFileObject();
 
         List<CompletionItem> list = new ArrayList<CompletionItem>();
-        
+
         if (link.contains(":")) {
             String[] parts = link.split(":");
             for(String s : getAllPresenters(fo)) {
@@ -262,11 +262,11 @@ public final class EditorUtils {
      * @param dynamicVars dynamically created variables in template
      * @return List<CompletionItem> ready completion set to add to CompletionResultSet
      */
-    public static List<CompletionItem> parseVariable(Document doc, String var, int caretOffset, 
+    public static List<CompletionItem> parseVariable(Document doc, String var, int caretOffset,
             List<String> dynamicVars)
     {
         List<CompletionItem> list = new ArrayList<CompletionItem>();
-        
+
         for(String s : dynamicVars) {
             if(s.startsWith(var)) {
                 list.add(new VariableCompletionItem(s, caretOffset-var.length(), caretOffset));
@@ -288,7 +288,7 @@ public final class EditorUtils {
 	 */
 	public static List<CompletionItem> getSyntaxCompletions(String written, int startOffset, int length) {
 		List<CompletionItem> list = new ArrayList<CompletionItem>();
-		String[] types = { 
+		String[] types = {
 			"latte",
 			"double",
 			"asp",
@@ -389,7 +389,7 @@ public final class EditorUtils {
 			if (fo == null) {
 				return null;
 			}
-			
+
             if(fo.getName().equals("sessions")
                     || fo.getName().equals("temp") || fo.getName().equals("logs"))
                 continue;
@@ -420,11 +420,11 @@ public final class EditorUtils {
      */
     public static List<String> getAllPresenters(FileObject fo) {
         File appDir = new File(PhpModule.forFileObject(fo).getSourceDirectory().getPath() + "/app");
-        
+
         Enumeration<? extends FileObject> files = FileUtil.toFileObject(appDir).getChildren(true);
 
         Pattern p = Pattern.compile("class +([A-Za-z_][A-Za-z0-9_]*)Presenter");
-        
+
         List<String> list = new ArrayList<String>();
         while (files.hasMoreElements()) {
             FileObject pfo = files.nextElement();
@@ -450,7 +450,7 @@ public final class EditorUtils {
                         }
                     }
                 } catch (IOException ioe) {
-                    
+
                 }
             }
         }
@@ -568,7 +568,7 @@ public final class EditorUtils {
      */
     private static List<FileObject> getFilesRecursive(FileObject fp, FilenameFilter filter) {
         List<FileObject> list = new ArrayList<FileObject>();
-        
+
         for(FileObject child : fp.getChildren()) {
             if(child.getName().equals("temp") || child.getName().equals("sessions") ||
                     child.getName().equals("logs"))
@@ -657,7 +657,7 @@ public final class EditorUtils {
 	 */
 	public static String extractPresenterName(String presenterFileName) {
 		String modulePrefixPattern = "^(.*)_";
-		
+
 		return firstLetterCapital(presenterFileName.replaceAll(NetteFramework.NETTE_PRESENTER_EXTENSION, "").replaceAll("Presenter", "").replaceFirst(modulePrefixPattern, ""));
 	}
 

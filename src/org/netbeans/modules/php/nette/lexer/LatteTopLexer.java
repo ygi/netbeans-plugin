@@ -39,9 +39,9 @@ import org.netbeans.spi.lexer.TokenPropertyProvider;
  * @author Radek Ježdík
  */
 class LatteTopLexer implements Lexer<LatteTopTokenId> {
-    
+
     private static final int EOF = LexerInput.EOF;
-	
+
     private final LatteTopColoringLexer scanner;
 
     private LexerInput input;
@@ -145,7 +145,7 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                         input.backup(1);							// exlude left delimiter
                         return LatteTopTokenId.HTML;				// end return the rest as HTMl
                     }
-                        
+
                     c = input.read();								// next character
                     if(!Character.isJavaIdentifierPart(c) && c != '!' && c != '?'
                             && c != '=' && c != '/' && c != '*') {	// it is not a macro
@@ -318,7 +318,7 @@ class LatteTopLexer implements Lexer<LatteTopTokenId> {
                     substate = null;
                     state = State.IN_HTML_TAG;							// returning back to HTML tag
                 }
-                
+
                 c = input.read();
             }
 

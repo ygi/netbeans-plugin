@@ -5,7 +5,7 @@ Options -Indexes
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 	RewriteBase /
-	
+
 	# front controller
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d

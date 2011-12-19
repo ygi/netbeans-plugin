@@ -56,7 +56,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
     /** Creates new form CreateComponentGeneratorPanel */
     public CreateComponentGeneratorPanel() {
         initComponents();
-		
+
 		errorLabel.setText("");
     }
 
@@ -312,7 +312,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 
 	public void setDialogDescriptor(DialogDescriptor dd) {
 	   this.dd = dd;
-	   
+
 	   formName.getDocument().addDocumentListener(this);
 	   formClass.getDocument().addDocumentListener(this);
 	   componentName.getDocument().addDocumentListener(this);
@@ -344,7 +344,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 			if (!classNameValidator.validate(getFormClass())) {
 				errorLabel.setIcon(errorIcon);
 				setWarningText(NbBundle.getMessage(CreateComponentGeneratorPanel.class, "ERR_head_form_class"));
-				
+
 				dd.setValid(false);
 			} else if (!componentNameValidator.validate(getFormName())) {
 				errorLabel.setIcon(errorIcon);
@@ -371,7 +371,7 @@ public class CreateComponentGeneratorPanel extends javax.swing.JPanel implements
 			} else {
 				errorLabel.setIcon(null);
 				errorLabel.setText("");
-				
+
 				dd.setValid(true);
 			}
 		}

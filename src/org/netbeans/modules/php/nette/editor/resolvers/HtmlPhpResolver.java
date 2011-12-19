@@ -46,15 +46,15 @@ public class HtmlPhpResolver extends TemplateResolver {
 	public void solve(Token t, TokenSequence<LatteTopTokenId> sequence) {
 		if (t.id() == LatteTopTokenId.HTML_TAG || t.id() == LatteTopTokenId.LATTE_TAG) {
 			String tag = t.text().toString();
-			
-			if(isOpeningTag(tag)) {			
+
+			if(isOpeningTag(tag)) {
 				if(t.id() == LatteTopTokenId.LATTE_TAG) {
 					setMacroName((String) t.getProperty("macro"));		// if <n:tag, store macro name
 				}
 
 				getTags().add(0);										// counts nesting
 			} else if (isClosingTag(tag)) {
-				if (getTags().size() > 0) {									
+				if (getTags().size() > 0) {
 					int c = removeLastTag();							// Opening
 					if (c > 0) {										// if there are some code blocks
 						closeAllCodeBlocks(c);

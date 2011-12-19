@@ -41,7 +41,7 @@ import org.openide.util.Exceptions;
  * Nefunguje!
  * Zprovoznit!
  * Rychle!
- * 
+ *
  * @author Radek Ježdík
  */
 public class LatteFormatter implements Formatter {
