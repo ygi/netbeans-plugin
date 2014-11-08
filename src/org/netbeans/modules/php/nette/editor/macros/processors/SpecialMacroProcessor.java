@@ -55,7 +55,7 @@ public class SpecialMacroProcessor extends  MacroProcessor {
 
 		do {
 			Token<LatteTokenId> t2 = sequence2.token();
-			
+
 			if(whiteSpace < 2) {												// first param ( {mac param ...})
 				if(t2.id() == LatteTokenId.VARIABLE || t2.id() == LatteTokenId.STRING) {
 					toString = false;											// do not encapsulate with quotes
@@ -80,7 +80,7 @@ public class SpecialMacroProcessor extends  MacroProcessor {
 				}
 				start = sequence.offset() + sequence2.offset();
 			}
-			
+
 			if(t2.id() == LatteTokenId.RD) {
 				break;
 			}
@@ -106,7 +106,7 @@ public class SpecialMacroProcessor extends  MacroProcessor {
 		String params = embedder.getSnapshot().getText().subSequence(start, start+length).toString();
 		params = params.replaceAll("([ ,(\\[])([a-zA-Z]+) *=>", "$1 \"$2\" =>");
 		embedder.embed(params);
-		
+
 		embedder.embed(")?>");
 	}
 

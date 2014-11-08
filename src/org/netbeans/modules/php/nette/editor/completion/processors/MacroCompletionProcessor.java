@@ -47,9 +47,9 @@ public class MacroCompletionProcessor {
 
 	public List<CompletionItem> process(TokenSequence<LatteTopTokenId> sequence, TokenSequence<LatteTokenId> sequence2,
 			Document document, int caretOffset) {
-		
+
 		List<CompletionItem> list = new ArrayList<CompletionItem>();
-		
+
 		String written = "";
 
 		Token<LatteTokenId> token2 = sequence2.token();
@@ -59,13 +59,13 @@ public class MacroCompletionProcessor {
 			sequence2.moveNext();
 			token2 = sequence2.token();
 		}
-		
+
 		// when only {} is written
 		if (token2.id() != LatteTokenId.RD) {
 			written = token2.text().toString().replace("}", "");
 			written = written.substring(0, caretOffset - sequence2.offset() - sequence.offset());
 		}
-		
+
 		for (LatteMacro macro : MacroDefinitions.macros) {
 			if (macro.getMacroName().startsWith(written)) {
 				list.add(

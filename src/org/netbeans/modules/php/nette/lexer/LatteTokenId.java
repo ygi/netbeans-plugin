@@ -85,7 +85,7 @@ public enum LatteTokenId implements TokenId {
         this.fixedText = fixedText;
         this.primaryCategory = primaryCategory;
     }
-    
+
     public String fixedText() {
         return fixedText;
     }
@@ -112,12 +112,12 @@ public enum LatteTokenId implements TokenId {
         protected Lexer<LatteTokenId> createLexer(LexerRestartInfo<LatteTokenId> info) {
             return new LatteLexer(info);
         }
-		
+
         @Override
         protected String mimeType() {
             return "text/x-latte";
         }
-        
+
     }.language();
 
     public static Language<LatteTokenId> language() {

@@ -61,7 +61,7 @@ public class BlockMacroProcessor extends MacroProcessor {
 				if (t2.id() == LatteTokenId.RD) {
 					break;
 				}
-				
+
 				length += t2.length();
 			} while(sequence2.moveNext());
 

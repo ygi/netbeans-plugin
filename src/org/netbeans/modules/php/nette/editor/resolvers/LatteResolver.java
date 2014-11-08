@@ -68,7 +68,7 @@ public class LatteResolver extends TemplateResolver {
 		sequence2.moveStart();
 		while(sequence2.moveNext()) {
 			Token<LatteTokenId> t2 = sequence2.token();
-			
+
 			if (isEndMacro(t2, sequence2)) {		// is end macro {/
 				endMacro = true;
 			}
@@ -77,7 +77,7 @@ public class LatteResolver extends TemplateResolver {
 				String comment = t2.text().toString();
 				parseLatteDoc(comment);
 			}
-			
+
 			if (t2.id() == LatteTokenId.MACRO) {									// store macro name
 				macro = t2.text().toString();
 				setMacroName(null);

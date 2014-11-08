@@ -57,5 +57,5 @@ public class LatteCommentMacro extends LatteMacro {
         }
     }
 
-    
+
 }

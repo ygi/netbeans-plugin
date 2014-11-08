@@ -70,7 +70,7 @@ public enum LatteTopTokenId implements TokenId {
         return primaryCategory;
     }
 
-    
+
     private static final Language<LatteTopTokenId> language = new LanguageHierarchy<LatteTopTokenId>() {
 
         @Override

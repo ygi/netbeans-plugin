@@ -64,7 +64,7 @@ abstract public class Embedder {
 		//merges embeddings into one piece
 		if (!embeddings.isEmpty()) {
 			List<Embedding> result = new ArrayList<Embedding>();		// embedding result
-			
+
 			result.add(Embedding.create(embeddings));
 
 			return result;						// return embedding

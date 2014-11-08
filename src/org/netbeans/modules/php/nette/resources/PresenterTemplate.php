@@ -29,5 +29,5 @@ class ${name} <#if parentPresenter != "">extends ${parentPresenter} </#if>{
 	}
     </#if>
     </#list>
-        
+
 }

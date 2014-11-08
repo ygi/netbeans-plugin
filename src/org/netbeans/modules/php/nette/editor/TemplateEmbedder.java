@@ -68,7 +68,7 @@ public class TemplateEmbedder extends Embedder {
 
 		LatteResolver latteResolver = new LatteResolver(this);
 		HtmlPhpResolver htmlPhpResolver = new HtmlPhpResolver(this);
-		
+
 		while(sequence.moveNext()) {
 			Token t = sequence.token();
 			if(t.id() == LatteTopTokenId.LATTE) {
@@ -82,7 +82,7 @@ public class TemplateEmbedder extends Embedder {
 		if (isAllowedBlockOpened()) {
 			embed("<?php } ?>");
 		}
-		
+
 		return super.getEmbeddings();
 	}
 

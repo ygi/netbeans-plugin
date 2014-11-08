@@ -1,18 +1,18 @@
 /*
  *  The MIT License
- * 
+ *
  *  Copyright (c) 2010 Radek Ježdík <redhead@email.cz>, Ondřej Brejla <ondrej@brejla.cz>
- * 
+ *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
  *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *  copies of the Software, and to permit persons to whom the Software is
  *  furnished to do so, subject to the following conditions:
- * 
+ *
  *  The above copyright notice and this permission notice shall be included in
  *  all copies or substantial portions of the Software.
- * 
+ *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -47,7 +47,7 @@ final class HintsPanel extends javax.swing.JPanel {
 		initComponents();
 
 		settings = HintsSettings.getSettings();
-		
+
 		for(Map.Entry<String, Boolean> entry : settings.entrySet()) {
 			boolean b = entry.getValue();
 
@@ -66,7 +66,7 @@ final class HintsPanel extends javax.swing.JPanel {
 
 		update();
 	}
-	
+
 	private void checkboxClicked(java.awt.event.ActionEvent evt) {
 		JCheckBox chbox = (JCheckBox) evt.getSource();
 		settings.put(chbox.getName(), chbox.isSelected());
@@ -100,7 +100,7 @@ final class HintsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 	synchronized void update() {
-		
+
 	}
 
 	void cancel() {
@@ -128,7 +128,7 @@ final class HintsPanel extends javax.swing.JPanel {
 		}
 		return fo.getPath();
 	}
-	
+
 	// Variables declaration - do not modify
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel boxContainer;

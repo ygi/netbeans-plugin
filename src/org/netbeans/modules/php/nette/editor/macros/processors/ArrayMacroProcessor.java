@@ -103,7 +103,7 @@ public class ArrayMacroProcessor extends MacroProcessor {
 					state = -1;												// search for next variable name
 					continue;
 				}
-				
+
 				length += t2.length();										// add up value length
 				var += t2.text();											// add variable value
 			}

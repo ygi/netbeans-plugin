@@ -85,7 +85,7 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
     public String getWarningMessage() {
         return null;
     }
-    
+
     private HashSet<FileObject> set = new HashSet<FileObject>();
 
     @Override
@@ -114,13 +114,13 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
         File folder = new File(d + NetteFramework.NETTE_DOCUMENT_ROOT_DIR);
         FileObject doc_root = FileUtil.createFolder(folder);
         set.add(doc_root);
-        
+
         set.add(FileUtil.createFolder(new File(doc_root.getPath() + "/css")));
         set.add(FileUtil.createFolder(new File(doc_root.getPath() + "/js")));
         set.add(FileUtil.createFolder(new File(doc_root.getPath() + "/images")));
 
         FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/index.php"), new File(d + NetteFramework.NETTE_DOCUMENT_ROOT_DIR + "/index.php"));
-        
+
         FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/.htaccess-DOCUMENT_ROOT"), new File(d + NetteFramework.NETTE_DOCUMENT_ROOT_DIR + "/.htaccess"));
     }
 
@@ -132,14 +132,14 @@ public class NettePhpModuleExtender extends PhpModuleExtender {
         //TODO FrontModule, AdminModule, .. presenters, templates, ..
         //make user choose what names
         //set.add(FileUtil.createFolder(new File(doc_root.getPath() + "/FrontModule")));
-        
+
         //set.add(FileUtil.createFolder(new File(app.getPath() + "/temp")));
         //set.add(FileUtil.createFolder(new File(app.getPath() + "/sessions")));
         //set.add(FileUtil.createFolder(new File(app.getPath() + "/logs")));
-        
+
         set.add(FileUtil.createFolder(new File(app.getPath() + "/presenters")));
         set.add(FileUtil.createFolder(new File(app.getPath() + "/templates")));
-        
+
         FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/bootstrap.php"), new File(d + NetteFramework.NETTE_APP_DIR + "/bootstrap.php"));
 
         FileUtils.copyFile(getClass().getResourceAsStream("/org/netbeans/modules/php/nette/resources/.htaccess-APP"), new File(d + NetteFramework.NETTE_APP_DIR + "/.htaccess"));

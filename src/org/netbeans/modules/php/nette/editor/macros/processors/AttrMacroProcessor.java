@@ -45,7 +45,7 @@ public class AttrMacroProcessor extends MacroProcessor {
 	public void process(TokenSequence<LatteTopTokenId> sequence, TokenSequence<LatteTokenId> sequence2, int start, String macro, boolean endMacro, Embedder embedder) {
 		int numOfBrackets = 0;				// counts number of brackets to clearly match nested brackets
 		int whiteSpace = 0;					// counts whitespaces (delimits attr calls)
-		
+
 		List<Integer> starts = new ArrayList<Integer>();	// array of starts of attr call
 		List<Integer> lengths = new ArrayList<Integer>();	// array of lengths of attr call
 
@@ -82,7 +82,7 @@ public class AttrMacroProcessor extends MacroProcessor {
 					continue;
 				}
 			}
-			
+
 			length += t2.length();
 		} while (sequence2.moveNext());
 

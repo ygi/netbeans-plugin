@@ -108,7 +108,7 @@ public class ParentPresenterWizardPanel implements WizardDescriptor.Panel {
     it.next().stateChanged(ev);
     }
     }
-    
+
 
     // You can use a settings object to keep track of state. Normally the
     // settings object will be the WizardDescriptor, so you can use

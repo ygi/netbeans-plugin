@@ -9,4 +9,4 @@ Custom build
 4. right click on the project name in the 'Project window'
 5. left click on 'Create NBM'
 6. when building is complete a '*.nbm' file is generated in the './build' directory
-7. done :-) 
+7. done :-)

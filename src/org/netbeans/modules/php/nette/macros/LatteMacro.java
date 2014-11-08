@@ -42,7 +42,7 @@ public class LatteMacro {
     protected String macro;
     protected boolean isPair;
     protected String endMacro;
-    
+
     public LatteMacro(String macro) {
         this(macro, false, macro);
     }

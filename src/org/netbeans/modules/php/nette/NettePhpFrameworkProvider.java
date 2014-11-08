@@ -45,14 +45,14 @@ import org.openide.util.NbBundle;
  * @author Radek Ježdík
  */
 public class NettePhpFrameworkProvider extends PhpFrameworkProvider {
-    
+
     private static final NettePhpFrameworkProvider INSTANCE = new NettePhpFrameworkProvider();
 
     public NettePhpFrameworkProvider() {
-		super(NbBundle.getMessage(NettePhpFrameworkProvider.class, "OpenIDE-Module-Name"), 
+		super(NbBundle.getMessage(NettePhpFrameworkProvider.class, "OpenIDE-Module-Name"),
 				NbBundle.getMessage(NettePhpFrameworkProvider.class, "OpenIDE-Module-Short-Description"));
     }
-    
+
     public static NettePhpFrameworkProvider getInstance() {
         return INSTANCE;
     }
@@ -112,5 +112,5 @@ public class NettePhpFrameworkProvider extends PhpFrameworkProvider {
     public EditorExtender getEditorExtender(PhpModule pm) {
         return new NetteEditorExtender();
     }
-    
+
 }

@@ -42,7 +42,7 @@ import org.openide.util.NbBundle;
 
 /**
  * Panel for adding action and/or render methods and for generating their templates.
- * 
+ *
  * @author Ondřej Brejla <ondrej@brejla.cz>
  */
 public final class ActionRenderVisualPanel extends JPanel {
@@ -319,7 +319,7 @@ public final class ActionRenderVisualPanel extends JPanel {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int row = actionTable.getSelectedRow();
         if (row != -1) {
-            int result = JOptionPane.showConfirmDialog(this, 
+            int result = JOptionPane.showConfirmDialog(this,
 					NbBundle.getMessage(ActionRenderVisualPanel.class, "TXT_delete_row_confirm_text"),
 					NbBundle.getMessage(ActionRenderVisualPanel.class, "TXT_delete_row_confirm_title"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -366,7 +366,7 @@ public final class ActionRenderVisualPanel extends JPanel {
 
             return true;
         }
-        
+
         return false;
     }
 
@@ -398,7 +398,7 @@ public final class ActionRenderVisualPanel extends JPanel {
             oldAction = (String) tableModel.getValueAt(i, 0);
             if (oldAction.equals(newAction)) {
                 showWarning(NbBundle.getMessage(ActionRenderVisualPanel.class, "WRN_action_exists"));
-                
+
                 return true;
             }
         }

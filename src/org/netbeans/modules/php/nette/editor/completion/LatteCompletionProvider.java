@@ -88,7 +88,7 @@ public class LatteCompletionProvider implements CompletionProvider {
 				sequence.move(caretOffset);
 				if(sequence.moveNext() || sequence.movePrevious()) {
 					Token<LatteTopTokenId> token = sequence.token();
-					
+
 					if(token.id() == LatteTopTokenId.LATTE) {
 						//inside macro completion
 						InsideMacroResolver.resolve(completionResultSet, sequence, document, caretOffset);
@@ -135,7 +135,7 @@ public class LatteCompletionProvider implements CompletionProvider {
 	 */
 	private MacroCounterMap preprocessUnclosedMacros(TokenSequence<LatteTopTokenId> sequence) {
 		paired = new MacroCounterMap();
-		
+
 		// find all pair macros
 		for(LatteMacro macro : MacroDefinitions.macros) {
 			if(macro.isPair()) {

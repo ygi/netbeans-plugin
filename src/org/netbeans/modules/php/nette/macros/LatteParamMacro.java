@@ -42,12 +42,12 @@ public class LatteParamMacro extends LatteMacro {
     public LatteParamMacro(String macro, boolean isPair) {
         this(macro, isPair, macro);
     }
-    
+
     public LatteParamMacro(String macro, boolean isPair, String endMacro) {
         super(macro, isPair, endMacro);
     }
 
-	
+
     @Override
     public void process(JTextComponent jtc, int dotOffset) {
         StyledDocument doc = (StyledDocument) jtc.getDocument();
